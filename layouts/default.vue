@@ -2,12 +2,18 @@
   <v-app>
     <Bar @changeNavigation="changeNavigation" />
     <Navigation :isView="navigation" />
-    <v-main class="color-main">
-      <v-container fluid>
-        <nuxt />
+    <v-main class="color-default">
+      <v-container fluid fill-height >
+        <v-row 
+          align="center"
+          justify="center">
+          <v-col>
+            <nuxt />
+          </v-col>
+        </v-row>
       </v-container>
     </v-main>
-    <Footer />
+    <Footer color="#7BC142" />
   </v-app>
 </template>
 <script>
@@ -34,7 +40,7 @@
   }
 </script>
 <style>
-  .color-main {
+  .color-default {
     background-color: #F2F2F2;
   }
 </style>

@@ -2,7 +2,7 @@
   <v-footer 
     app
     dark
-    color="#7BC142">
+    :color="color">
     <v-col
       class="text-center"
       cols="12">
@@ -14,6 +14,9 @@
   import moment from 'moment';
 
   export default {
+    props: {
+      color: String
+    },
     computed: {
       getYear() {
         return moment().format('YYYY');
