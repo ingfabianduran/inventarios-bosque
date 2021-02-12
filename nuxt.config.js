@@ -3,7 +3,7 @@ export default {
   head: {
     title: 'inventarios-bosque',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'es'
     },
     meta: [
       { charset: 'utf-8' },

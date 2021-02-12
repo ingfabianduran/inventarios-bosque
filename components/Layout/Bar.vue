@@ -4,14 +4,14 @@
     color="#F27830"
     dark>
     <v-app-bar-nav-icon @click="changeNavigation"></v-app-bar-nav-icon>
-    <v-toolbar-title>Inventarios Tecnologia</v-toolbar-title>
+    <v-toolbar-title>Inventarios El Bosque</v-toolbar-title>
   </v-app-bar>
 </template>
 <script>
   export default {
     data() {
       return {
-        navigation: true
+        navigation: true,
       }
     },
     methods: {

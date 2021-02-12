@@ -3,7 +3,9 @@
     v-model="isView"
     app
     dark
-    color="#3C4024">
+    color="#3C4024"
+    width="320"
+    class="mx-auto">
     <template v-slot:prepend>
       <v-list-item two-line>
         <v-list-item-avatar>
@@ -16,25 +18,71 @@
       </v-list-item>
     </template>
     <v-divider></v-divider>
-    <v-list>
-      <v-list-item
-        v-for="i in 8"
-        :key="i"
-        link>
-          <v-list-item-icon>
-            <v-icon>mdi-desktop-classic</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>{{ `Link ${ i + 1 }` }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-    </v-list>
+    <ListNavigation 
+      categoria="Servicios" 
+      :links="servicios" />
+    <v-divider></v-divider>
+    <ListNavigation 
+      categoria="Tecnologia" 
+      :links="tecnologias" />
+    <template v-slot:append>
+      <div class="pa-2">
+        <v-btn 
+          block
+          color="#F27830"
+          rounded>
+          <v-icon left>
+            mdi-exit-to-app
+          </v-icon>
+          Salir
+        </v-btn>
+      </div>
+    </template>
   </v-navigation-drawer>
 </template>
 <script>
+  import ListNavigation from '~/components/Layout/ListNavigation';
+
   export default {
+    data() {
+      return {
+        servicios: [
+          { titulo: 'Infraestructura', icon: 'mdi-home-modern', subtitulos: [
+            { titulo: 'Edificios', link: '#' },
+            { titulo: 'Dependencias', link: '#' },
+            { titulo: 'Espacios', link: '#' },
+          ] },
+          { titulo: 'Responsables', icon: 'mdi-account-group', link: '#' },
+          { titulo: 'Asignaciones', icon: 'mdi-handshake', link: '#' },
+          { titulo: 'Servicio Tecnico', icon: 'mdi-hammer-wrench', link: '#', subtitulos: [
+            { titulo: 'Categorias', link: '#' },
+            { titulo: 'Especialistas', link: '#' },
+            { titulo: 'Mantenimientos', link: '#' }
+          ] },
+        ],
+        tecnologias: [
+          { titulo: 'Equipos', icon: 'mdi-desktop-classic' },
+          { titulo: 'Hardware', icon: 'mdi-harddisk', subtitulos: [
+            { titulo: 'Discos Duros', link: '#' },
+            { titulo: 'Memorias Ram', link: '#' },
+            { titulo: 'Procesadores', link: '#' },
+            { titulo: 'Pantallas', link: '#' },
+          ] },
+          { titulo: 'Software', icon: 'mdi-blender-software', subtitulos: [
+            { titulo: 'Sistemas Operativos', link: '#' },
+            { titulo: 'Programas', link: '#' },
+          ] },
+          { titulo: 'Redes', icon: 'mdi-ip-network', subtitulos: [
+            { titulo: 'Direcciones Mac', link: '#' },
+          ] },
+        ]
+      }
+    },
     props: {
       isView: Boolean
+    },
+    components: {
+      ListNavigation
     }
   }
 </script>
