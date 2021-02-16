@@ -8,14 +8,14 @@
         <Carusel />
       </v-col>
       <v-col sm="12" md="7" lg="7" xl="7" class="pa-10">
-        <FormLogin />
+        <Form />
       </v-col>
     </v-row>
   </v-card>
 </template>
 <script>
   import Carusel from '~/components/Index/Carusel';
-  import FormLogin from '~/components/Index/FormLogin';
+  import Form from '~/components/Index/Form';
 
   export default {
     layout: 'index',
@@ -26,7 +26,7 @@
     },
     components: {
       Carusel,
-      FormLogin,
+      Form,
     }
   }
 </script>

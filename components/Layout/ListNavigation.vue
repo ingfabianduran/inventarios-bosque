@@ -20,7 +20,9 @@
             :key="j"
             link>
             <v-list-item-content>
-              <v-list-item-title v-text="subLink.titulo"></v-list-item-title>
+              <nuxt-link :to="subLink.link" class="link">
+                <v-list-item-title class="text-link" v-text="subLink.titulo"></v-list-item-title>
+              </nuxt-link>
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
@@ -31,7 +33,7 @@
           <v-list-item-icon>
             <v-icon>{{ link.icon }}</v-icon>
           </v-list-item-icon>
-          <v-list-item-title>{{ link.titulo }}</v-list-item-title>
+          <v-list-item-title >{{ link.titulo }}</v-list-item-title>
         </v-list-item>
       </template>
     </v-list>
@@ -45,3 +47,11 @@
     }
   }
 </script>
+<style>
+  .link {
+    text-decoration: none;
+  }
+  .text-link {
+    color: white;
+  }
+</style>
