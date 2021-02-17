@@ -11,7 +11,7 @@
               <ValidationProvider
                 v-slot="{ errors }"
                 name="documento"
-                rules="required">
+                rules="required|integer|min_value:10000000|max_value:9999999999">
                 <v-text-field
                   v-model="form.documento"
                   label="Documento"
@@ -28,7 +28,7 @@
               <ValidationProvider
                 v-slot="{ errors }"
                 name="correo"
-                rules="required">
+                rules="required|min:3|max:50">
                 <v-text-field
                   v-model="form.correo"
                   label="Correo"
@@ -48,7 +48,7 @@
               <ValidationProvider
                 v-slot="{ errors }"
                 name="nombres"
-                rules="required">
+                rules="required|min:3|max:50">
                 <v-text-field
                   v-model="form.nombres"
                   label="Nombres"
@@ -65,7 +65,7 @@
               <ValidationProvider
                 v-slot="{ errors }"
                 name="apellidos"
-                rules="required">
+                rules="required|min:3|max:50">
                 <v-text-field
                   v-model="form.apellidos"
                   label="Apellidos"
@@ -80,11 +80,11 @@
           <v-row>
             <v-col 
               cols="12"
-              md="6">
+              md="4">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="password"
-                rules="required">
+                rules="required|confirmed:confirmar">
                 <v-text-field
                   v-model="form.password"
                   :append-icon=" showPassword ? 'mdi-eye' : 'mdi-eye-off' "
@@ -100,11 +100,31 @@
             </v-col>
             <v-col 
               cols="12"
-              md="6">
+              md="4">
+              <ValidationProvider
+                v-slot="{ errors }"
+                name="confirmar"
+                vid="confirmar">
+                <v-text-field
+                  v-model="form.confirmar"
+                  :append-icon=" showPassword ? 'mdi-eye' : 'mdi-eye-off' "
+                  :type=" showPassword ? 'text' : 'password' "
+                  @click:append=" showPassword = !showPassword "
+                  label="Confirmar"
+                  placeholder="Confirmar la contraseña"
+                  outlined
+                  color="#7BC142"
+                  :error-messages="errors">
+                </v-text-field>
+              </ValidationProvider>
+            </v-col>
+            <v-col 
+              cols="12"
+              md="4">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="rol"
-                rules="required">
+                rules="required|oneOf:Coordinador,Soporte,Mesa">
                 <v-select
                   v-model="form.rol"
                   label="Rol"
@@ -147,6 +167,7 @@
           nombres: '',
           apellidos: '',
           password: '',
+          confirmar: '',
           rol: ''
         }
       }

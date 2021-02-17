@@ -1,13 +1,11 @@
 <template>
-  <div>
-    <v-card>
-      <v-data-table
-        :headers="headers"
-        :items="items"
-        hide-default-footer>
-      </v-data-table>
-    </v-card>
-  </div>
+  <v-card>
+    <v-data-table
+      :headers="headers"
+      :items="items"
+      hide-default-footer>
+    </v-data-table>
+  </v-card>
 </template>
 <script>
   export default {

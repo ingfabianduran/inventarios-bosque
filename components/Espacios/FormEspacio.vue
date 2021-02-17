@@ -11,7 +11,7 @@
               <ValidationProvider
                 v-slot="{ errors }"
                 name="nombre"
-                rules="required">
+                rules="required|min:5|max:45">
                 <v-text-field
                   v-model="form.nombre"
                   label="Nombre"
@@ -28,7 +28,7 @@
               <ValidationProvider
                 v-slot="{ errors }"
                 name="edificio"
-                rules="required">
+                rules="required|integer">
                 <v-select
                   v-model="form.edificio"
                   label="Edificio"

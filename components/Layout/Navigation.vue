@@ -52,7 +52,7 @@
             { titulo: 'Dependencias', link: '/dependencias' },
             { titulo: 'Espacios', link: '/espacios' },
           ] },
-          { titulo: 'Responsables', icon: 'mdi-account-group', link: '#' },
+          { titulo: 'Responsables', icon: 'mdi-account-group', link: '/responsables' },
           { titulo: 'Asignaciones', icon: 'mdi-handshake', link: '#' },
           { titulo: 'Servicio Tecnico', icon: 'mdi-hammer-wrench', link: '#', subtitulos: [
             { titulo: 'Categorias', link: '#' },
@@ -61,7 +61,7 @@
           ] },
         ],
         tecnologias: [
-          { titulo: 'Equipos', icon: 'mdi-desktop-classic' },
+          { titulo: 'Equipos', icon: 'mdi-desktop-classic', link: '#' },
           { titulo: 'Hardware', icon: 'mdi-harddisk', subtitulos: [
             { titulo: 'Discos Duros', link: '#' },
             { titulo: 'Memorias Ram', link: '#' },

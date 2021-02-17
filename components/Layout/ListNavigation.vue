@@ -28,13 +28,15 @@
         </v-list-group>
       </template>
       <template v-else>
-        <v-list-item
-          link>
-          <v-list-item-icon>
-            <v-icon>{{ link.icon }}</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title >{{ link.titulo }}</v-list-item-title>
-        </v-list-item>
+        <nuxt-link :to="link.link" class="link">
+          <v-list-item
+            link> 
+              <v-list-item-icon>
+                <v-icon>{{ link.icon }}</v-icon>
+              </v-list-item-icon>  
+              <v-list-item-title v-text="link.titulo" class="text-link"></v-list-item-title>
+          </v-list-item>
+        </nuxt-link>
       </template>
     </v-list>
   </div>
