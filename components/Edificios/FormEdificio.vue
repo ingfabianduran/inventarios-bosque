@@ -2,7 +2,7 @@
   <v-card>
     <ValidationObserver>
       <v-form>
-        <v-card-title>Nuevo Bloque</v-card-title>
+        <v-card-title>Nuevo Edificio</v-card-title>
         <v-card-text>
           <v-row>
             <v-col 

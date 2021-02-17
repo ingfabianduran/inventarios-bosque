@@ -7,7 +7,7 @@
     </v-row>
     <v-row>
       <v-col>
-        <Table :headers="headers" :items="items" />
+        <Table title="Dependencias" :headers="headers" :items="items" />
       </v-col>
     </v-row>
     <Pagination />
@@ -21,7 +21,7 @@
   export default {
     head() {
       return {
-        title: 'Listado de Bloques'
+        title: 'Dependencias'
       }
     },
     data() {
