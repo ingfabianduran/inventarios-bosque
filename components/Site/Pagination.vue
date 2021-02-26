@@ -1,10 +1,11 @@
 <template>
   <div class="text-center mt-3">
     <v-pagination
-      v-model="page"
-      :length="15"
+      v-model="current"
+      :length="page.last"
       color="#F27830"
-      total-visible="6">
+      total-visible="10"
+      @input="getData()">
     </v-pagination>
   </div>
 </template>
@@ -12,7 +13,16 @@
   export default {
     data() {
       return {
-        page: 1
+        current: 1
+      }
+    },
+    props: {
+      page: Object
+    },
+    methods: {
+      async getData() {
+        const { data } = await this.$axios.$get(`${this.page.url}${this.current}`);
+        this.$emit('getData', data);
       }
     }
   }

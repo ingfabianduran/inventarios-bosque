@@ -6,7 +6,8 @@
       <v-container fluid fill-height >
         <v-row 
           align="center"
-          justify="center">
+          justify="center"
+          class="my-1 mx-1">
           <v-col>
             <nuxt />
           </v-col>

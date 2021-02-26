@@ -6,16 +6,21 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col>
-        <Table title="Edificios" :headers="headers" :items="items" />
+      <v-col 
+        v-for="(edificio, i) in edificios" :key="i"
+        sm="12"
+        md="6"
+        lg="4"
+        xl="4">
+        <Edificio :edificio="edificio" />
       </v-col>
     </v-row>
-    <Pagination />
+    <Pagination :page="page" @getData="updateListEdificios" />
   </div>
 </template>
 <script>
   import Form from '~/components/Edificios/FormEdificio';
-  import Table from '~/components/Site/Table';
+  import Edificio from '~/components/Edificios/CardEdificio';
   import Pagination from '~/components/Site/Pagination';
 
   export default {
@@ -26,18 +31,30 @@
     },
     data() {
       return {
-        headers: [
-          { text: 'Nombre', sortable: false },
-        ],
-        items: [
-
-        ]
+        edificios: [],
+        page: {
+          last: 0,
+          url: 'api/asignacion/edificios/i/10?page='
+        }
       }
     },
     components: {
       Form,
-      Table, 
+      Edificio, 
       Pagination
     },
+    async created() {
+      await this.getEdificios();
+    },
+    methods: {
+      async getEdificios() {
+        const { data, last_page } = await this.$axios.$get('api/asignacion/edificios/i/10');
+        this.edificios = data;
+        this.page.last = last_page; 
+      },
+      updateListEdificios(edificios) {
+        this.edificios = edificios;
+      }
+    }
   }
 </script>
