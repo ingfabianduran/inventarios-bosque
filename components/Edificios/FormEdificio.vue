@@ -1,8 +1,9 @@
 <template>
   <v-card>
-    <ValidationObserver>
+    <ValidationObserver
+      ref="formEdificio">
       <v-form>
-        <v-card-title>Nuevo Edificio</v-card-title>
+        <v-card-title>{{ this.titulo }}</v-card-title>
         <v-card-text>
           <v-row>
             <v-col 
@@ -30,12 +31,13 @@
             type="submit"
             dark
             color="#F27830">
-            Registrar
+            {{ this.textBtn }}
           </v-btn>
           <v-btn
             type="button"
             dark
-            color="#7BC142">
+            color="#7BC142"
+            @click="clearForm()">
             Cancelar
           </v-btn>
         </v-card-actions>
@@ -49,7 +51,31 @@
       return {
         form: {
           nombre: ''
-        }
+        },
+      }
+    },
+    props: {
+      titulo: {
+        type: String,
+        required: true
+      },
+      edificio: {
+        type: Object,
+      },
+      textBtn: {
+        type: String,
+        required: true
+      },
+    },
+    methods: {
+      clearForm() {
+        this.$refs.formEdificio.reset();
+        this.$emit('clearForm');
+      }
+    },
+    watch: {
+      titulo() {
+        this.form.nombre = this.edificio.nombre;
       }
     }
   }

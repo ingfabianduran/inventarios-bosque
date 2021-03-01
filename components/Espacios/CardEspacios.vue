@@ -22,6 +22,7 @@
         color="#7BC142"
         dark
         elevation="3"
+        :loading="isLoading"
         @click="getEspacio(espacio.id)">
         <v-icon left>
           mdi-pencil
@@ -42,13 +43,29 @@
   </v-card>
 </template>
 <script>
+  import Alert from '~/components/Site/SweetAlert';
+
   export default {
+    data() {
+      return {
+        isLoading: false
+      }
+    },
     props: {
-      espacio: Object
+      espacio: {
+        type: Object,
+        required: true
+      } 
     },
     methods: {
-      getEspacio(id) {
-
+      async getEspacio(id) {
+        this.isLoading = true;
+        const espacio = await this.$axios.$get(`api/asignacion/espacios/${id}`);
+        setTimeout(() => {
+          Alert.showToast('success', 'Por favor vizualice y/o actualicé la información');
+          this.isLoading = false;
+          this.$emit('getEspacio', espacio);
+        }, 1000);
       },
       deleteEspacio(id) {
 

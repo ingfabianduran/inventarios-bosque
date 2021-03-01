@@ -2,7 +2,7 @@
   <div>
     <v-row>
       <v-col>
-        <Form />
+        <Form :titulo="espacio.titulo" :espacio="espacio.data" :textBtn="espacio.textBtn" @clearForm="clearForm" />
       </v-col>
     </v-row>
     <v-row>
@@ -13,7 +13,7 @@
         md="6"
         lg="4"
         xl="4">
-        <Espacio :espacio="espacio"/>
+        <Espacio :espacio="espacio" @getEspacio="getEspacio" />
       </v-col>
     </v-row>
     <Pagination :page="page" @getData="updateListEspacios" />
@@ -32,6 +32,11 @@
     },
     data() {
       return {
+        espacio: {
+          titulo: 'Nuevo Espacio',
+          data: {},
+          textBtn: 'Registrar'
+        },
         espacios: [],
         page: {
           last: 0,
@@ -55,6 +60,18 @@
       },
       updateListEspacios(espacios) {
         this.espacios = espacios;
+      },
+      getEspacio(espacio) {
+        this.espacio.titulo = 'Actualizar Espacio';
+        this.espacio.data = espacio;
+        this.espacio.textBtn = 'Actualizar';
+      },
+      clearForm() {
+        this.espacio = {
+          titulo: 'Nuevo Espacio',
+          data: {},
+          textBtn: 'Registrar'
+        };
       }
     }
   }

@@ -1,8 +1,9 @@
 <template>
   <v-card>
-    <ValidationObserver>
+    <ValidationObserver
+      ref="formEspacio">
       <v-form>
-        <v-card-title>Nuevo Espacio</v-card-title>
+        <v-card-title>{{ this.titulo }}</v-card-title>
         <v-card-text>
           <v-row>
             <v-col 
@@ -27,14 +28,17 @@
               md="6">
               <ValidationProvider
                 v-slot="{ errors }"
-                name="edificio"
+                name="edificio_id"
                 rules="required|integer">
-                <v-select
-                  v-model="form.edificio"
+                <v-autocomplete
+                  v-model="form.edificio_id"
+                  :items="edificios"
+                  item-text="nombre"
+                  item-value="id"
                   label="Edificio"
                   outlined
                   :error-messages="errors">
-                </v-select>
+                </v-autocomplete>
               </ValidationProvider>
             </v-col>
           </v-row>
@@ -45,12 +49,13 @@
             type="submit"
             dark
             color="#F27830">
-            Registrar
+            {{ this.textBtn }}
           </v-btn>
           <v-btn
             type="button"
             dark
-            color="#7BC142">
+            color="#7BC142"
+            @click="clearForm()">
             Cancelar
           </v-btn>
         </v-card-actions>
@@ -62,10 +67,42 @@
   export default {
     data() {
       return {
+        edificios: [],
         form: {
           nombre: '',
-          edificio: ''
+          edificio_id: ''
         }
+      }
+    },
+    props: {
+      titulo: {
+        type: String,
+        required: true
+      },
+      espacio: {
+        type: Object,
+      },
+      textBtn: {
+        type: String,
+        required: true
+      },
+    },
+    async created() {
+      await this.getEdificios();
+    },
+    methods: {
+      async getEdificios() {
+        this.edificios = await this.$axios.$get('api/asignacion/edificios/i/10/1');
+      },
+      clearForm() {
+        this.$refs.formEspacio.reset();
+        this.$emit('clearForm');
+      }
+    },
+    watch: {
+      titulo() {
+        this.form.nombre = this.espacio.nombre;
+        this.form.edificio_id = this.espacio.edificio_id;
       }
     }
   }
