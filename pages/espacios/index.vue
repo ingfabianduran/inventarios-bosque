@@ -2,7 +2,7 @@
   <div>
     <v-row>
       <v-col>
-        <Form :titulo="espacio.titulo" :espacio="espacio.data" :textBtn="espacio.textBtn" @clearForm="clearForm" />
+        <Form :titulo="espacio.titulo" :espacio="espacio.data" :url="espacio.url" :textBtn="espacio.textBtn" @clearForm="clearForm" />
       </v-col>
     </v-row>
     <v-row>
@@ -11,9 +11,9 @@
         :key="i"
         sm="12"
         md="6"
-        lg="4"
+        lg="6"
         xl="4">
-        <Espacio :espacio="espacio" @getEspacio="getEspacio" />
+        <Espacio :espacio="espacio" @getEspacio="getEspacio" @getEspacios="getEspacios" />
       </v-col>
     </v-row>
     <Pagination :page="page" @getData="updateListEspacios" />
@@ -21,7 +21,7 @@
 </template>
 <script>
   import Form from '~/components/Espacios/FormEspacio';
-  import Espacio from '~/components/Espacios/CardEspacios';
+  import Espacio from '~/components/Espacios/CardEspacio';
   import Pagination from '~/components/Site/Pagination';
 
   export default {
@@ -35,6 +35,7 @@
         espacio: {
           titulo: 'Nuevo Espacio',
           data: {},
+          url: 'api/asignacion/espacios',
           textBtn: 'Registrar'
         },
         espacios: [],
@@ -54,7 +55,8 @@
     },
     methods: {
       async getEspacios() {
-        const { data, last_page } = await this.$axios.$get('http://localhost:8000/api/asignacion/espacios/i/10');
+        console.log('RUN');
+        const { data, last_page } = await this.$axios.$get('api/asignacion/espacios/i/10');
         this.espacios = data;
         this.page.last = last_page;
       },
@@ -64,14 +66,15 @@
       getEspacio(espacio) {
         this.espacio.titulo = 'Actualizar Espacio';
         this.espacio.data = espacio;
+        this.espacio.url = `api/asignacion/espacios/${espacio.id}`
         this.espacio.textBtn = 'Actualizar';
       },
-      clearForm() {
-        this.espacio = {
-          titulo: 'Nuevo Espacio',
-          data: {},
-          textBtn: 'Registrar'
-        };
+      async clearForm() {
+        this.espacio.titulo = 'Nuevo Espacio';
+        this.espacio.data = {};
+        this.espacio.url = 'api/asignacion/espacios';
+        this.espacio.textBtn = 'Registrar';
+        await this.getEspacios();
       }
     }
   }

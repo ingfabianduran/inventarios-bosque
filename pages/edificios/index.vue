@@ -2,7 +2,7 @@
   <div>
     <v-row>
       <v-col>
-        <Form :titulo="edificio.titulo" :edificio="edificio.data" :textBtn="edificio.textBtn" @clearForm="clearForm" />
+        <Form :titulo="edificio.titulo" :edificio="edificio.data" :url="edificio.url" :textBtn="edificio.textBtn" @clearForm="clearForm" />
       </v-col>
     </v-row>
     <v-row>
@@ -10,9 +10,9 @@
         v-for="(edificio, i) in edificios" :key="i"
         sm="12"
         md="6"
-        lg="4"
+        lg="6"
         xl="4">
-        <Edificio :edificio="edificio" @getEdificio="getEdificio" />
+        <Edificio :edificio="edificio" @getEdificio="getEdificio" @getEdificios="getEdificios" />
       </v-col>
     </v-row>
     <Pagination :page="page" @getData="updateListEdificios" />
@@ -34,6 +34,7 @@
         edificio: {
           titulo: 'Nuevo Edificio',
           data: {},
+          url: 'api/asignacion/edificios',
           textBtn: 'Registrar'
         },
         edificios: [],
@@ -53,7 +54,7 @@
     },
     methods: {
       async getEdificios() {
-        const { data, last_page } = await this.$axios.$get('api/asignacion/edificios/i/10/false');
+        const { data, last_page } = await this.$axios.$get('api/asignacion/edificios/i/10/0');
         this.edificios = data;
         this.page.last = last_page; 
       },
@@ -63,14 +64,15 @@
       getEdificio(edificio) {
         this.edificio.titulo = 'Actualizar Edificio';
         this.edificio.data = edificio;
+        this.edificio.url = `api/asignacion/edificios/${edificio.id}`;
         this.edificio.textBtn = 'Actualizar';
       },
-      clearForm() {
-        this.edificio = {
-          titulo: 'Nuevo Edificio',
-          data: {},
-          textBtn: 'Registrar'
-        };
+      async clearForm() {
+        this.edificio.titulo = 'Nuevo Edificio';
+        this.edificio.data = {};
+        this.edificio.url = 'api/asignacion/edificios';
+        this.edificio.textBtn = 'Registrar';
+        await this.getEdificios();
       }
     }
   }

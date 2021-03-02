@@ -1,8 +1,10 @@
 <template>
   <v-card>
+    <Loader :isShow="isLoading" size="70" />
     <ValidationObserver
       ref="formEspacio">
-      <v-form>
+      <v-form
+        @submit.prevent="storeEspacio()">
         <v-card-title>{{ this.titulo }}</v-card-title>
         <v-card-text>
           <v-row>
@@ -33,6 +35,7 @@
                 <v-autocomplete
                   v-model="form.edificio_id"
                   :items="edificios"
+                  color="#7BC142"
                   item-text="nombre"
                   item-value="id"
                   label="Edificio"
@@ -64,6 +67,9 @@
   </v-card>
 </template>
 <script>
+  import Alert from '~/components/Site/SweetAlert';
+  import Loader from '~/components/Site/Loader';
+
   export default {
     data() {
       return {
@@ -71,7 +77,8 @@
         form: {
           nombre: '',
           edificio_id: ''
-        }
+        },
+        isLoading: false
       }
     },
     props: {
@@ -81,11 +88,19 @@
       },
       espacio: {
         type: Object,
+        required: false
+      },
+      url: {
+        type: String,
+        required: true
       },
       textBtn: {
         type: String,
         required: true
       },
+    },
+    components: {
+      Loader
     },
     async created() {
       await this.getEdificios();
@@ -94,13 +109,30 @@
       async getEdificios() {
         this.edificios = await this.$axios.$get('api/asignacion/edificios/i/10/1');
       },
+      storeEspacio() {
+        Alert.showConfirm(this.titulo, '¿Esta seguro de agregar un nuevo registro?', 'question', async(confirmed) => {
+          if (confirmed) {
+            this.isLoading = true;
+            const espacio = (this.titulo === 'Nuevo Espacio') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
+            if (espacio) {
+              Alert.showToast('success', `El espacio se ha registrado correctamente`);
+              this.clearForm();
+            }
+            setTimeout(() => {
+              this.isLoading = false;
+            }, 500);
+          }
+        });
+      },
       clearForm() {
         this.$refs.formEspacio.reset();
+        this.form.nombre = '';
+        this.form.edificio_id = ''; 
         this.$emit('clearForm');
       }
     },
     watch: {
-      titulo() {
+      espacio() {
         this.form.nombre = this.espacio.nombre;
         this.form.edificio_id = this.espacio.edificio_id;
       }

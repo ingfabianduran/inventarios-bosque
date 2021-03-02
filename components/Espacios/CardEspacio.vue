@@ -13,7 +13,7 @@
         <v-icon left>
           mdi-home-modern
         </v-icon>
-        {{ `${espacio.edificio.nombre}` }}
+        {{ (espacio.edificio) ? espacio.edificio.nombre : 'No Registra' }}
       </v-chip>
     </v-card-title>
     <v-card-actions>
@@ -22,7 +22,7 @@
         color="#7BC142"
         dark
         elevation="3"
-        :loading="isLoading"
+        :loading="isLoadingVer"
         @click="getEspacio(espacio.id)">
         <v-icon left>
           mdi-pencil
@@ -33,6 +33,7 @@
         color="#F27830"
         dark
         elevation="3"
+        :loading="isLoadingDelete"
         @click="deleteEspacio(espacio.id)">
         <v-icon left>
           mdi-delete
@@ -48,7 +49,8 @@
   export default {
     data() {
       return {
-        isLoading: false
+        isLoadingVer: false,
+        isLoadingDelete: false
       }
     },
     props: {
@@ -59,16 +61,28 @@
     },
     methods: {
       async getEspacio(id) {
-        this.isLoading = true;
+        this.isLoadingVer = true;
         const espacio = await this.$axios.$get(`api/asignacion/espacios/${id}`);
         setTimeout(() => {
           Alert.showToast('success', 'Por favor vizualice y/o actualicé la información');
-          this.isLoading = false;
+          this.isLoadingVer = false;
           this.$emit('getEspacio', espacio);
         }, 1000);
       },
       deleteEspacio(id) {
-
+        Alert.showConfirm('Eliminar Espacio', '¿Esta seguro de eliminar el registro?', 'question', async(confirmed) => {
+          if (confirmed) {
+            this.isLoadingDelete = true;
+            const espacio = await this.$axios.$delete(`api/asignacion/espacios/${id}`);
+            if (espacio) {
+              setTimeout(() => {
+                Alert.showToast('success', 'Registro eliminado correctamente');
+                this.isLoadingDelete = false;
+                this.$emit('getEspacios');
+              },1000);
+            }
+          }
+        });
       }
     }
   }

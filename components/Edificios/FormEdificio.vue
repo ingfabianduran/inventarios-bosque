@@ -1,8 +1,10 @@
 <template>
   <v-card>
+    <Loader :isShow="isLoading" size="70" />
     <ValidationObserver
       ref="formEdificio">
-      <v-form>
+      <v-form 
+        @submit.prevent="storeEdificio">
         <v-card-title>{{ this.titulo }}</v-card-title>
         <v-card-text>
           <v-row>
@@ -46,12 +48,16 @@
   </v-card>
 </template>
 <script>
+  import Alert from '~/components/Site/SweetAlert';
+  import Loader from '~/components/Site/Loader';
+
   export default {
     data() {
       return {
         form: {
           nombre: ''
         },
+        isLoading: false
       }
     },
     props: {
@@ -61,20 +67,44 @@
       },
       edificio: {
         type: Object,
+        required: false
+      },
+      url: {
+        type: String,
+        required: true
       },
       textBtn: {
         type: String,
         required: true
       },
     },
+    components: {
+      Loader
+    },
     methods: {
+      storeEdificio() {
+        Alert.showConfirm(this.titulo, `¿Esta seguro de realizar la petición?`, 'question', async(confirmed) => {
+          if (confirmed) {
+            this.isLoading = true;
+            const edificio = (this.titulo === 'Nuevo Edificio') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
+            if (edificio) {
+              Alert.showToast('success', `El edificio se ha registrado correctamente`);
+              this.clearForm();
+            }
+            setTimeout(() => {
+              this.isLoading = false;
+            }, 500);
+          }
+        });
+      },
       clearForm() {
         this.$refs.formEdificio.reset();
+        this.form.nombre = '';
         this.$emit('clearForm');
       }
     },
     watch: {
-      titulo() {
+      edificio() {
         this.form.nombre = this.edificio.nombre;
       }
     }

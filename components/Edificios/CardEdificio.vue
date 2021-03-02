@@ -12,7 +12,7 @@
         color="#7BC142"
         dark
         elevation="3"
-        :loading="isLoading"
+        :loading="isLoadingVer"
         @click="getEdificio(edificio.id)">
         <v-icon left>
           mdi-pencil
@@ -23,6 +23,7 @@
         color="#F27830"
         dark
         elevation="3"
+        :loading="isLoadingDelete"
         @click="deleteEdificio(edificio.id)">
         <v-icon left>
           mdi-delete
@@ -38,7 +39,8 @@
   export default {
     data() {
       return {
-        isLoading: false
+        isLoadingVer: false,
+        isLoadingDelete: false,
       }
     },
     props: {
@@ -49,16 +51,28 @@
     }, 
     methods: {
       async getEdificio(id) {
-        this.isLoading = true;
+        this.isLoadingVer = true;
         const edificio = await this.$axios.$get(`api/asignacion/edificios/${id}`);
         setTimeout(() => {
           Alert.showToast('success', 'Por favor vizualice y/o actualicé la información');
-          this.isLoading = false;
+          this.isLoadingVer = false;
           this.$emit('getEdificio', edificio);
         }, 1000);
       },
       deleteEdificio(id) {
-        
+        Alert.showConfirm('Eliminar Edificio', '¿Esta seguro de eliminar el registro?', 'question', async(confirmed) => {
+          if (confirmed) {
+            this.isLoadingDelete = true;
+            const edificio = await this.$axios.$delete(`api/asignacion/edificios/${id}`);
+            if (edificio) {
+              setTimeout(() => {
+                Alert.showToast('success', 'Registro eliminado correctamente');
+                this.isLoadingDelete = false;
+                this.$emit('getEdificios');
+              },1000);
+            }
+          }
+        });
       }
     }
   }
