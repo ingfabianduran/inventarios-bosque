@@ -17,12 +17,17 @@
       }
     },
     props: {
-      page: Object
+      page: Object,
+      required: true
     },
     methods: {
       async getData() {
         const { data } = await this.$axios.$get(`${this.page.url}${this.current}`);
-        this.$emit('getData', data);
+        const pagination = {
+          data: data,
+          current: this.current
+        };
+        this.$emit('getData', pagination);
       }
     }
   }

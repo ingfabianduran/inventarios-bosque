@@ -40,6 +40,7 @@
         },
         espacios: [],
         page: {
+          current: 1,
           last: 0,
           url: 'api/asignacion/espacios/i/10?page='
         }
@@ -55,13 +56,13 @@
     },
     methods: {
       async getEspacios() {
-        console.log('RUN');
-        const { data, last_page } = await this.$axios.$get('api/asignacion/espacios/i/10');
+        const { data, last_page } = await this.$axios.$get(`api/asignacion/espacios/i/10?page=${this.page.current}`);
         this.espacios = data;
         this.page.last = last_page;
       },
       updateListEspacios(espacios) {
-        this.espacios = espacios;
+        this.espacios = espacios.data;
+        this.page.current = espacios.current;
       },
       getEspacio(espacio) {
         this.espacio.titulo = 'Actualizar Espacio';

@@ -10,7 +10,6 @@
         <Table title="Responsables" :headers="headers" :items="items" />
       </v-col>
     </v-row>
-    <Pagination />
   </div>
 </template>
 <script>
