@@ -107,7 +107,8 @@
     },
     methods: {
       async getEdificios() {
-        this.edificios = await this.$axios.$get('api/asignacion/edificios/i/10/1');
+        const { data } = await this.$axios.$get('api/asignacion/edificios/i/10/1');
+        this.edificios = data.data;
       },
       storeEspacio() {
         Alert.showConfirm(this.titulo, '¿Esta seguro de agregar un nuevo registro?', 'question', async(confirmed) => {

@@ -56,9 +56,9 @@
     },
     methods: {
       async getEspacios() {
-        const { data, last_page } = await this.$axios.$get(`api/asignacion/espacios/i/10?page=${this.page.current}`);
-        this.espacios = data;
-        this.page.last = last_page;
+        const { data } = await this.$axios.$get(`api/asignacion/espacios/i/10?page=${this.page.current}`);
+        this.espacios = data.data;
+        this.page.last = data.last_page;
       },
       updateListEspacios(espacios) {
         this.espacios = espacios.data;
@@ -66,7 +66,7 @@
       },
       getEspacio(espacio) {
         this.espacio.titulo = 'Actualizar Espacio';
-        this.espacio.data = espacio;
+        this.espacio.data = espacio.data;
         this.espacio.url = `api/asignacion/espacios/${espacio.id}`
         this.espacio.textBtn = 'Actualizar';
       },
