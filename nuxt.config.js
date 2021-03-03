@@ -55,7 +55,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: 'http://127.0.0.1:8000'
+    baseURL: 'http://172.18.92.12'
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
@@ -63,5 +63,10 @@ export default {
     transpile: [
       "vee-validate/dist/rules"
     ],
+  },
+  server: {
+    port: 3000, // default: 3000
+    host: '0.0.0.0', // default: localhost,
+    timing: false
   }
 }
