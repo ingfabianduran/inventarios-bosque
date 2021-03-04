@@ -1,8 +1,11 @@
 <template>
   <v-card>
-    <ValidationObserver>
-      <v-form>
-        <v-card-title>Nuevo Responsable</v-card-title>
+    <Loader :isShow="isLoading" size="90" />
+    <ValidationObserver
+      ref="formResponsable">
+      <v-form
+        @submit.prevent="storeResponsable">
+        <v-card-title>{{ this.titulo }}</v-card-title>
         <v-card-text>
           <v-row>
             <v-col 
@@ -79,15 +82,18 @@
               md="5">
               <ValidationProvider
                 v-slot="{ errors }"
-                name="area"
+                name="dependencias"
                 rules="required|integer">
-                <v-select
-                  v-model="form.area"
-                  :items="areas"
-                  label="Area"
+                <v-autocomplete
+                  v-model="form.dependencia_id"
+                  :items="dependencias"
+                  color="#7BC142"
+                  item-text="nombre"
+                  item-value="id"
+                  label="Dependencia"
                   outlined
                   :error-messages="errors">
-                </v-select>
+                </v-autocomplete>
               </ValidationProvider>
             </v-col>
           </v-row>
@@ -98,7 +104,7 @@
             type="submit"
             dark
             color="#F27830">
-            Registrar
+            {{ this.textBtn }}
           </v-btn>
           <v-btn
             type="button"
@@ -112,18 +118,78 @@
   </v-card>
 </template>
 <script>
+  import Alert from '~/components/Site/SweetAlert';
+  import Loader from '~/components/Site/Loader';
+
   export default {
     data() {
       return {
         roles: ['Académico', 'Administrativo', 'Docente', 'Directivo', 'Investigador'],
-        areas: [],
+        dependencias: [],
         form: {
           nombre: '',
           cargo: '',
           tipo: '',
           extension: '',
-          area: ''
-        }
+          dependencia_id: ''
+        },
+        isLoading: false
+      }
+    },
+    props: {
+      titulo: {
+        type: String,
+        required: true
+      },
+      responsable: {
+        type: Object,
+        required: false
+      },
+      url: {
+        type: String,
+        required: true
+      },
+      textBtn: {
+        type: String,
+        required: true
+      },
+    },
+    components: {
+      Loader
+    },
+    methods: {
+      storeResponsable() {
+        Alert.showConfirm(this.titulo, `¿Esta seguro de realizar la petición?`, 'question', async(confirmed) => {
+          if (confirmed) {
+            this.isLoading = true;
+            const { descripcion } = (this.titulo === 'Nuevo Responsable') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
+            if (descripcion) {
+              setTimeout(() => {
+                Alert.showToast('success', descripcion);
+                this.isLoading = false;
+                this.clearForm();
+              }, 500);
+            }
+          }
+        });
+      },
+      clearForm() {
+        this.$refs.formResponsable.reset();
+        this.form.nombre = '';
+        this.form.cargo = '';
+        this.form.tipo = '';
+        this.form.extension = '';
+        this.form.dependencia = '';
+        this.$emit('clearForm');
+      }
+    },
+    watch: {
+      responsable() {
+        this.form.nombre = this.responsable.nombre;
+        this.form.cargo = this.responsable.cargo;
+        this.form.tipo = this.responsable.tipo;
+        this.form.extension = this.responsable.extension;
+        this.form.dependencia = this.responsable.dependencia;
       }
     }
   }

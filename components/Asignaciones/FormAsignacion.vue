@@ -1,28 +1,27 @@
 <template>
   <v-card>
-    <Loader :isShow="isLoading" size="70" />
+    <Loader :isShow="isLoading" size="60" />
     <ValidationObserver
-      ref="formDependencia">
+      ref="formAsignacion">
       <v-form
-        @submit.prevent="storeDependencia">
+        @submit.prevent="storeAsignacion">
         <v-card-title>{{ this.titulo }}</v-card-title>
         <v-card-text>
           <v-row>
-            <v-col 
+            <v-col
               cols="12"
-              md="12">
+              md="6">
               <ValidationProvider
                 v-slot="{ errors }"
-                name="nombre"
-                rules="required|min:5|max:45">
-                <v-text-field
-                  v-model="form.nombre"
-                  label="Nombre"
-                  placeholder="Nombre de la dependecia"
+                name="tipo"
+                rules="required|oneOf:Aulas,Oficinas">
+                <v-select
+                  v-model="form.tipo"
+                  label="Tipo"
                   outlined
-                  color="#7BC142"
+                  :items="tipos"
                   :error-messages="errors">
-                </v-text-field>
+                </v-select>
               </ValidationProvider>
             </v-col>
           </v-row>
@@ -53,8 +52,13 @@
   export default {
     data() {
       return {
+        tipos: ['Aulas', 'Oficinas'],
         form: {
-          nombre: ''
+          tipo: '',
+          estado: '',
+          responsable_id: '',
+          espacio_id: '',
+          equipo_id: ''
         },
         isLoading: false
       }
@@ -64,7 +68,7 @@
         type: String,
         required: true
       },
-      dependencia: {
+      asignacion: {
         type: Object,
         required: false
       },
@@ -81,11 +85,11 @@
       Loader
     },
     methods: {
-      storeDependencia() {
+      storeAsignacion() {
         Alert.showConfirm(this.titulo, `¿Esta seguro de realizar la petición?`, 'question', async(confirmed) => {
           if (confirmed) {
             this.isLoading = true;
-            const { descripcion } = (this.titulo === 'Nueva Dependencia') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
+            const { descripcion } = (this.titulo === 'Nuevo Especialista') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
             if (descripcion) {
               setTimeout(() => {
                 Alert.showToast('success', descripcion);
@@ -97,14 +101,12 @@
         });
       },
       clearForm() {
-        this.$refs.formDependencia.reset();
-        this.form.nombre = '';
-        this.$emit('clearForm');
+        
       }
     },
     watch: {
-      dependencia() {
-        this.form.nombre = this.dependencia.nombre;
+      especialista() {
+        
       }
     }
   }

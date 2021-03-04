@@ -53,7 +53,7 @@
             { titulo: 'Espacios', link: '/espacios' },
           ] },
           { titulo: 'Responsables', icon: 'mdi-account-group', link: '/responsables' },
-          { titulo: 'Asignaciones', icon: 'mdi-handshake', link: '#' },
+          { titulo: 'Asignaciones', icon: 'mdi-handshake', link: '/asignaciones' },
           { titulo: 'Servicio Tecnico', icon: 'mdi-hammer-wrench', link: '#', subtitulos: [
             { titulo: 'Categorias', link: '#' },
             { titulo: 'Especialistas', link: '/especialistas' },

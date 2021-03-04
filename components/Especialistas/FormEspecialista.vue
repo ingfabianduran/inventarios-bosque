@@ -1,8 +1,11 @@
 <template>
   <v-card>
-    <ValidationObserver>
-      <v-form>
-        <v-card-title>Nuevo Especialista</v-card-title>
+    <Loader :isShow="isLoading" size="100" />
+    <ValidationObserver
+      ref="formEspecialista">
+      <v-form
+        @submit.prevent="storeEspecialista">
+        <v-card-title>{{ this.titulo }}</v-card-title>
         <v-card-text>
           <v-row>
             <v-col 
@@ -142,7 +145,7 @@
             type="submit"
             dark
             color="#F27830">
-            Registrar
+            {{ this.textBtn }}
           </v-btn>
           <v-btn
             type="button"
@@ -156,6 +159,9 @@
   </v-card>
 </template>
 <script>
+  import Alert from '~/components/Site/SweetAlert';
+  import Loader from '~/components/Site/Loader';
+
   export default {
     data() {
       return {
@@ -169,7 +175,68 @@
           password: '',
           confirmar: '',
           rol: ''
-        }
+        },
+        isLoading: false
+      }
+    },
+    props: {
+      titulo: {
+        type: String,
+        required: true
+      },
+      especialista: {
+        type: Object,
+        required: false
+      },
+      url: {
+        type: String,
+        required: true
+      },
+      textBtn: {
+        type: String,
+        required: true
+      },
+    },
+    components: {
+      Loader
+    },
+    methods: {
+      storeEspecialista() {
+        Alert.showConfirm(this.titulo, `¿Esta seguro de realizar la petición?`, 'question', async(confirmed) => {
+          if (confirmed) {
+            this.isLoading = true;
+            const { descripcion } = (this.titulo === 'Nuevo Especialista') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
+            if (descripcion) {
+              setTimeout(() => {
+                Alert.showToast('success', descripcion);
+                this.isLoading = false;
+                this.clearForm();
+              }, 500);
+            }
+          }
+        });
+      },
+      clearForm() {
+        this.$refs.formEspecialista.reset();
+        this.form.documento = '';
+        this.form.correo = '';
+        this.form.nombres = '';
+        this.form.apellidos = '';
+        this.form.password = ''; 
+        this.form.confirmar = '';
+        this.form.rol = '';
+        this.$emit('clearForm');
+      }
+    },
+    watch: {
+      especialista() {
+        this.form.documento = this.especialista.documento;
+        this.form.correo = this.especialista.correo;
+        this.form.nombres = this.especialista.nombres;
+        this.form.apellidos = this.especialista.apellidos;
+        this.form.password = this.especialista.password; 
+        this.form.confirmar = this.especialista.password;
+        this.form.rol = this.especialista.rol;
       }
     }
   }
