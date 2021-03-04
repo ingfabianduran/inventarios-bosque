@@ -4,7 +4,7 @@
     outlined>
     <v-card-title
       class="font-weight-bold">
-      {{ `Espacio ${espacio.nombre}` }}
+      {{ espacio.nombre }}
       <v-spacer></v-spacer>
       <v-chip
         color="#3C4024"
@@ -62,21 +62,21 @@
     methods: {
       async getEspacio(id) {
         this.isLoadingVer = true;
-        const espacio = await this.$axios.$get(`api/asignacion/espacios/${id}`);
+        const { data } = await this.$axios.$get(`api/asignacion/espacios/${id}`);
         setTimeout(() => {
           Alert.showToast('success', 'Por favor vizualice y/o actualicé la información');
           this.isLoadingVer = false;
-          this.$emit('getEspacio', espacio);
+          this.$emit('getEspacio', data);
         }, 1000);
       },
       deleteEspacio(id) {
         Alert.showConfirm('Eliminar Espacio', '¿Esta seguro de eliminar el registro?', 'question', async(confirmed) => {
           if (confirmed) {
             this.isLoadingDelete = true;
-            const espacio = await this.$axios.$delete(`api/asignacion/espacios/${id}`);
-            if (espacio) {
+            const { descripcion } = await this.$axios.$delete(`api/asignacion/espacios/${id}`);
+            if (descripcion) {
               setTimeout(() => {
-                Alert.showToast('success', 'Registro eliminado correctamente');
+                Alert.showToast('success', descripcion);
                 this.isLoadingDelete = false;
                 this.$emit('getEspacios');
               },1000);

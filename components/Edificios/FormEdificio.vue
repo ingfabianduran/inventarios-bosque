@@ -86,14 +86,14 @@
         Alert.showConfirm(this.titulo, `¿Esta seguro de realizar la petición?`, 'question', async(confirmed) => {
           if (confirmed) {
             this.isLoading = true;
-            const edificio = (this.titulo === 'Nuevo Edificio') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
-            if (edificio) {
-              Alert.showToast('success', `El edificio se ha registrado correctamente`);
-              this.clearForm();
+            const { descripcion } = (this.titulo === 'Nuevo Edificio') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
+            if (descripcion) {
+              setTimeout(() => {
+                Alert.showToast('success', descripcion);
+                this.isLoading = false;
+                this.clearForm();
+              }, 500);
             }
-            setTimeout(() => {
-              this.isLoading = false;
-            }, 500);
           }
         });
       },

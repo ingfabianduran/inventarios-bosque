@@ -55,9 +55,9 @@
     },
     methods: {
       async getEdificios() {
-        const { data, last_page } = await this.$axios.$get(`api/asignacion/edificios/i/10?page=${this.page.current}`);
-        this.edificios = data;
-        this.page.last = last_page; 
+        const { data } = await this.$axios.$get(`api/asignacion/edificios/i/10?page=${this.page.current}`);
+        this.edificios = data.data;
+        this.page.last = data.last_page; 
       },
       updateListEdificios(edificios) {
         this.edificios = edificios.data;

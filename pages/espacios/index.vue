@@ -56,7 +56,7 @@
     },
     methods: {
       async getEspacios() {
-        const { data } = await this.$axios.$get(`api/asignacion/espacios/i/10?page=${this.page.current}`);
+        const { data }  = await this.$axios.$get(`api/asignacion/espacios/i/10?page=${this.page.current}`);
         this.espacios = data.data;
         this.page.last = data.last_page;
       },
@@ -66,7 +66,7 @@
       },
       getEspacio(espacio) {
         this.espacio.titulo = 'Actualizar Espacio';
-        this.espacio.data = espacio.data;
+        this.espacio.data = espacio;
         this.espacio.url = `api/asignacion/espacios/${espacio.id}`
         this.espacio.textBtn = 'Actualizar';
       },

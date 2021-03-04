@@ -111,17 +111,17 @@
         this.edificios = data.data;
       },
       storeEspacio() {
-        Alert.showConfirm(this.titulo, '¿Esta seguro de agregar un nuevo registro?', 'question', async(confirmed) => {
+        Alert.showConfirm(this.titulo, '¿Esta seguro de realizar la petición?', 'question', async(confirmed) => {
           if (confirmed) {
             this.isLoading = true;
-            const espacio = (this.titulo === 'Nuevo Espacio') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
-            if (espacio) {
-              Alert.showToast('success', `El espacio se ha registrado correctamente`);
-              this.clearForm();
+            const { descripcion } = (this.titulo === 'Nuevo Espacio') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
+            if (descripcion) {
+              setTimeout(() => {
+                Alert.showToast('success', descripcion);
+                this.isLoading = false;
+                this.clearForm();
+              }, 500);
             }
-            setTimeout(() => {
-              this.isLoading = false;
-            }, 500);
           }
         });
       },

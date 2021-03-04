@@ -24,7 +24,7 @@
       async getData() {
         const { data } = await this.$axios.$get(`${this.page.url}${this.current}`);
         const pagination = {
-          data: data,
+          data: data.data,
           current: this.current
         };
         this.$emit('getData', pagination);

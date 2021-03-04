@@ -52,21 +52,21 @@
     methods: {
       async getEdificio(id) {
         this.isLoadingVer = true;
-        const edificio = await this.$axios.$get(`api/asignacion/edificios/${id}`);
+        const { data } = await this.$axios.$get(`api/asignacion/edificios/${id}`);
         setTimeout(() => {
           Alert.showToast('success', 'Por favor vizualice y/o actualicé la información');
           this.isLoadingVer = false;
-          this.$emit('getEdificio', edificio);
+          this.$emit('getEdificio', data);
         }, 1000);
       },
       deleteEdificio(id) {
         Alert.showConfirm('Eliminar Edificio', '¿Esta seguro de eliminar el registro?', 'question', async(confirmed) => {
           if (confirmed) {
             this.isLoadingDelete = true;
-            const edificio = await this.$axios.$delete(`api/asignacion/edificios/${id}`);
-            if (edificio) {
+            const { descripcion } = await this.$axios.$delete(`api/asignacion/edificios/${id}`);
+            if (descripcion) {
               setTimeout(() => {
-                Alert.showToast('success', 'Registro eliminado correctamente');
+                Alert.showToast('success', descripcion);
                 this.isLoadingDelete = false;
                 this.$emit('getEdificios');
               },1000);
