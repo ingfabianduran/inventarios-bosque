@@ -52,7 +52,11 @@
       Pagination
     },
     async created() {
+      this.$store.commit('SET_LOADING', true);
       await this.getEspacios();
+      setTimeout(() => {
+        this.$store.commit('SET_LOADING', false);
+      }, 1000);
     },
     methods: {
       async getEspacios() {

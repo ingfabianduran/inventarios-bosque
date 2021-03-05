@@ -22,12 +22,16 @@
     },
     methods: {
       async getData() {
-        const { data } = await this.$axios.$get(`${this.page.url}${this.current}`);
-        const pagination = {
-          data: data.data,
-          current: this.current
-        };
-        this.$emit('getData', pagination);
+        try {
+          const { data } = await this.$axios.$get(`${this.page.url}${this.current}`);
+          const pagination = {
+            data: data.data,
+            current: this.current
+          };
+          this.$emit('getData', pagination);
+        } catch (error) {
+          
+        }
       }
     }
   }

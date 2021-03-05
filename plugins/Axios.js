@@ -1,11 +1,12 @@
-import Alert from '~/components/Site/SweetAlert';
+import Errors from '~/components/Site/Errors';
 
 export default function ({ $axios }) {  
   $axios.onError(error => {
     const code = parseInt(error.response && error.response.status);
     if (code === 422) {
-      Alert.showToast('error', 'Datos invalidos para el servidor');
+      const errors = error.response.data;
+      Errors.showErrors422(errors);
       return true;
-    }
+    } 
   });
 }

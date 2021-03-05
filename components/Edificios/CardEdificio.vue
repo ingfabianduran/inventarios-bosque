@@ -51,25 +51,31 @@
     }, 
     methods: {
       async getEdificio(id) {
-        this.isLoadingVer = true;
-        const { data } = await this.$axios.$get(`api/asignacion/edificios/${id}`);
-        setTimeout(() => {
-          Alert.showToast('success', 'Por favor vizualice y/o actualicé la información');
+        try {
+          this.isLoadingVer = true;
+          const { data } = await this.$axios.$get(`api/asignacion/edificios/${id}`);
+          setTimeout(() => {
+            Alert.showToast('success', 'Por favor vizualice y/o actualicé la información');
+            this.isLoadingVer = false;
+            this.$emit('getEdificio', data);
+          }, 1000);
+        } catch (error) {
           this.isLoadingVer = false;
-          this.$emit('getEdificio', data);
-        }, 1000);
+        }
       },
       deleteEdificio(id) {
         Alert.showConfirm('Eliminar Edificio', '¿Esta seguro de eliminar el registro?', 'question', async(confirmed) => {
           if (confirmed) {
-            this.isLoadingDelete = true;
-            const { descripcion } = await this.$axios.$delete(`api/asignacion/edificios/${id}`);
-            if (descripcion) {
+            try {
+              this.isLoadingDelete = true;
+              const { descripcion } = await this.$axios.$delete(`api/asignacion/edificios/${id}`);
               setTimeout(() => {
                 Alert.showToast('success', descripcion);
                 this.isLoadingDelete = false;
                 this.$emit('getEdificios');
               },1000);
+            } catch (error) {
+              this.isLoadingDelete = false;
             }
           }
         });

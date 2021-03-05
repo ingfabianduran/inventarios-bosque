@@ -4,7 +4,7 @@
     app
     dark
     color="#3C4024"
-    width="320"
+    width="280"
     class="mx-auto">
     <template v-slot:prepend>
       <v-list-item two-line>

@@ -61,25 +61,31 @@
     },
     methods: {
       async getModel(id) {
-        this.isLoadingVer = true;
-        const { data } = await this.$axios.$get(`${this.url}${id}`);
-        setTimeout(() => {
-          Alert.showToast('success', 'Por favor vizualice y/o actualicé la información');
+        try {
+          this.isLoadingVer = true;
+          const { data } = await this.$axios.$get(`${this.url}${id}`);
+          setTimeout(() => {
+            Alert.showToast('success', 'Por favor vizualice y/o actualicé la información');
+            this.isLoadingVer = false;
+            this.$emit('getModel', data);
+          }, 1000);
+        } catch (error) {
           this.isLoadingVer = false;
-          this.$emit('getModel', data);
-        }, 1000);
+        }
       },
       deleteModel(id) {
         const titulo = `Eliminar ${this.title.substring(0, cadena.length - 1)}`;
         Alert.showConfirm(titulo, '¿Esta seguro de eliminar el registro?', 'question', async(confirmed) => {
           if (confirmed) {
-            this.isLoadingDelete = true;
-            const { descripcion } = await this.$axios.$delete(`${this.url}${id}`);
-            if (descripcion) {
+            try {
+              this.isLoadingDelete = true;
+              const { descripcion } = await this.$axios.$delete(`${this.url}${id}`);
               setTimeout(() => {
                 Alert.showToast('success', descripcion);
                 this.isLoadingDelete = false;
               },1000);
+            } catch (error) {
+              this.isLoadingDelete = false;
             }
           }
         });

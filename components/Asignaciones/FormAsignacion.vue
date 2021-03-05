@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <Loader :isShow="isLoading" size="60" />
+    <Loader :isShow="isLoading" color="#212121" size="90" />
     <ValidationObserver
       ref="formAsignacion">
       <v-form
@@ -10,7 +10,7 @@
           <v-row>
             <v-col
               cols="12"
-              md="6">
+              md="5">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="tipo"
@@ -22,6 +22,80 @@
                   :items="tipos"
                   :error-messages="errors">
                 </v-select>
+              </ValidationProvider>
+            </v-col>
+            <v-col
+              cols="12"
+              md="6">
+              <ValidationProvider
+                v-slot="{ errors }"
+                name="responsable_id"
+                rules="required">
+                <v-autocomplete
+                  v-model="form.responsable_id"
+                  label="Responsable"
+                  :items="responsables"
+                  outlined
+                  :error-messages="errors">
+                </v-autocomplete>
+              </ValidationProvider>
+            </v-col>
+            <v-col
+              cols="12"
+              md="1">
+              <v-checkbox
+                v-model="form.estado"
+                label="Estado"
+                color="#F27830">
+              </v-checkbox>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col
+              cols="12"
+              md="4">
+              <ValidationProvider
+                v-slot="{ errors }"
+                name="edificio"
+                rules="required">
+                <v-autocomplete
+                  v-model="edificio"
+                  label="Edificio"
+                  :items="edificios"
+                  outlined
+                  :error-messages="errors">
+                </v-autocomplete>
+              </ValidationProvider>
+            </v-col>
+            <v-col
+              cols="12"
+              md="4">
+              <ValidationProvider
+                v-slot="{ errors }"
+                name="espacio_id"
+                rules="required">
+                <v-autocomplete
+                  v-model="form.espacio_id"
+                  label="Espacio"
+                  :items="espacios"
+                  outlined
+                  :error-messages="errors">
+                </v-autocomplete>
+              </ValidationProvider>
+            </v-col>
+            <v-col
+              cols="12"
+              md="4">
+              <ValidationProvider
+                v-slot="{ errors }"
+                name="equipo_id"
+                rules="required">
+                <v-autocomplete
+                  v-model="form.equipo_id"
+                  label="Equipo"
+                  outlined
+                  :error-messages="errors">
+                </v-autocomplete>
               </ValidationProvider>
             </v-col>
           </v-row>
@@ -37,7 +111,8 @@
           <v-btn
             type="button"
             dark
-            color="#7BC142">
+            color="#7BC142"
+            @click="clearForm">
             Cancelar
           </v-btn>
         </v-card-actions>
@@ -53,13 +128,18 @@
     data() {
       return {
         tipos: ['Aulas', 'Oficinas'],
+        responsables: [],
+        edificios: [],
+        espacios: [],
+        equipos: [],
         form: {
           tipo: '',
-          estado: '',
+          estado: false,
           responsable_id: '',
           espacio_id: '',
           equipo_id: ''
         },
+        edificio: '',
         isLoading: false
       }
     },
@@ -88,25 +168,36 @@
       storeAsignacion() {
         Alert.showConfirm(this.titulo, `¿Esta seguro de realizar la petición?`, 'question', async(confirmed) => {
           if (confirmed) {
-            this.isLoading = true;
-            const { descripcion } = (this.titulo === 'Nuevo Especialista') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
-            if (descripcion) {
+            try {
+              this.isLoading = true;
+              const { descripcion } = (this.titulo === 'Nueva Asignación') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
               setTimeout(() => {
                 Alert.showToast('success', descripcion);
                 this.isLoading = false;
                 this.clearForm();
               }, 500);
+            } catch (error) {
+              this.isLoading = false;
             }
           }
         });
       },
       clearForm() {
-        
+        this.form.tipo = '';
+        this.form.estado = false;
+        this.form.responsable_id = '';
+        this.form.espacio_id = '';
+        this.form.equipo_id = '';
+        this.$emit('clearForm');
       }
     },
     watch: {
-      especialista() {
-        
+      asignacion() {
+        this.form.tipo = this.asignacion.tipo;
+        this.form.estado = this.asignacion.estado;
+        this.form.responsable_id = this.asignacion.responsable_id;
+        this.form.espacio_id = this.asignacion.espacio_id;
+        this.form.equipo_id = this.asignacion.equipo_id;
       }
     }
   }

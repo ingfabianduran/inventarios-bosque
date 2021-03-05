@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <Loader :isShow="isLoading" size="70" />
+    <Loader :isShow="isLoading" color="#212121" size="70" />
     <ValidationObserver
       ref="formDependencia">
       <v-form
@@ -84,14 +84,16 @@
       storeDependencia() {
         Alert.showConfirm(this.titulo, `¿Esta seguro de realizar la petición?`, 'question', async(confirmed) => {
           if (confirmed) {
-            this.isLoading = true;
-            const { descripcion } = (this.titulo === 'Nueva Dependencia') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
-            if (descripcion) {
+            try {
+              this.isLoading = true;
+              const { descripcion } = (this.titulo === 'Nueva Dependencia') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
               setTimeout(() => {
                 Alert.showToast('success', descripcion);
                 this.isLoading = false;
                 this.clearForm();
               }, 500);
+            } catch (error) {
+              this.isLoading = false;
             }
           }
         });

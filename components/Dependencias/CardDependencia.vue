@@ -51,25 +51,31 @@
     }, 
     methods: {
       async getDependencia(id) {
-        this.isLoadingVer = true;
-        const { data } = await this.$axios.$get(`api/asignacion/dependencias/${id}`);
-        setTimeout(() => {
-          Alert.showToast('success', 'Por favor vizualice y/o actualicé la información');
+        try {
+          this.isLoadingVer = true;
+          const { data } = await this.$axios.$get(`api/asignacion/dependencias/${id}`);
+          setTimeout(() => {
+            Alert.showToast('success', 'Por favor vizualice y/o actualicé la información');
+            this.isLoadingVer = false;
+            this.$emit('getDependencia', data);
+          }, 1000);
+        } catch (error) {
           this.isLoadingVer = false;
-          this.$emit('getDependencia', data);
-        }, 1000);
+        }
       },
       deleteEdificio(id) {
         Alert.showConfirm('Eliminar Dependencia', '¿Esta seguro de eliminar el registro?', 'question', async(confirmed) => {
           if (confirmed) {
-            this.isLoadingDelete = true;
-            const { descripcion } = await this.$axios.$delete(`api/asignacion/dependencias/${id}`);
-            if (descripcion) {
+            try {
+              this.isLoadingDelete = true;
+              const { descripcion } = await this.$axios.$delete(`api/asignacion/dependencias/${id}`);
               setTimeout(() => {
                 Alert.showToast('success', descripcion);
                 this.isLoadingDelete = false;
                 this.$emit('getDependencias');
               },1000);
+            } catch (error) {
+              this.isLoadingDelete = false;
             }
           }
         });
