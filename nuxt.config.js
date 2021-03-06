@@ -70,5 +70,5 @@ export default {
     port: 3000,
     host: '127.0.0.1', // Server U Bosque: 172.18.92.12
     timing: false
-  }
+  },
 }
