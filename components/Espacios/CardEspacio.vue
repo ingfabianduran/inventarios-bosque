@@ -57,17 +57,21 @@
       espacio: {
         type: Object,
         required: true
-      } 
+      }
     },
     methods: {
       async getEspacio(id) {
         try {
           this.isLoadingVer = true;
           const { data } = await this.$axios.$get(`api/asignacion/espacios/${id}`);
-          setTimeout(() => {
+          if (data !== null) {
             Alert.showToast('success', 'Por favor vizualice y/o actualicé la información');
-            this.isLoadingVer = false;
             this.$emit('getEspacio', data);
+          } else {
+            Alert.showToast('error', 'Espacio no encontrado');
+          }
+          setTimeout(() => {
+            this.isLoadingVer = false;
           }, 1000);
         } catch (error) {
           this.isLoadingVer = false;

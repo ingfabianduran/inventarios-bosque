@@ -7,7 +7,7 @@
     </v-row>
     <v-row>
       <v-col>
-        <Table title="Responsables" :headers="headers" :items="responsables" url="api/asignacion/responsables/" @getModel="getResponsable" />
+        <Table title="Responsables" :headers="headers" :items="responsables" url="api/asignacion/responsables/" @getModel="getResponsable" @updateModels="getResponsables" />
       </v-col>
     </v-row>
     <Pagination :page="page" @getData="updateListResponsables" />
@@ -39,9 +39,7 @@
           { text: 'Extension', value: 'extension', sortable: false },
           { text: 'Actions', value: 'actions', sortable: false }
         ],
-        responsables: [
-          {id: 1, nombre: 'Fabian Duran', tipo: 'Academico', extension: '1121'}
-        ],
+        responsables: [],
         page: {
           current: 1,
           last: 0,
@@ -51,17 +49,21 @@
     },
     components: {
       Form,
-      Table, 
+      Table,
       Pagination
     },
     async created() {
-      // await this.getResponsables();
+      this.$store.commit('SET_LOADING', true);
+      await this.getResponsables();
+      setTimeout(() => {
+        this.$store.commit('SET_LOADING', false);
+      }, 1000);
     },
     methods: {
       async getResponsables() {
         const { data } = await this.$axios.$get(`api/asignacion/responsables/i/10?page=${this.page.current}`);
         this.responsables = data.data;
-        this.page.last = data.last_page; 
+        this.page.last = data.last_page;
       },
       updateListResponsables(responsables) {
         this.responsables = responsables.data;

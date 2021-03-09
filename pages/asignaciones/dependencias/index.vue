@@ -53,13 +53,17 @@
       Pagination
     },
     async created() {
-      // await this.getDependencias();
+      this.$store.commit('SET_LOADING', true);
+      await this.getDependencias();
+      setTimeout(() => {
+        this.$store.commit('SET_LOADING', false);
+      }, 1000);
     },
     methods: {
       async getDependencias() {
         const { data } = await this.$axios.$get(`api/asignacion/dependencias/i/10?page=${this.page.current}`);
         this.dependencias = data.data;
-        this.page.last = data.last_page; 
+        this.page.last = data.last_page;
       },
       updateListDependencias(dependencias) {
         this.dependencias = dependencias.data;

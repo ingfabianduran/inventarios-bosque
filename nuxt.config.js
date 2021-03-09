@@ -35,12 +35,12 @@ export default {
     '@nuxtjs/vuetify'
   ],
 
-  // CSS by Vuetify: 
-  vuetify: { 
-    treeShake: true, 
+  // CSS by Vuetify:
+  vuetify: {
+    treeShake: true,
     defaultAssets: {
       font: {
-        family: 'Open Sans Condensed' 
+        family: 'Open Sans Condensed'
       },
       icons: 'mdi'
     }
@@ -55,7 +55,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: 'http://127.0.0.1:8000'
+    baseURL: 'http://127.0.0.1'
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
@@ -65,7 +65,7 @@ export default {
     ],
   },
 
-  // Config server: 
+  // Config server:
   server: {
     port: 3000,
     host: '127.0.0.1', // Server U Bosque: 172.18.92.12

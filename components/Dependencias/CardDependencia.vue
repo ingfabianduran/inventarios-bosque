@@ -24,7 +24,7 @@
         dark
         elevation="3"
         :loading="isLoadingDelete"
-        @click="getDependencia(dependencia.id)">
+        @click="deleteDependencia(dependencia.id)">
         <v-icon left>
           mdi-delete
         </v-icon>
@@ -48,22 +48,26 @@
         type: Object,
         required: true
       }
-    }, 
+    },
     methods: {
       async getDependencia(id) {
         try {
           this.isLoadingVer = true;
           const { data } = await this.$axios.$get(`api/asignacion/dependencias/${id}`);
-          setTimeout(() => {
+          if (data !== null) {
             Alert.showToast('success', 'Por favor vizualice y/o actualicé la información');
-            this.isLoadingVer = false;
             this.$emit('getDependencia', data);
+          } else {
+            Alert.showToast('error', 'Dependencia no encontrada');
+          }
+          setTimeout(() => {
+            this.isLoadingVer = false;
           }, 1000);
         } catch (error) {
           this.isLoadingVer = false;
         }
       },
-      deleteEdificio(id) {
+      deleteDependencia(id) {
         Alert.showConfirm('Eliminar Dependencia', '¿Esta seguro de eliminar el registro?', 'question', async(confirmed) => {
           if (confirmed) {
             try {

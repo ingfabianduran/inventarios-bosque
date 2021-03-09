@@ -8,13 +8,13 @@
         <v-card-title>{{ this.titulo }}</v-card-title>
         <v-card-text>
           <v-row>
-            <v-col 
+            <v-col
               cols="12"
               md="6">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="nombre"
-                rules="required|min:10|max:120">
+                rules="required|min:3|max:120">
                 <v-text-field
                   v-model="form.nombre"
                   label="Nombre"
@@ -25,13 +25,13 @@
                 </v-text-field>
               </ValidationProvider>
             </v-col>
-            <v-col 
+            <v-col
               cols="12"
               md="6">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="cargo"
-                rules="required|min:10|max:60">
+                rules="required|min:3|max:60">
                 <v-text-field
                   v-model="form.cargo"
                   label="cargo"
@@ -44,7 +44,7 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col 
+            <v-col
               cols="12"
               md="5">
               <ValidationProvider
@@ -60,7 +60,7 @@
                 </v-select>
               </ValidationProvider>
             </v-col>
-            <v-col 
+            <v-col
               cols="12"
               md="2">
               <ValidationProvider
@@ -77,7 +77,7 @@
                 </v-text-field>
               </ValidationProvider>
             </v-col>
-            <v-col 
+            <v-col
               cols="12"
               md="5">
               <ValidationProvider
@@ -98,7 +98,7 @@
             </v-col>
           </v-row>
         </v-card-text>
-        <v-card-actions 
+        <v-card-actions
           class="justify-end">
           <v-btn
             type="submit"
@@ -109,7 +109,8 @@
           <v-btn
             type="button"
             dark
-            color="#7BC142">
+            color="#7BC142"
+            @click="clearForm()">
             Cancelar
           </v-btn>
         </v-card-actions>
@@ -157,7 +158,14 @@
     components: {
       Loader
     },
+    async created() {
+      await this.getDependencias();
+    },
     methods: {
+      async getDependencias() {
+        const { data } = await this.$axios.$get('api/asignacion/dependencias/i/0');
+        this.dependencias = data;
+      },
       storeResponsable() {
         Alert.showConfirm(this.titulo, `¿Esta seguro de realizar la petición?`, 'question', async(confirmed) => {
           if (confirmed) {
@@ -181,7 +189,7 @@
         this.form.cargo = '';
         this.form.tipo = '';
         this.form.extension = '';
-        this.form.dependencia = '';
+        this.form.dependencia_id = '';
         this.$emit('clearForm');
       }
     },
@@ -191,7 +199,7 @@
         this.form.cargo = this.responsable.cargo;
         this.form.tipo = this.responsable.tipo;
         this.form.extension = this.responsable.extension;
-        this.form.dependencia = this.responsable.dependencia;
+        this.form.dependencia_id = this.responsable.dependencia_id
       }
     }
   }

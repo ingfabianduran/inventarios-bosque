@@ -7,22 +7,21 @@
     <v-data-table
       :headers="headers"
       :items="items"
-      hide-default-footer>
+      hide-default-footer
+      :loading="isLoading">
       <template v-slot:[`item.actions`]="{ item }">
         <v-btn
           icon
-          :loading="isLoadingVer"
-          @click="getModel(item)">
-          <v-icon 
+          @click="getModel(item.id)">
+          <v-icon
             color="#7BC142">
             mdi-pencil
           </v-icon>
         </v-btn>
         <v-btn
           icon
-          :loading="isLoadingDelete"
-          @click="deleteModel(item)">
-          <v-icon 
+          @click="deleteModel(item.id)">
+          <v-icon
             color="#F27830">
             mdi-delete
           </v-icon>
@@ -37,8 +36,7 @@
   export default {
     data() {
       return {
-        isLoadingVer: false,
-        isLoadingDelete: false
+        isLoading: false
       }
     },
     props: {
@@ -57,35 +55,41 @@
       url: {
         type: String,
         required: true
-      } 
+      }
     },
     methods: {
       async getModel(id) {
         try {
-          this.isLoadingVer = true;
+          this.isLoading = true;
           const { data } = await this.$axios.$get(`${this.url}${id}`);
-          setTimeout(() => {
+          if (data !== null) {
             Alert.showToast('success', 'Por favor vizualice y/o actualicé la información');
-            this.isLoadingVer = false;
             this.$emit('getModel', data);
+          } else {
+            const mensaje = this.title.toString();
+            Alert.showToast('error', `${mensaje.slice(0, -1)} no encontrado`);
+          }
+          setTimeout(() => {
+            this.isLoading = false;
           }, 1000);
         } catch (error) {
-          this.isLoadingVer = false;
+          this.isLoading = false;
         }
       },
       deleteModel(id) {
-        const titulo = `Eliminar ${this.title.substring(0, cadena.length - 1)}`;
+        const titulo = `Eliminar ${this.title.slice(0, -1)}`;
         Alert.showConfirm(titulo, '¿Esta seguro de eliminar el registro?', 'question', async(confirmed) => {
           if (confirmed) {
             try {
-              this.isLoadingDelete = true;
+              this.isLoading = true;
               const { descripcion } = await this.$axios.$delete(`${this.url}${id}`);
               setTimeout(() => {
                 Alert.showToast('success', descripcion);
-                this.isLoadingDelete = false;
+                this.isLoading = false;
+                this.$emit('updateModels');
               },1000);
             } catch (error) {
-              this.isLoadingDelete = false;
+              this.isLoading = false;
             }
           }
         });
@@ -93,3 +97,14 @@
     }
   }
 </script>
+<style>
+  .v-progress-linear__background.primary {
+    background-color: #F27830 !important;
+  }
+  .v-progress-linear__indeterminate.long.primary {
+    background-color: #F27830 !important;
+  }
+  .v-progress-linear__indeterminate.short.primary {
+    background-color: #F27830 !important
+  }
+</style>

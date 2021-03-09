@@ -3,18 +3,18 @@
     <Loader :isShow="isLoading" color="#212121" size="70" />
     <ValidationObserver
       ref="formEdificio">
-      <v-form 
+      <v-form
         @submit.prevent="storeEdificio">
         <v-card-title>{{ this.titulo }}</v-card-title>
         <v-card-text>
           <v-row>
-            <v-col 
+            <v-col
               cols="12"
               md="12">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="nombre"
-                rules="required|min:5|max:45">
+                rules="required|min:3|max:45">
                 <v-text-field
                   v-model="form.nombre"
                   label="Nombre"
@@ -27,7 +27,7 @@
             </v-col>
           </v-row>
         </v-card-text>
-        <v-card-actions 
+        <v-card-actions
           class="justify-end">
           <v-btn
             type="submit"

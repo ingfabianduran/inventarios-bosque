@@ -1,6 +1,6 @@
 <template>
   <v-navigation-drawer
-    v-model="isView"
+    v-model="navigation.isView"
     app
     dark
     color="#3C4024"
@@ -18,16 +18,20 @@
       </v-list-item>
     </template>
     <v-divider></v-divider>
-    <ListNavigation 
-      categoria="Servicios" 
-      :links="servicios" />
+    <ListNavigation
+      categoria="Asignación"
+      :links="asignaciones" />
     <v-divider></v-divider>
-    <ListNavigation 
-      categoria="Tecnologia" 
-      :links="tecnologias" />
+    <ListNavigation
+      categoria="Inventario"
+      :links="inventario" />
+    <v-divider></v-divider>
+    <ListNavigation
+      categoria="Mantenimientos"
+      :links="mantenimientos" />
     <template v-slot:append>
       <div class="pa-2">
-        <v-btn 
+        <v-btn
           block
           color="#F27830"
           rounded>
@@ -46,21 +50,24 @@
   export default {
     data() {
       return {
-        servicios: [
+        asignaciones: [
           { titulo: 'Infraestructura', icon: 'mdi-home-modern', subtitulos: [
-            { titulo: 'Edificios', link: '/edificios' },
-            { titulo: 'Dependencias', link: '/dependencias' },
-            { titulo: 'Espacios', link: '/espacios' },
+            { titulo: 'Edificios', link: '/asignaciones/edificios' },
+            { titulo: 'Dependencias', link: '/asignaciones/dependencias' },
+            { titulo: 'Espacios', link: '/asignaciones/espacios' },
           ] },
-          { titulo: 'Responsables', icon: 'mdi-account-group', link: '/responsables' },
-          { titulo: 'Asignaciones', icon: 'mdi-handshake', link: '/asignaciones' },
+          { titulo: 'Responsables', icon: 'mdi-account-group', link: '/asignaciones/responsables' },
+          { titulo: 'Asignaciones', icon: 'mdi-handshake', link: '/asignaciones/asignaciones' },
+        ],
+        mantenimientos: [
           { titulo: 'Servicio Tecnico', icon: 'mdi-hammer-wrench', link: '#', subtitulos: [
+            { titulo: 'Aranda', link: '#' },
             { titulo: 'Categorias', link: '#' },
-            { titulo: 'Especialistas', link: '/especialistas' },
+            { titulo: 'Especialistas', link: '/mantenimientos/especialistas' },
             { titulo: 'Mantenimientos', link: '#' }
           ] },
         ],
-        tecnologias: [
+        inventario: [
           { titulo: 'Equipos', icon: 'mdi-desktop-classic', link: '#' },
           { titulo: 'Hardware', icon: 'mdi-harddisk', subtitulos: [
             { titulo: 'Discos Duros', link: '#' },
@@ -79,7 +86,7 @@
       }
     },
     props: {
-      isView: Boolean
+      navigation: Object,
     },
     components: {
       ListNavigation

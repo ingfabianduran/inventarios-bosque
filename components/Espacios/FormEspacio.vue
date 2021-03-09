@@ -4,17 +4,17 @@
     <ValidationObserver
       ref="formEspacio">
       <v-form
-        @submit.prevent="storeEspacio()">
+        @submit.prevent="storeEspacio">
         <v-card-title>{{ this.titulo }}</v-card-title>
         <v-card-text>
           <v-row>
-            <v-col 
+            <v-col
               cols="12"
               md="6">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="nombre"
-                rules="required|min:5|max:45">
+                rules="required|min:3|max:45">
                 <v-text-field
                   v-model="form.nombre"
                   label="Nombre"
@@ -25,7 +25,7 @@
                 </v-text-field>
               </ValidationProvider>
             </v-col>
-            <v-col 
+            <v-col
               cols="12"
               md="6">
               <ValidationProvider
@@ -46,7 +46,7 @@
             </v-col>
           </v-row>
         </v-card-text>
-        <v-card-actions 
+        <v-card-actions
           class="justify-end">
           <v-btn
             type="submit"
@@ -115,14 +115,14 @@
           if (confirmed) {
             try {
               this.isLoading = true;
-              const { descripcion } = (this.titulo === 'Nuevo Espacio') ? await this.$axios.$post(this.url, form) : await this.$axios.$put(this.url, this.form);
+              const { descripcion } = (this.titulo === 'Nuevo Espacio') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
               setTimeout(() => {
                 Alert.showToast('success', descripcion);
                 this.isLoading = false;
                 this.clearForm();
               }, 500);
             } catch (error) {
-              this.isLoading = false; 
+              this.isLoading = false;
             }
           }
         });
@@ -130,7 +130,7 @@
       clearForm() {
         this.$refs.formEspacio.reset();
         this.form.nombre = '';
-        this.form.edificio_id = ''; 
+        this.form.edificio_id = '';
         this.$emit('clearForm');
       }
     },

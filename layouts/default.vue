@@ -1,11 +1,11 @@
 <template>
   <v-app>
     <Bar @changeNavigation="changeNavigation" />
-    <Navigation :isView="navigation" />
+    <Navigation :navigation="navigation" />
     <v-main class="color-default">
       <Loader :isShow="this.$store.state.loading" color="#F2F2F2" opacity="1" size="120" width="9" />
       <v-container fluid fill-height>
-        <v-row 
+        <v-row
           align="center"
           justify="center"
           class="my-1 mx-1">
@@ -27,7 +27,9 @@
   export default {
     data() {
       return {
-        navigation: true
+        navigation: {
+          isView: true
+        }
       }
     },
     components: {
@@ -38,7 +40,7 @@
     },
     methods: {
       changeNavigation(value) {
-        this.navigation = value;
+        this.navigation.isView = value;
       }
     },
   }

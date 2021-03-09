@@ -48,7 +48,7 @@
     },
     components: {
       Form,
-      Espacio, 
+      Espacio,
       Pagination
     },
     async created() {
