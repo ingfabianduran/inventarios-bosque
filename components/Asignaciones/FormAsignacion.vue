@@ -15,13 +15,14 @@
                 v-slot="{ errors }"
                 name="tipo"
                 rules="required|oneOf:Aulas,Oficinas">
-                <v-select
+                <v-autocomplete
                   v-model="form.tipo"
                   label="Tipo"
                   outlined
                   :items="tipos"
+                  color="#7BC142"
                   :error-messages="errors">
-                </v-select>
+                </v-autocomplete>
               </ValidationProvider>
             </v-col>
             <v-col
@@ -35,7 +36,10 @@
                   v-model="form.responsable_id"
                   label="Responsable"
                   :items="responsables"
+                  item-text="nombre"
+                  item-value="id"
                   outlined
+                  color="#7BC142"
                   :error-messages="errors">
                 </v-autocomplete>
               </ValidationProvider>
@@ -62,6 +66,9 @@
                   v-model="edificio"
                   label="Edificio"
                   :items="edificios"
+                  item-text="nombre"
+                  item-value="id"
+                  color="#7BC142"
                   outlined
                   :error-messages="errors">
                 </v-autocomplete>
@@ -78,6 +85,9 @@
                   v-model="form.espacio_id"
                   label="Espacio"
                   :items="espacios"
+                  item-text="nombre"
+                  item-value="id"
+                  color="#7BC142"
                   outlined
                   :error-messages="errors">
                 </v-autocomplete>
@@ -94,13 +104,14 @@
                   v-model="form.equipo_id"
                   label="Equipo"
                   outlined
+                  color="#7BC142"
                   :error-messages="errors">
                 </v-autocomplete>
               </ValidationProvider>
             </v-col>
           </v-row>
         </v-card-text>
-        <v-card-actions 
+        <v-card-actions
           class="justify-end">
           <v-btn
             type="submit"
@@ -112,7 +123,7 @@
             type="button"
             dark
             color="#7BC142"
-            @click="clearForm">
+            @click="clearForm()">
             Cancelar
           </v-btn>
         </v-card-actions>
@@ -128,16 +139,16 @@
     data() {
       return {
         tipos: ['Aulas', 'Oficinas'],
-        responsables: [],
         edificios: [],
         espacios: [],
+        responsables: [],
         equipos: [],
         form: {
           tipo: '',
           estado: false,
           responsable_id: '',
           espacio_id: '',
-          equipo_id: ''
+          equipo_id: null
         },
         edificio: '',
         isLoading: false
@@ -164,7 +175,24 @@
     components: {
       Loader
     },
+    async created() {
+      await this.getEdificios();
+      await this.getEspacios();
+      await this.getResponsables();
+    },
     methods: {
+      async getEdificios() {
+        const { data } = await this.$axios.$get('api/asignacion/edificios/i/0');
+        this.edificios = data;
+      },
+      async getEspacios() {
+        const { data } = await this.$axios.$get('api/asignacion/espacios/i/0');
+        this.espacios = data;
+      },
+      async getResponsables() {
+        const { data } = await this.$axios.$get('api/asignacion/responsables/i/0');
+        this.responsables = data;
+      },
       storeAsignacion() {
         Alert.showConfirm(this.titulo, `¿Esta seguro de realizar la petición?`, 'question', async(confirmed) => {
           if (confirmed) {
@@ -183,22 +211,25 @@
         });
       },
       clearForm() {
+        this.$refs.formAsignacion.reset();
         this.form.tipo = '';
         this.form.estado = false;
         this.form.responsable_id = '';
         this.form.espacio_id = '';
         this.form.equipo_id = '';
+        this.edificio = '';
         this.$emit('clearForm');
       }
     },
     watch: {
       asignacion() {
         this.form.tipo = this.asignacion.tipo;
-        this.form.estado = this.asignacion.estado;
+        this.form.estado = (this.asignacion.estado === 1) ? true : false;
         this.form.responsable_id = this.asignacion.responsable_id;
         this.form.espacio_id = this.asignacion.espacio_id;
         this.form.equipo_id = this.asignacion.equipo_id;
-      }
+        this.edificio = (this.asignacion.hasOwnProperty('espacio')) ? this.asignacion.espacio.edificio_id : '';
+      },
     }
   }
 </script>

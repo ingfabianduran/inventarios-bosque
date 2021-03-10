@@ -77,7 +77,7 @@
         }
       },
       deleteModel(id) {
-        const titulo = `Eliminar ${this.title.slice(0, -1)}`;
+        const titulo = `Eliminar Registro`;
         Alert.showConfirm(titulo, '¿Esta seguro de eliminar el registro?', 'question', async(confirmed) => {
           if (confirmed) {
             try {

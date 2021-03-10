@@ -51,13 +51,14 @@
                 v-slot="{ errors }"
                 name="tipo"
                 rules="required|oneOf:Académico,Administrativo,Docente,Directivo,Investigador">
-                <v-select
+                <v-autocomplete
                   v-model="form.tipo"
                   :items="roles"
                   label="Rol"
                   outlined
+                  color="#7BC142"
                   :error-messages="errors">
-                </v-select>
+                </v-autocomplete>
               </ValidationProvider>
             </v-col>
             <v-col

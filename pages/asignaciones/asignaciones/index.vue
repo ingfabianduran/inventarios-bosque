@@ -7,7 +7,7 @@
     </v-row>
     <v-row>
       <v-col>
-        <Table title="Asignaciones" :headers="headers" :items="asignaciones" url="api/asignacion/asignaciones/" @getModel="getAsignacion" />
+        <Table title="Asignaciones" :headers="headers" :items="asignaciones" url="api/asignacion/asignaciones/" @getModel="getAsignacion" @updateModels="getAsignaciones" />
       </v-col>
     </v-row>
     <Pagination :page="page" @getData="updateListAsignaciones" />
@@ -34,15 +34,12 @@
         },
         headers: [
           { text: 'Id', value: 'id', align: ' d-none' },
-          { text: 'Fecha', value: 'fecha', sortable: false },
+          { text: 'Fecha', value: 'created_at', sortable: false },
           { text: 'Tipo', value: 'tipo', sortable: false },
-          { text: 'Responsable', value: 'responsable', sortable: false },
-          { text: 'Equipo', value: 'equipo', sortable: false },
+          { text: 'Responsable', value: 'responsable.nombre', sortable: false },
           { text: 'Actions', value: 'actions', sortable: false }
         ],
-        asignaciones: [
-          { id: 1, fecha: '05/03/2021', tipo: 'Oficinas', responsable: 'Fabian Duran', equipo: 'Lenovo L460' }
-        ],
+        asignaciones: [],
         page: {
           current: 1,
           last: 0,
@@ -56,13 +53,17 @@
       Pagination
     },
     async created() {
-      // await this.getAsignaciones();
+      this.$store.commit('SET_LOADING', true);
+      await this.getAsignaciones();
+      setTimeout(() => {
+        this.$store.commit('SET_LOADING', false);
+      }, 1000);
     },
     methods: {
       async getAsignaciones() {
         const { data } = await this.$axios.$get(`api/asignacion/asignaciones/i/10?page=${this.page.current}`);
         this.asignaciones = data.data;
-        this.page.last = data.last_page; 
+        this.page.last = data.last_page;
       },
       updateListAsignaciones(asignaciones) {
         this.asignaciones = asignaciones.data;
@@ -79,6 +80,7 @@
         this.asignacion.data = {};
         this.asignacion.url = 'api/asignacion/asignaciones';
         this.asignacion.textBtn = 'Registrar';
+        await this.getAsignaciones();
       }
     }
   }
