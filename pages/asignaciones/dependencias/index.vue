@@ -1,8 +1,21 @@
 <template>
   <div>
-    <v-row>
-      <v-col>
+    <v-row
+      align="center"
+      justify="center">
+      <v-col
+        sm="12"
+        md="8"
+        lg="8"
+        xl="8">
         <Form :titulo="dependencia.titulo" :dependencia="dependencia.data" :url="dependencia.url" :textBtn="dependencia.textBtn" @clearForm="clearForm" />
+      </v-col>
+      <v-col
+        sm="12"
+        md="4"
+        lg="4"
+        xl="4">
+        <Busqueda nameBusqueda="Nombre de la dependencia" url="api/asignacion/dependencias/buscar/nombre/" @searchModel="searchListDependencias" @resetBusqueda="getDependencias" />
       </v-col>
     </v-row>
     <v-row>
@@ -12,15 +25,16 @@
         md="6"
         lg="6"
         xl="4">
-        <Dependencia :dependencia="dependencia" @getDependencia="getDependencia" @getDependencias="getDependencias" />
+        <Dependencia :model="dependencia" url="/api/asignacion/dependencias/" @getModel="getDependencia" @getModels="getDependencias" />
       </v-col>
     </v-row>
     <Pagination :page="page" @getData="updateListDependencias" />
   </div>
 </template>
 <script>
-  import Form from '~/components/Dependencias/FormDependencia';
-  import Dependencia from '~/components/Dependencias/CardDependencia';
+  import Form from '~/components/Asignacion/Dependencias/FormDependencia';
+  import Busqueda from '~/components/Site/CardSearch';
+  import Dependencia from '~/components/Site/SimpleCard'
   import Pagination from '~/components/Site/Pagination';
 
   export default {
@@ -49,21 +63,19 @@
     },
     components: {
       Form,
+      Busqueda,
       Dependencia,
       Pagination
     },
     async created() {
-      this.$store.commit('SET_LOADING', true);
       await this.getDependencias();
-      setTimeout(() => {
-        this.$store.commit('SET_LOADING', false);
-      }, 1000);
     },
     methods: {
       async getDependencias() {
         const { data } = await this.$axios.$get(`api/asignacion/dependencias/i/10?page=${this.page.current}`);
         this.dependencias = data.data;
         this.page.last = data.last_page;
+        this.page.url = 'api/asignacion/dependencias/i/10?page=';
       },
       updateListDependencias(dependencias) {
         this.dependencias = dependencias.data;
@@ -81,7 +93,13 @@
         this.dependencia.url = 'api/asignacion/dependencias';
         this.dependencia.textBtn = 'Registrar';
         await this.getDependencias();
-      }
+      },
+      searchListDependencias(dependencias) {
+        this.dependencias = dependencias.data.data;
+        this.page.current = 1;
+        this.page.last = dependencias.data.last_page;
+        this.page.url = dependencias.url;
+      },
     }
   }
 </script>

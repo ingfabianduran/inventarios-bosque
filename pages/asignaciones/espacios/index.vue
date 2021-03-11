@@ -1,8 +1,21 @@
 <template>
   <div>
-    <v-row>
-      <v-col>
+    <v-row
+      align="center"
+      justify="center">
+      <v-col
+        sm="12"
+        md="8"
+        lg="8"
+        xl="8">
         <Form :titulo="espacio.titulo" :espacio="espacio.data" :url="espacio.url" :textBtn="espacio.textBtn" @clearForm="clearForm" />
+      </v-col>
+      <v-col
+        sm="12"
+        md="4"
+        lg="4"
+        xl="4">
+        <Busqueda nameBusqueda="Nombre del espacio" url="api/asignacion/espacios/buscar/nombre/" @searchModel="searchListEspacios" @resetBusqueda="getEspacios" />
       </v-col>
     </v-row>
     <v-row>
@@ -13,15 +26,16 @@
         md="6"
         lg="6"
         xl="4">
-        <Espacio :espacio="espacio" @getEspacio="getEspacio" @getEspacios="getEspacios" />
+        <Espacio :model="espacio" url="/api/asignacion/espacios/" @getModel="getEspacio" @getModels="getEspacios" />
       </v-col>
     </v-row>
     <Pagination :page="page" @getData="updateListEspacios" />
   </div>
 </template>
 <script>
-  import Form from '~/components/Espacios/FormEspacio';
-  import Espacio from '~/components/Espacios/CardEspacio';
+  import Form from '~/components/Asignacion/Espacios/FormEspacio';
+  import Busqueda from '~/components/Site/CardSearch';
+  import Espacio from '~/components/Site/SimpleCard';
   import Pagination from '~/components/Site/Pagination';
 
   export default {
@@ -48,21 +62,19 @@
     },
     components: {
       Form,
+      Busqueda,
       Espacio,
       Pagination
     },
     async created() {
-      this.$store.commit('SET_LOADING', true);
       await this.getEspacios();
-      setTimeout(() => {
-        this.$store.commit('SET_LOADING', false);
-      }, 1000);
     },
     methods: {
       async getEspacios() {
         const { data }  = await this.$axios.$get(`api/asignacion/espacios/i/10?page=${this.page.current}`);
         this.espacios = data.data;
         this.page.last = data.last_page;
+        this.page.url = 'api/asignacion/espacios/i/10?page=';
       },
       updateListEspacios(espacios) {
         this.espacios = espacios.data;
@@ -80,7 +92,13 @@
         this.espacio.url = 'api/asignacion/espacios';
         this.espacio.textBtn = 'Registrar';
         await this.getEspacios();
-      }
+      },
+      searchListEspacios(espacios) {
+        this.espacios = espacios.data.data;
+        this.page.current = 1;
+        this.page.last = espacios.data.last_page;
+        this.page.url = espacios.url;
+      },
     }
   }
 </script>

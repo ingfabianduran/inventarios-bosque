@@ -14,7 +14,7 @@
   </div>
 </template>
 <script>
-  import Form from '~/components/Especialistas/FormEspecialista';
+  import Form from '~/components/Mantenimiento/Especialistas/FormEspecialista';
   import Table from '~/components/Site/Table';
   import Pagination from '~/components/Site/Pagination';
 
@@ -51,17 +51,14 @@
     },
     components: {
       Form,
-      Table, 
+      Table,
       Pagination
-    },
-    async created() {
-      // await this.getEspecialistas();
     },
     methods: {
       async getEspecialistas() {
         const { data } = await this.$axios.$get(`api/matenimientos/usuarios/i/10?page=${this.page.current}`);
         this.especialistas = data.data;
-        this.page.last = data.last_page; 
+        this.page.last = data.last_page;
       },
       updateListEspecialistas(especialistas) {
         this.especialistas = especialistas.data;

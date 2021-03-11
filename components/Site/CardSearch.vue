@@ -1,0 +1,68 @@
+<template>
+  <v-card
+    outlined
+    elevation="4">
+    <v-card-title
+      class="font-weight-bold">
+      Busqueda
+    </v-card-title>
+    <v-card-text>
+      <v-text-field
+        v-model="busqueda"
+        :label="nameBusqueda"
+        filled
+        rounded
+        append-icon="mdi-magnify"
+        color="#7BC142">
+      </v-text-field>
+    </v-card-text>
+    <v-card-actions
+      class="justify-end">
+      <v-btn
+        type="submit"
+        dark
+        rounded
+        color="#F27830"
+        @click="resetBusqueda()">
+        Reiniciar Busqueda
+      </v-btn>
+    </v-card-actions>
+  </v-card>
+</template>
+<script>
+  export default {
+    data() {
+      return {
+        busqueda: ''
+      }
+    },
+    props: {
+      nameBusqueda: {
+        type: String,
+        required: true
+      },
+      url: {
+        type: String,
+        required: true
+      }
+    },
+    methods: {
+      resetBusqueda() {
+        this.busqueda = '';
+        this.$emit('resetBusqueda');
+      }
+    },
+    watch: {
+      async busqueda(value) {
+        if (value !== null && value.length > 0) {
+          const { data } = await this.$axios.$get(`${this.url}${value}`);
+          const pagination = {
+            data: data,
+            url: `${this.url}${value}?page=`
+          };
+          this.$emit('searchModel', pagination);
+        }
+      }
+    }
+  }
+</script>

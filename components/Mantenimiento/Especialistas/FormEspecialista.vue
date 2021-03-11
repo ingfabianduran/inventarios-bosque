@@ -5,10 +5,12 @@
       ref="formEspecialista">
       <v-form
         @submit.prevent="storeEspecialista">
-        <v-card-title>{{ this.titulo }}</v-card-title>
+        <v-card-title class="font-weight-bold">
+          {{ this.titulo }}
+        </v-card-title>
         <v-card-text>
           <v-row>
-            <v-col 
+            <v-col
               cols="12"
               md="6">
               <ValidationProvider
@@ -25,7 +27,7 @@
                 </v-text-field>
               </ValidationProvider>
             </v-col>
-            <v-col 
+            <v-col
               cols="12"
               md="6">
               <ValidationProvider
@@ -45,7 +47,7 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col 
+            <v-col
               cols="12"
               md="6">
               <ValidationProvider
@@ -62,7 +64,7 @@
                 </v-text-field>
               </ValidationProvider>
             </v-col>
-            <v-col 
+            <v-col
               cols="12"
               md="6">
               <ValidationProvider
@@ -81,7 +83,7 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col 
+            <v-col
               cols="12"
               md="4">
               <ValidationProvider
@@ -101,7 +103,7 @@
                 </v-text-field>
               </ValidationProvider>
             </v-col>
-            <v-col 
+            <v-col
               cols="12"
               md="4">
               <ValidationProvider
@@ -121,7 +123,7 @@
                 </v-text-field>
               </ValidationProvider>
             </v-col>
-            <v-col 
+            <v-col
               cols="12"
               md="4">
               <ValidationProvider
@@ -139,7 +141,7 @@
             </v-col>
           </v-row>
         </v-card-text>
-        <v-card-actions 
+        <v-card-actions
           class="justify-end">
           <v-btn
             type="submit"
@@ -224,7 +226,7 @@
         this.form.correo = '';
         this.form.nombres = '';
         this.form.apellidos = '';
-        this.form.password = ''; 
+        this.form.password = '';
         this.form.confirmar = '';
         this.form.rol = '';
         this.$emit('clearForm');
@@ -236,7 +238,7 @@
         this.form.correo = this.especialista.correo;
         this.form.nombres = this.especialista.nombres;
         this.form.apellidos = this.especialista.apellidos;
-        this.form.password = this.especialista.password; 
+        this.form.password = this.especialista.password;
         this.form.confirmar = this.especialista.password;
         this.form.rol = this.especialista.rol;
       }

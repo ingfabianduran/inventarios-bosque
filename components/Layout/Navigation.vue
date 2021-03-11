@@ -61,8 +61,7 @@
         ],
         mantenimientos: [
           { titulo: 'Servicio Tecnico', icon: 'mdi-hammer-wrench', link: '#', subtitulos: [
-            { titulo: 'Aranda', link: '#' },
-            { titulo: 'Categorias', link: '#' },
+            { titulo: 'Categorias', link: '/mantenimientos/categorias' },
             { titulo: 'Especialistas', link: '/mantenimientos/especialistas' },
             { titulo: 'Mantenimientos', link: '#' }
           ] },

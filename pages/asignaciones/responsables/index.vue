@@ -14,7 +14,7 @@
   </div>
 </template>
 <script>
-  import Form from '~/components/Responsables/FormResponsable';
+  import Form from '~/components/Asignacion/Responsables/FormResponsable';
   import Table from '~/components/Site/Table';
   import Pagination from '~/components/Site/Pagination';
 
@@ -53,17 +53,14 @@
       Pagination
     },
     async created() {
-      this.$store.commit('SET_LOADING', true);
       await this.getResponsables();
-      setTimeout(() => {
-        this.$store.commit('SET_LOADING', false);
-      }, 1000);
     },
     methods: {
       async getResponsables() {
         const { data } = await this.$axios.$get(`api/asignacion/responsables/i/10?page=${this.page.current}`);
         this.responsables = data.data;
         this.page.last = data.last_page;
+        this.page.url = 'api/asignacion/responsables/i/10?page=';
       },
       updateListResponsables(responsables) {
         this.responsables = responsables.data;

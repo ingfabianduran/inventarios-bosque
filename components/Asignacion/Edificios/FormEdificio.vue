@@ -2,10 +2,13 @@
   <v-card>
     <Loader :isShow="isLoading" color="#212121" size="70" />
     <ValidationObserver
-      ref="formDependencia">
+      ref="formEdificio">
       <v-form
-        @submit.prevent="storeDependencia">
-        <v-card-title>{{ this.titulo }}</v-card-title>
+        @submit.prevent="storeEdificio">
+        <v-card-title
+          class="font-weight-bold">
+          {{ this.titulo }}
+        </v-card-title>
         <v-card-text>
           <v-row>
             <v-col
@@ -18,7 +21,7 @@
                 <v-text-field
                   v-model="form.nombre"
                   label="Nombre"
-                  placeholder="Nombre de la dependecia"
+                  placeholder="Nombre del Bloque"
                   outlined
                   color="#7BC142"
                   :error-messages="errors">
@@ -65,7 +68,7 @@
         type: String,
         required: true
       },
-      dependencia: {
+      edificio: {
         type: Object,
         required: false
       },
@@ -82,12 +85,12 @@
       Loader
     },
     methods: {
-      storeDependencia() {
+      storeEdificio() {
         Alert.showConfirm(this.titulo, `¿Esta seguro de realizar la petición?`, 'question', async(confirmed) => {
           if (confirmed) {
             try {
               this.isLoading = true;
-              const { descripcion } = (this.titulo === 'Nueva Dependencia') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
+              const { descripcion } = (this.titulo === 'Nuevo Edificio') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
               setTimeout(() => {
                 Alert.showToast('success', descripcion);
                 this.isLoading = false;
@@ -100,14 +103,14 @@
         });
       },
       clearForm() {
-        this.$refs.formDependencia.reset();
+        this.$refs.formEdificio.reset();
         this.form.nombre = '';
         this.$emit('clearForm');
       }
     },
     watch: {
-      dependencia() {
-        this.form.nombre = this.dependencia.nombre;
+      edificio() {
+        this.form.nombre = this.edificio.nombre;
       }
     }
   }

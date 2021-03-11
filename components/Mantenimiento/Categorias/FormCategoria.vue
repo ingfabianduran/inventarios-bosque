@@ -2,15 +2,18 @@
   <v-card>
     <Loader :isShow="isLoading" color="#212121" size="70" />
     <ValidationObserver
-      ref="formEspacio">
+      ref="formCategoria">
       <v-form
-        @submit.prevent="storeEspacio">
-        <v-card-title>{{ this.titulo }}</v-card-title>
+        @submit.prevent="storeCategoria">
+        <v-card-title
+          class="font-weight-bold">
+          {{ this.titulo }}
+        </v-card-title>
         <v-card-text>
           <v-row>
             <v-col
               cols="12"
-              md="6">
+              md="12">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="nombre"
@@ -18,30 +21,11 @@
                 <v-text-field
                   v-model="form.nombre"
                   label="Nombre"
-                  placeholder="Nombre del Espacio"
+                  placeholder="Nombre de la categoria"
                   outlined
                   color="#7BC142"
                   :error-messages="errors">
                 </v-text-field>
-              </ValidationProvider>
-            </v-col>
-            <v-col
-              cols="12"
-              md="6">
-              <ValidationProvider
-                v-slot="{ errors }"
-                name="edificio_id"
-                rules="required|integer">
-                <v-autocomplete
-                  v-model="form.edificio_id"
-                  :items="edificios"
-                  color="#7BC142"
-                  item-text="nombre"
-                  item-value="id"
-                  label="Edificio"
-                  outlined
-                  :error-messages="errors">
-                </v-autocomplete>
               </ValidationProvider>
             </v-col>
           </v-row>
@@ -73,10 +57,8 @@
   export default {
     data() {
       return {
-        edificios: [],
         form: {
-          nombre: '',
-          edificio_id: ''
+          nombre: ''
         },
         isLoading: false
       }
@@ -86,7 +68,7 @@
         type: String,
         required: true
       },
-      espacio: {
+      categoria: {
         type: Object,
         required: false
       },
@@ -102,20 +84,13 @@
     components: {
       Loader
     },
-    async created() {
-      await this.getEdificios();
-    },
     methods: {
-      async getEdificios() {
-        const { data } = await this.$axios.$get('api/asignacion/edificios/i/0');
-        this.edificios = data;
-      },
-      storeEspacio() {
-        Alert.showConfirm(this.titulo, '¿Esta seguro de realizar la petición?', 'question', async(confirmed) => {
+      storeCategoria() {
+        Alert.showConfirm(this.titulo, `¿Esta seguro de realizar la petición?`, 'question', async(confirmed) => {
           if (confirmed) {
             try {
               this.isLoading = true;
-              const { descripcion } = (this.titulo === 'Nuevo Espacio') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
+              const { descripcion } = (this.titulo === 'Nueva Categoria') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
               setTimeout(() => {
                 Alert.showToast('success', descripcion);
                 this.isLoading = false;
@@ -128,16 +103,14 @@
         });
       },
       clearForm() {
-        this.$refs.formEspacio.reset();
+        this.$refs.formEdificio.reset();
         this.form.nombre = '';
-        this.form.edificio_id = '';
         this.$emit('clearForm');
       }
     },
     watch: {
-      espacio() {
-        this.form.nombre = this.espacio.nombre;
-        this.form.edificio_id = this.espacio.edificio_id;
+      categoria() {
+        this.form.nombre = this.categoria.nombre;
       }
     }
   }
