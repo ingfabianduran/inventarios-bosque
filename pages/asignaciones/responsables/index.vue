@@ -7,7 +7,16 @@
     </v-row>
     <v-row>
       <v-col>
-        <Table title="Responsables" :headers="headers" :items="responsables" url="api/asignacion/responsables/" @getModel="getResponsable" @updateModels="getResponsables" />
+        <Table
+          title="Responsables"
+          :headers="headers"
+          :items="responsables"
+          url="api/asignacion/responsables/"
+          :search="search"
+          @getModel="getResponsable"
+          @updateModels="$fetch"
+          @searchModel="searchListResponsables"
+          @resetBusqueda="$fetch" />
       </v-col>
     </v-row>
     <Pagination :page="page" @getData="updateListResponsables" />
@@ -44,6 +53,10 @@
           current: 1,
           last: 0,
           url: 'api/asignacion/responsables/i/10?page='
+        },
+        search: {
+          label: 'Nombre del responsable',
+          url: 'api/asignacion/responsables/buscar/nombre/'
         }
       }
     },
@@ -52,16 +65,13 @@
       Table,
       Pagination
     },
-    async created() {
-      await this.getResponsables();
+    async fetch() {
+      const { data } = await this.$axios.$get(`api/asignacion/responsables/i/10?page=${this.page.current}`);
+      this.responsables = data.data;
+      this.page.last = data.last_page;
+      this.page.url = 'api/asignacion/responsables/i/10?page=';
     },
     methods: {
-      async getResponsables() {
-        const { data } = await this.$axios.$get(`api/asignacion/responsables/i/10?page=${this.page.current}`);
-        this.responsables = data.data;
-        this.page.last = data.last_page;
-        this.page.url = 'api/asignacion/responsables/i/10?page=';
-      },
       updateListResponsables(responsables) {
         this.responsables = responsables.data;
         this.page.current = responsables.current;
@@ -77,8 +87,14 @@
         this.responsable.data = {};
         this.responsable.url = 'api/asignacion/responsables';
         this.responsable.textBtn = 'Registrar';
-        await this.getResponsables();
-      }
+        this.$fetch();
+      },
+      searchListResponsables(responsables) {
+        this.responsables = responsables.data.data;
+        this.page.current = 1;
+        this.page.last = responsables.data.last_page;
+        this.page.url = responsables.url;
+      },
     }
   }
 </script>

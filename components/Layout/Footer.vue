@@ -1,8 +1,7 @@
 <template>
-  <v-footer 
+  <v-footer
     app
     dark
-    
     :color="color">
     <v-col
       class="text-center"

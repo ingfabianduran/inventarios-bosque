@@ -12,5 +12,8 @@ export default {
   },
   showErrors503(errors) {
     Alert.showToast('error', `Codigo: ${errors.codigo}. ${errors.error}`);
+  },
+  showErrors404(errors) {
+    Alert.showToast('error', `Codigo: ${errors.codigo}. ${errors.error}`);
   }
 }

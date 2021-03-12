@@ -15,7 +15,7 @@
         md="4"
         lg="4"
         xl="4">
-        <Busqueda nameBusqueda="Nombre del edificio" url="api/asignacion/edificios/buscar/nombre/" @searchModel="searchListEdificios" @resetBusqueda="getEdificios" />
+        <Busqueda nameBusqueda="Nombre del edificio" url="api/asignacion/edificios/buscar/nombre/" @searchModel="searchListEdificios" @resetBusqueda="$fetch" />
       </v-col>
     </v-row>
     <v-row>
@@ -25,7 +25,7 @@
         md="6"
         lg="6"
         xl="4">
-        <Edificio :model="edificio" url="/api/asignacion/edificios/" @getModel="getEdificio" @getModels="getEdificios" />
+        <Edificio :model="edificio" url="/api/asignacion/edificios/" @getModel="getEdificio" @getModels="$fetch" />
       </v-col>
     </v-row>
     <Pagination :page="page" @getData="updateListEdificios" />
@@ -65,16 +65,13 @@
       Edificio,
       Pagination
     },
-    async created() {
-      await this.getEdificios();
+    async fetch() {
+      const { data } = await this.$axios.$get(`api/asignacion/edificios/i/10?page=${this.page.current}`);
+      this.edificios = data.data;
+      this.page.last = data.last_page;
+      this.page.url = 'api/asignacion/edificios/i/10?page=';
     },
     methods: {
-      async getEdificios() {
-        const { data } = await this.$axios.$get(`api/asignacion/edificios/i/10?page=${this.page.current}`);
-        this.edificios = data.data;
-        this.page.last = data.last_page;
-        this.page.url = 'api/asignacion/edificios/i/10?page=';
-      },
       updateListEdificios(edificios) {
         this.edificios = edificios.data;
         this.page.current = edificios.current;
@@ -90,7 +87,7 @@
         this.edificio.data = {};
         this.edificio.url = 'api/asignacion/edificios';
         this.edificio.textBtn = 'Registrar';
-        await this.getEdificios();
+        this.$fetch();
       },
       searchListEdificios(edificios) {
         this.edificios = edificios.data.data;

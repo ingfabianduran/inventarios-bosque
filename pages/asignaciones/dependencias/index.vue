@@ -15,7 +15,7 @@
         md="4"
         lg="4"
         xl="4">
-        <Busqueda nameBusqueda="Nombre de la dependencia" url="api/asignacion/dependencias/buscar/nombre/" @searchModel="searchListDependencias" @resetBusqueda="getDependencias" />
+        <Busqueda nameBusqueda="Nombre de la dependencia" url="api/asignacion/dependencias/buscar/nombre/" @searchModel="searchListDependencias" @resetBusqueda="$fetch" />
       </v-col>
     </v-row>
     <v-row>
@@ -25,7 +25,7 @@
         md="6"
         lg="6"
         xl="4">
-        <Dependencia :model="dependencia" url="/api/asignacion/dependencias/" @getModel="getDependencia" @getModels="getDependencias" />
+        <Dependencia :model="dependencia" url="/api/asignacion/dependencias/" @getModel="getDependencia" @getModels="$fetch" />
       </v-col>
     </v-row>
     <Pagination :page="page" @getData="updateListDependencias" />
@@ -67,16 +67,13 @@
       Dependencia,
       Pagination
     },
-    async created() {
-      await this.getDependencias();
+    async fetch() {
+      const { data } = await this.$axios.$get(`api/asignacion/dependencias/i/10?page=${this.page.current}`);
+      this.dependencias = data.data;
+      this.page.last = data.last_page;
+      this.page.url = 'api/asignacion/dependencias/i/10?page=';
     },
     methods: {
-      async getDependencias() {
-        const { data } = await this.$axios.$get(`api/asignacion/dependencias/i/10?page=${this.page.current}`);
-        this.dependencias = data.data;
-        this.page.last = data.last_page;
-        this.page.url = 'api/asignacion/dependencias/i/10?page=';
-      },
       updateListDependencias(dependencias) {
         this.dependencias = dependencias.data;
         this.page.current = dependencias.current;
@@ -92,7 +89,7 @@
         this.dependencia.data = {};
         this.dependencia.url = 'api/asignacion/dependencias';
         this.dependencia.textBtn = 'Registrar';
-        await this.getDependencias();
+        this.$fetch();
       },
       searchListDependencias(dependencias) {
         this.dependencias = dependencias.data.data;

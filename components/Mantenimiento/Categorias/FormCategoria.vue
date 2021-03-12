@@ -103,7 +103,7 @@
         });
       },
       clearForm() {
-        this.$refs.formEdificio.reset();
+        this.$refs.formCategoria.reset();
         this.form.nombre = '';
         this.$emit('clearForm');
       }

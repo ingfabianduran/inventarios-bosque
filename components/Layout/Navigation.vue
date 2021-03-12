@@ -63,7 +63,7 @@
           { titulo: 'Servicio Tecnico', icon: 'mdi-hammer-wrench', link: '#', subtitulos: [
             { titulo: 'Categorias', link: '/mantenimientos/categorias' },
             { titulo: 'Especialistas', link: '/mantenimientos/especialistas' },
-            { titulo: 'Mantenimientos', link: '#' }
+            { titulo: 'Mantenimientos', link: '/mantenimientos/mantenimientos' }
           ] },
         ],
         inventario: [

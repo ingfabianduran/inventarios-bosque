@@ -10,6 +10,9 @@ export default function ({ $axios }) {
     } else if (code === 503) {
       const errors = error.response.data;
       Errors.showErrors503(errors);
+    } else if (code === 404) {
+      const errors = error.response.data;
+      Errors.showErrors404(errors);
     }
   });
 }

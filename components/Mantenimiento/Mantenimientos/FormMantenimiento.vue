@@ -1,28 +1,67 @@
 <template>
   <v-card>
-    <Loader :isShow="isLoading" color="#212121" size="90" />
+    <Loader :isShow="isLoading" color="#212121" size="100" />
     <ValidationObserver
-      ref="formAsignacion">
+      ref="formMantenimiento">
       <v-form
-        @submit.prevent="storeAsignacion">
-        <v-card-title
-          class="font-weight-bold">
+        @submit.prevent="storeMantenimiento">
+        <v-card-title class="font-weight-bold">
           {{ this.titulo }}
         </v-card-title>
         <v-card-text>
           <v-row>
             <v-col
               cols="12"
-              md="5">
+              md="6">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="tipo"
-                rules="required|oneOf:Aulas,Oficinas">
-                <v-autocomplete
+                rules="required|oneOf:Correctivo,Preventivo">
+                <v-select
                   v-model="form.tipo"
                   label="Tipo"
                   outlined
                   :items="tipos"
+                  color="#7BC142"
+                  :error-messages="errors">
+                </v-select>
+              </ValidationProvider>
+            </v-col>
+            <v-col
+              cols="12"
+              md="6">
+              <ValidationProvider
+                v-slot="{ errors }"
+                name="user_id"
+                rules="required|integer">
+                <v-autocomplete
+                  v-model="form.user_id"
+                  label="Especialista"
+                  :items="categorias"
+                  item-text="nombre"
+                  item-value="id"
+                  outlined
+                  color="#7BC142"
+                  :error-messages="errors">
+                </v-autocomplete>
+              </ValidationProvider>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col
+              cols="12"
+              md="6">
+              <ValidationProvider
+                v-slot="{ errors }"
+                name="categoria_id"
+                rules="required|integer">
+                <v-autocomplete
+                  v-model="form.categoria_id"
+                  label="Categoria"
+                  :items="especialistas"
+                  item-text="nombre"
+                  item-value="id"
+                  outlined
                   color="#7BC142"
                   :error-messages="errors">
                 </v-autocomplete>
@@ -33,84 +72,35 @@
               md="6">
               <ValidationProvider
                 v-slot="{ errors }"
-                name="responsable_id"
-                rules="required|integer">
-                <v-autocomplete
-                  v-model="form.responsable_id"
-                  :search-input.sync="searchResponsable"
-                  label="Responsable"
-                  :items="responsables"
-                  item-text="nombre"
-                  item-value="id"
-                  outlined
-                  color="#7BC142"
-                  :error-messages="errors">
-                </v-autocomplete>
-              </ValidationProvider>
-            </v-col>
-            <v-col
-              cols="12"
-              md="1">
-              <v-checkbox
-                v-model="form.estado"
-                label="Estado"
-                color="#F27830">
-              </v-checkbox>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col
-              cols="12"
-              md="4">
-              <ValidationProvider
-                v-slot="{ errors }"
-                name="edificio"
-                rules="required|integer">
-                <v-autocomplete
-                  v-model="edificio"
-                  label="Edificio"
-                  :items="edificios"
-                  item-text="nombre"
-                  item-value="id"
-                  color="#7BC142"
-                  outlined
-                  :error-messages="errors">
-                </v-autocomplete>
-              </ValidationProvider>
-            </v-col>
-            <v-col
-              cols="12"
-              md="4">
-              <ValidationProvider
-                v-slot="{ errors }"
-                name="espacio_id"
-                rules="required|integer">
-                <v-autocomplete
-                  v-model="form.espacio_id"
-                  label="Espacio"
-                  :items="espacios"
-                  item-text="nombre"
-                  item-value="id"
-                  color="#7BC142"
-                  outlined
-                  :error-messages="errors">
-                </v-autocomplete>
-              </ValidationProvider>
-            </v-col>
-            <v-col
-              cols="12"
-              md="4">
-              <ValidationProvider
-                v-slot="{ errors }"
                 name="equipo_id"
                 rules="required|integer">
                 <v-autocomplete
                   v-model="form.equipo_id"
                   label="Equipo"
+                  :items="equipos"
+                  item-text="nombre"
+                  item-value="id"
                   outlined
                   color="#7BC142"
                   :error-messages="errors">
                 </v-autocomplete>
+              </ValidationProvider>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col
+              cols="12"
+              md="12">
+              <ValidationProvider
+                v-slot="{ errors }"
+                name="equipo_id"
+                rules="required|max:2000">
+                <v-textarea
+                  outlined
+                  label="Tareas realizada"
+                  auto-grow
+                  :error-messages="errors">
+                </v-textarea>
               </ValidationProvider>
             </v-col>
           </v-row>
@@ -136,26 +126,23 @@
   </v-card>
 </template>
 <script>
-  import Alert from '~/components/Site/SweetAlert';
   import Loader from '~/components/Site/Loader';
+  import Alert from '~/components/Site/SweetAlert';
 
   export default {
     data() {
       return {
-        tipos: ['Aulas', 'Oficinas'],
-        edificios: [],
-        espacios: [],
-        responsables: [],
+        tipos: ['Correctivo', 'Preventivo'],
+        especialistas: [],
+        categorias: [],
         equipos: [],
         form: {
           tipo: '',
-          estado: false,
-          responsable_id: '',
-          espacio_id: '',
-          equipo_id: null
+          tarea_realizada: '',
+          user_id: '',
+          categoria_id: '',
+          equipo_id: ''
         },
-        edificio: '',
-        searchResponsable: null,
         isLoading: false
       }
     },
@@ -164,7 +151,7 @@
         type: String,
         required: true
       },
-      asignacion: {
+      mantenimiento: {
         type: Object,
         required: false
       },
@@ -180,25 +167,13 @@
     components: {
       Loader
     },
-    async created() {
-      await this.getEdificios();
-      await this.getEspacios();
-    },
     methods: {
-      async getEdificios() {
-        const { data } = await this.$axios.$get('api/asignacion/edificios/i/0');
-        this.edificios = data;
-      },
-      async getEspacios() {
-        const { data } = await this.$axios.$get('api/asignacion/espacios/i/0');
-        this.espacios = data;
-      },
-      storeAsignacion() {
+      storeMantenimiento() {
         Alert.showConfirm(this.titulo, `¿Esta seguro de realizar la petición?`, 'question', async(confirmed) => {
           if (confirmed) {
             try {
               this.isLoading = true;
-              const { descripcion } = (this.titulo === 'Nueva Asignación') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
+              const { descripcion } = (this.titulo === 'Nuevo Mantenimiento') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
               setTimeout(() => {
                 Alert.showToast('success', descripcion);
                 this.isLoading = false;
@@ -211,34 +186,23 @@
         });
       },
       clearForm() {
-        this.$refs.formAsignacion.reset();
+        this.$refs.formMantenimiento.reset();
         this.form.tipo = '';
-        this.form.estado = false;
-        this.form.responsable_id = '';
-        this.form.espacio_id = '';
+        this.form.tarea_realizada = '';
+        this.form.user_id = '';
+        this.form.categoria_id = '';
         this.form.equipo_id = '';
-        this.edificio = '';
-        this.searchResponsable = '';
-        this.responsables = [];
         this.$emit('clearForm');
       }
     },
     watch: {
-      asignacion() {
-        this.form.tipo = this.asignacion.tipo;
-        this.form.estado = (this.asignacion.estado === 1) ? true : false;
-        this.form.responsable_id = this.asignacion.responsable_id;
-        this.form.espacio_id = this.asignacion.espacio_id;
-        this.form.equipo_id = this.asignacion.equipo_id;
-        this.edificio = (this.asignacion.hasOwnProperty('espacio')) ? this.asignacion.espacio.edificio_id : '';
-        this.searchResponsable = (this.asignacion.hasOwnProperty('responsable')) ? this.asignacion.responsable.nombre : '';
+      mantenimiento() {
+        this.form.tipo = this.mantenimiento.tipo;
+        this.form.tarea_realizada = this.mantenimiento.tarea_realizada;
+        this.form.user_id = this.mantenimiento.user_id;
+        this.form.categoria_id = this.mantenimiento.categoria_id;
+        this.form.equipo_id = this.mantenimiento.equipo_id;
       },
-      async searchResponsable(value) {
-        if (value !== null && value.length > 0) {
-          const { data } = await this.$axios.$get(`/api/asignacion/responsables/buscar/nombre/${value}`);
-          this.responsables = data.data;
-        }
-      }
     }
   }
 </script>

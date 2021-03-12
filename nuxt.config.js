@@ -71,4 +71,6 @@ export default {
     host: '127.0.0.1', // Server U Bosque: 172.18.92.12
     timing: false
   },
+
+  loading: '~/components/Site/LoaderPage.vue'
 }

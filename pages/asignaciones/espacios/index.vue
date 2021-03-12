@@ -15,7 +15,7 @@
         md="4"
         lg="4"
         xl="4">
-        <Busqueda nameBusqueda="Nombre del espacio" url="api/asignacion/espacios/buscar/nombre/" @searchModel="searchListEspacios" @resetBusqueda="getEspacios" />
+        <Busqueda nameBusqueda="Nombre del espacio" url="api/asignacion/espacios/buscar/nombre/" @searchModel="searchListEspacios" @resetBusqueda="$fetch" />
       </v-col>
     </v-row>
     <v-row>
@@ -26,7 +26,7 @@
         md="6"
         lg="6"
         xl="4">
-        <Espacio :model="espacio" url="/api/asignacion/espacios/" @getModel="getEspacio" @getModels="getEspacios" />
+        <Espacio :model="espacio" url="/api/asignacion/espacios/" @getModel="getEspacio" @getModels="$fetch" />
       </v-col>
     </v-row>
     <Pagination :page="page" @getData="updateListEspacios" />
@@ -66,16 +66,13 @@
       Espacio,
       Pagination
     },
-    async created() {
-      await this.getEspacios();
+    async fetch() {
+      const { data }  = await this.$axios.$get(`api/asignacion/espacios/i/10?page=${this.page.current}`);
+      this.espacios = data.data;
+      this.page.last = data.last_page;
+      this.page.url = 'api/asignacion/espacios/i/10?page=';
     },
     methods: {
-      async getEspacios() {
-        const { data }  = await this.$axios.$get(`api/asignacion/espacios/i/10?page=${this.page.current}`);
-        this.espacios = data.data;
-        this.page.last = data.last_page;
-        this.page.url = 'api/asignacion/espacios/i/10?page=';
-      },
       updateListEspacios(espacios) {
         this.espacios = espacios.data;
         this.page.current = espacios.current;
@@ -91,7 +88,7 @@
         this.espacio.data = {};
         this.espacio.url = 'api/asignacion/espacios';
         this.espacio.textBtn = 'Registrar';
-        await this.getEspacios();
+        this.$fetch();
       },
       searchListEspacios(espacios) {
         this.espacios = espacios.data.data;

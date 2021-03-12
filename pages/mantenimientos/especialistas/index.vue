@@ -7,7 +7,16 @@
     </v-row>
     <v-row>
       <v-col>
-        <Table title="Especialistas" :headers="headers" :items="especialistas" url="api/matenimientos/usuarios/" @getModel="getEspecialista" />
+        <Table
+          title="Especialistas"
+          :headers="headers"
+          :items="especialistas"
+          url="api/mantenimiento/users/"
+          :search="search"
+          @getModel="getEspecialista"
+          @updateModels="$fetch"
+          @searchModel="searchListEspecialistas"
+          @resetBusqueda="$fetch" />
       </v-col>
     </v-row>
     <Pagination :page="page" @getData="updateListEspecialistas" />
@@ -28,24 +37,26 @@
       return {
         headers: [
           { text: 'Id', value: 'id', align: ' d-none' },
-          { text: 'Nombres', value: 'nombres', sortable: false },
-          { text: 'Apellidos', value: 'apellidos', sortable: false },
+          { text: 'Nombres', value: 'nombre', sortable: false },
+          { text: 'Apellidos', value: 'apellido', sortable: false },
           { text: 'Rol', value: 'rol', sortable: false },
           { text: 'Actions', value: 'actions', sortable: false }
         ],
         especialista: {
           titulo: 'Nuevo Especialista',
           data: {},
-          url: 'api/matenimientos/usuarios',
+          url: 'api/mantenimiento/users',
           textBtn: 'Registrar'
         },
-        especialistas: [
-          { id: 1, nombres: 'Fabian Esteban', apellidos: 'Duran Avellaneda', rol: 'Coordinador' }
-        ],
+        especialistas: [],
         page: {
           current: 1,
           last: 0,
-          url: 'api/matenimientos/usuarios/i/10?page='
+          url: 'api/mantenimiento/users/i/10?page='
+        },
+        search: {
+          label: 'Nombre, apellido, cedula o correo',
+          url: 'api/mantenimiento/users/buscar/'
         }
       }
     },
@@ -54,12 +65,13 @@
       Table,
       Pagination
     },
-    methods: {
-      async getEspecialistas() {
-        const { data } = await this.$axios.$get(`api/matenimientos/usuarios/i/10?page=${this.page.current}`);
+    async fetch() {
+      const { data } = await this.$axios.$get(`api/mantenimiento/users/i/10?page=${this.page.current}`);
         this.especialistas = data.data;
         this.page.last = data.last_page;
-      },
+        this.page.url = 'api/mantenimiento/users/i/10?page=';
+    },
+    methods: {
       updateListEspecialistas(especialistas) {
         this.especialistas = especialistas.data;
         this.page.current = especialistas.current;
@@ -67,7 +79,7 @@
       getEspecialista(especialista) {
         this.especialista.titulo = 'Actualizar Especialista';
         this.especialista.data = especialista;
-        this.especialista.url = `api/matenimientos/usuarios/${especialista.id}`;
+        this.especialista.url = `api/mantenimiento/users/${especialista.id}`;
         this.especialista.textBtn = 'Actualizar';
       },
       async clearForm() {
@@ -75,8 +87,14 @@
         this.especialista.data = {};
         this.especialista.url = 'api/matenimientos/usuarios';
         this.especialista.textBtn = 'Registrar';
-        await this.getEspecialistas();
-      }
+        this.$fetch();
+      },
+      searchListEspecialistas(especialistas) {
+        this.especialistas = especialistas.data.data;
+        this.page.current = 1;
+        this.page.last = especialistas.data.last_page;
+        this.page.url = especialistas.url;
+      },
     }
   }
 </script>
