@@ -88,17 +88,16 @@
                 </ValidationProvider>
               </v-col>
             </v-row>
-            <v-row
-              align="center"
-              justify="center">
+            <v-row>
               <v-col
                 cols="12"
-                :md="(aranda) ? 7 : 12">
+                :md="(aranda) ? 8 : 12">
                 <ValidationProvider
                   v-slot="{ errors }"
                   name="equipo_id"
                   rules="required|max:2000">
                   <v-textarea
+                    v-model="form.tarea_realizada"
                     outlined
                     label="Tareas realizada"
                     auto-grow
@@ -108,25 +107,9 @@
               </v-col>
               <v-col
                 cols="12"
-                md="5"
+                md="4"
                 v-if="aranda">
-                <v-alert
-                  prominent
-                  type="info"
-                  color="#7BC142">
-                  <v-row align="center">
-                    <v-col class="grow">
-                      El mantenimiento registra un caso en el sistema Aranda
-                    </v-col>
-                    <v-col
-                      class="shrink">
-                      <v-btn
-                        color="#F27830"
-                        @click="showAranda">
-                        Ver Caso</v-btn>
-                    </v-col>
-                  </v-row>
-              </v-alert>
+                <Aranda :aranda="aranda" />
               </v-col>
             </v-row>
           </v-card-text>
@@ -153,6 +136,7 @@
 </template>
 <script>
   import Loader from '~/components/Site/Loader';
+  import Aranda from '~/components/Mantenimiento/Aranda/CardAranda';
   import Alert from '~/components/Site/SweetAlert';
 
   export default {
@@ -193,6 +177,7 @@
     },
     components: {
       Loader,
+      Aranda
     },
     async created() {
       await this.getEspecialistas();
@@ -234,12 +219,6 @@
         this.aranda = {};
         this.$emit('clearForm');
       },
-      async showAranda() {
-        const data = await Alert.showFormAranda('Actualizar Aranda', 'Actualizar', this.aranda);
-        if (data !== undefined) {
-
-        }
-      }
     },
     watch: {
       mantenimiento() {
