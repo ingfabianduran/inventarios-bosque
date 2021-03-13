@@ -244,8 +244,10 @@
         this.form.confirmar = this.especialista.password;
         this.form.rol = this.especialista.rol;
       },
-      'form.cedula': function() {
-        this.form.cedula = parseInt(this.form.cedula);
+      'form.cedula': function(value) {
+        if (value !== '') {
+          this.form.cedula = parseInt(this.form.cedula);
+        }
       },
     }
   }
