@@ -1,138 +1,144 @@
 <template>
-  <div>
-    <v-card>
-      <Loader :isShow="isLoading" color="#212121" size="100" />
-      <ValidationObserver
-        ref="formMantenimiento">
-        <v-form
-          @submit.prevent="storeMantenimiento">
-          <v-card-title class="font-weight-bold">
-            {{ this.titulo }}
-          </v-card-title>
-          <v-card-text>
-            <v-row>
-              <v-col
-                cols="12"
-                md="6">
-                <ValidationProvider
-                  v-slot="{ errors }"
-                  name="tipo"
-                  rules="required|oneOf:Correctivo,Preventivo">
-                  <v-select
-                    v-model="form.tipo"
-                    label="Tipo"
-                    outlined
-                    :items="tipos"
-                    color="#7BC142"
-                    :error-messages="errors">
-                  </v-select>
-                </ValidationProvider>
-              </v-col>
-              <v-col
-                cols="12"
-                md="6">
-                <ValidationProvider
-                  v-slot="{ errors }"
-                  name="user_id"
-                  rules="required|integer">
-                  <v-autocomplete
-                    v-model="form.user_id"
-                    label="Especialista"
-                    :items="especialistas"
-                    item-text="nombre"
-                    item-value="id"
-                    outlined
-                    color="#7BC142"
-                    :error-messages="errors">
-                  </v-autocomplete>
-                </ValidationProvider>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col
-                cols="12"
-                md="6">
-                <ValidationProvider
-                  v-slot="{ errors }"
-                  name="categoria_id"
-                  rules="required|integer">
-                  <v-autocomplete
-                    v-model="form.categoria_id"
-                    label="Categoria"
-                    :items="categorias"
-                    item-text="nombre"
-                    item-value="id"
-                    outlined
-                    color="#7BC142"
-                    :error-messages="errors">
-                  </v-autocomplete>
-                </ValidationProvider>
-              </v-col>
-              <v-col
-                cols="12"
-                md="6">
-                <ValidationProvider
-                  v-slot="{ errors }"
-                  name="equipo_id"
-                  rules="required|integer">
-                  <v-autocomplete
-                    v-model="form.equipo_id"
-                    label="Equipo"
-                    :items="equipos"
-                    item-text="nombre"
-                    item-value="id"
-                    outlined
-                    color="#7BC142"
-                    :error-messages="errors">
-                  </v-autocomplete>
-                </ValidationProvider>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col
-                cols="12"
-                :md="(aranda) ? 8 : 12">
-                <ValidationProvider
-                  v-slot="{ errors }"
-                  name="equipo_id"
-                  rules="required|max:2000">
-                  <v-textarea
-                    v-model="form.tarea_realizada"
-                    outlined
-                    label="Tareas realizada"
-                    auto-grow
-                    :error-messages="errors">
-                  </v-textarea>
-                </ValidationProvider>
-              </v-col>
-              <v-col
-                cols="12"
-                md="4"
-                v-if="aranda">
-                <Aranda :aranda="aranda" />
-              </v-col>
-            </v-row>
-          </v-card-text>
-          <v-card-actions
-            class="justify-end">
-            <v-btn
-              type="submit"
-              dark
-              color="#F27830">
-              {{ this.textBtn }}
-            </v-btn>
-            <v-btn
-              type="button"
-              dark
-              color="#7BC142"
-              @click="clearForm()">
-              Cancelar
-            </v-btn>
-          </v-card-actions>
-        </v-form>
-      </ValidationObserver>
-    </v-card>
-  </div>
+  <v-row
+    align="center"
+    justify="center">
+    <v-col
+      cols="12"
+      :md="(aranda.data || aranda.mantenimiento) ? 8 : 12">
+      <v-card>
+        <Loader :isShow="isLoading" color="#212121" size="100" />
+        <ValidationObserver
+          ref="formMantenimiento">
+          <v-form
+            @submit.prevent="storeMantenimiento">
+            <v-card-title class="font-weight-bold">
+              {{ this.titulo }}
+            </v-card-title>
+            <v-card-text>
+              <v-row>
+                <v-col
+                  cols="12"
+                  md="6">
+                  <ValidationProvider
+                    v-slot="{ errors }"
+                    name="tipo"
+                    rules="required|oneOf:Correctivo,Preventivo">
+                    <v-select
+                      v-model="form.tipo"
+                      label="Tipo"
+                      outlined
+                      :items="tipos"
+                      color="#7BC142"
+                      :error-messages="errors">
+                    </v-select>
+                  </ValidationProvider>
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="6">
+                  <ValidationProvider
+                    v-slot="{ errors }"
+                    name="user_id"
+                    rules="required|integer">
+                    <v-autocomplete
+                      v-model="form.user_id"
+                      label="Especialista"
+                      :items="especialistas"
+                      item-text="nombre"
+                      item-value="id"
+                      outlined
+                      color="#7BC142"
+                      :error-messages="errors">
+                    </v-autocomplete>
+                  </ValidationProvider>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col
+                  cols="12"
+                  md="6">
+                  <ValidationProvider
+                    v-slot="{ errors }"
+                    name="categoria_id"
+                    rules="required|integer">
+                    <v-autocomplete
+                      v-model="form.categoria_id"
+                      label="Categoria"
+                      :items="categorias"
+                      item-text="nombre"
+                      item-value="id"
+                      outlined
+                      color="#7BC142"
+                      :error-messages="errors">
+                    </v-autocomplete>
+                  </ValidationProvider>
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="6">
+                  <ValidationProvider
+                    v-slot="{ errors }"
+                    name="equipo_id"
+                    rules="required|integer">
+                    <v-autocomplete
+                      v-model="form.equipo_id"
+                      label="Equipo"
+                      :items="equipos"
+                      item-text="nombre"
+                      item-value="id"
+                      outlined
+                      color="#7BC142"
+                      :error-messages="errors">
+                    </v-autocomplete>
+                  </ValidationProvider>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col
+                  cols="12"
+                  md="12">
+                  <ValidationProvider
+                    v-slot="{ errors }"
+                    name="equipo_id"
+                    rules="required|max:2000">
+                    <v-textarea
+                      v-model="form.tarea_realizada"
+                      outlined
+                      label="Tareas realizada"
+                      auto-grow
+                      :error-messages="errors">
+                    </v-textarea>
+                  </ValidationProvider>
+                </v-col>
+              </v-row>
+            </v-card-text>
+            <v-card-actions
+              class="justify-end">
+              <v-btn
+                type="submit"
+                dark
+                color="#F27830">
+                {{ this.textBtn }}
+              </v-btn>
+              <v-btn
+                type="button"
+                dark
+                color="#7BC142"
+                @click="clearForm()">
+                Cancelar
+              </v-btn>
+            </v-card-actions>
+          </v-form>
+        </ValidationObserver>
+      </v-card>
+    </v-col>
+    <v-col
+      cols="12"
+      md="4"
+      v-if="aranda.data || aranda.mantenimiento">
+      <Aranda :titulo="aranda.titulo" :aranda="aranda.data" :mantenimiento="aranda.mantenimiento" :url="aranda.url" :textBtn="aranda.textBtn" />
+    </v-col>
+  </v-row>
 </template>
 <script>
   import Loader from '~/components/Site/Loader';
@@ -154,7 +160,13 @@
           equipo_id: ''
         },
         isLoading: false,
-        aranda: null
+        aranda: {
+          titulo: 'Registrar Caso Aranda',
+          data: null,
+          mantenimiento: null,
+          url: '',
+          textBtn: 'Registrar'
+        }
       }
     },
     props: {
@@ -216,7 +228,7 @@
         this.form.user_id = '';
         this.form.categoria_id = '';
         this.form.equipo_id = '';
-        this.aranda = {};
+        this.aranda.data = null;
         this.$emit('clearForm');
       },
     },
@@ -227,7 +239,7 @@
         this.form.user_id = this.mantenimiento.user_id;
         this.form.categoria_id = this.mantenimiento.categoria_id;
         this.form.equipo_id = this.mantenimiento.equipo_id;
-        this.aranda = this.mantenimiento.aranda;
+        this.aranda.data = this.mantenimiento.aranda;
       },
     }
   }

@@ -1,56 +1,105 @@
 <template>
-  <v-card
-    outlined>
-    <v-card-title
-      class="font-weight-bold">
-      <div v-if="aranda">
-        {{ `Caso No ${aranda.caso}` }}
-      </div>
-      <div v-else>
-        No se registra caso en Aranda.
-      </div>
-    </v-card-title>
-    <v-card-subtitle
-      class="subtitle-2">
-      <div v-if="aranda">
-        {{ aranda.tipo }}
-      </div>
-    </v-card-subtitle>
-    <v-card-actions
-      class="justify-end">
-        <v-btn
-          text
-          color="#F27830"
-          v-if="!this.aranda.mantenimiento_id">
-          Registrar
-        </v-btn>
-        <v-btn
-          text
-          color="#7BC142"
-          v-if="this.aranda.mantenimiento_id">
-          Actualizar
-        </v-btn>
-        <v-btn
-          text
-          color="#F27830"
-          v-if="this.aranda.mantenimiento_id">
-          Eliminar
-        </v-btn>
-    </v-card-actions>
+  <v-card>
+    <ValidationObserver
+      ref="formAranda">
+      <v-form>
+        <v-card-title
+          class="font-weight-bold">
+          {{ this.titulo }}
+        </v-card-title>
+        <v-card-text>
+          <v-row>
+            <v-col
+              cols="12"
+              md="12">
+              <ValidationProvider
+                v-slot="{ errors }"
+                name="tipo"
+                rules="required|oneOf:Incidente,Requerimiento">
+                <v-select
+                  v-model="form.tipo"
+                  label="Tipo"
+                  outlined
+                  :items="tipos"
+                  color="#7BC142"
+                  :error-messages="errors">
+                </v-select>
+              </ValidationProvider>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col
+              cols="12"
+              md="12">
+              <ValidationProvider
+                v-slot="{ errors }"
+                name="caso"
+                rules="required|min:3|max:50">
+                <v-text-field
+                  v-model="form.caso"
+                  label="Caso"
+                  placeholder="Numero del caso"
+                  outlined
+                  color="#7BC142"
+                  :error-messages="errors">
+                </v-text-field>
+              </ValidationProvider>
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <v-card-actions
+          class="justify-end">
+          <v-btn
+            type="submit"
+            dark
+            color="#F27830">
+            {{ this.textBtn }}
+          </v-btn>
+          <v-btn
+            type="button"
+            dark
+            color="#7BC142">
+            Cancelar
+          </v-btn>
+        </v-card-actions>
+      </v-form>
+    </ValidationObserver>
   </v-card>
 </template>
 <script>
   import Alert from '~/components/Site/SweetAlert';
 
   export default {
-    props: {
-      aranda: {
-        type: Object,
-        default: {
+    data() {
+      return {
+        form: {
           tipo: '',
           caso: ''
-        }
+        },
+        tipos: ['Incidente', 'Requerimiento']
       }
-    }
+    },
+    props: {
+      titulo: {
+        type: String,
+        required: true
+      },
+      aranda: {
+        type: Object,
+        required: false
+      },
+      mantenimiento: {
+        type: Object,
+        required: true
+      },
+      url: {
+        type: String,
+        required: true
+      },
+      textBtn: {
+        type: String,
+        required: true
+      },
+    },
   }
 </script>
