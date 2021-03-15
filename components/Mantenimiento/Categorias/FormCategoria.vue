@@ -1,5 +1,7 @@
 <template>
-  <v-card>
+  <v-card
+    outlined
+    elevation="4">
     <Loader :isShow="isLoading" color="#212121" size="70" />
     <ValidationObserver
       ref="formCategoria">
@@ -85,22 +87,25 @@
       Loader
     },
     methods: {
-      storeCategoria() {
-        Alert.showConfirm(this.titulo, `¿Esta seguro de realizar la petición?`, 'question', async(confirmed) => {
-          if (confirmed) {
-            try {
-              this.isLoading = true;
-              const { descripcion } = (this.titulo === 'Nueva Categoria') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
-              setTimeout(() => {
-                Alert.showToast('success', descripcion);
+      async storeCategoria() {
+        const validate = await this.$refs.formCategoria.validate();
+        if (validate) {
+          Alert.showConfirm(this.titulo, `¿Esta seguro de realizar la petición?`, 'question', async(confirmed) => {
+            if (confirmed) {
+              try {
+                this.isLoading = true;
+                const { descripcion } = (this.titulo === 'Nueva Categoria') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
+                setTimeout(() => {
+                  Alert.showToast('success', descripcion);
+                  this.isLoading = false;
+                  this.clearForm();
+                }, 500);
+              } catch (error) {
                 this.isLoading = false;
-                this.clearForm();
-              }, 500);
-            } catch (error) {
-              this.isLoading = false;
+              }
             }
-          }
-        });
+          });
+        }
       },
       clearForm() {
         this.$refs.formCategoria.reset();

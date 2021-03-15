@@ -1,5 +1,7 @@
 <template>
-  <v-card>
+  <v-card
+    outlined
+    elevation="4">
     <Loader :isShow="isLoading" color="#212121" size="90" />
     <ValidationObserver
       ref="formResponsable">
@@ -70,7 +72,7 @@
               <ValidationProvider
                 v-slot="{ errors }"
                 name="extension"
-                rules="integer|min:4|max:5">
+                rules="required|integer|min:4|max:5">
                 <v-text-field
                   v-model="form.extension"
                   label="Extensión"
@@ -86,7 +88,7 @@
               md="5">
               <ValidationProvider
                 v-slot="{ errors }"
-                name="dependencias"
+                name="dependencia"
                 rules="required|integer">
                 <v-autocomplete
                   v-model="form.dependencia_id"
@@ -170,22 +172,25 @@
         const { data } = await this.$axios.$get('api/asignacion/dependencias/i/0');
         this.dependencias = data;
       },
-      storeResponsable() {
-        Alert.showConfirm(this.titulo, `¿Esta seguro de realizar la petición?`, 'question', async(confirmed) => {
-          if (confirmed) {
-            try {
-              this.isLoading = true;
-              const { descripcion } = (this.titulo === 'Nuevo Responsable') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
-              setTimeout(() => {
-                Alert.showToast('success', descripcion);
+      async storeResponsable() {
+        const validate = await this.$refs.formResponsable.validate();
+        if (validate) {
+          Alert.showConfirm(this.titulo, `¿Esta seguro de realizar la petición?`, 'question', async(confirmed) => {
+            if (confirmed) {
+              try {
+                this.isLoading = true;
+                const { descripcion } = (this.titulo === 'Nuevo Responsable') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
+                setTimeout(() => {
+                  Alert.showToast('success', descripcion);
+                  this.isLoading = false;
+                  this.clearForm();
+                }, 500);
+              } catch (error) {
                 this.isLoading = false;
-                this.clearForm();
-              }, 500);
-            } catch (error) {
-              this.isLoading = false;
+              }
             }
-          }
-        });
+          });
+        }
       },
       clearForm() {
         this.$refs.formResponsable.reset();

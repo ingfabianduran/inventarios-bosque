@@ -1,8 +1,18 @@
 <template>
   <div>
-    <v-row>
-      <v-col>
-        <Form :titulo="mantenimiento.titulo" :mantenimiento="mantenimiento.data" :url="mantenimiento.url" :textBtn="mantenimiento.textBtn" @clearForm="clearForm" />
+    <v-row
+      align="center"
+      justify="center">
+      <v-col
+        cols="12"
+        :md="(aranda.mantenimiento === 0 ? 12 : 8)">
+        <Mantenimiento :titulo="mantenimiento.titulo" :mantenimiento="mantenimiento.data" :url="mantenimiento.url" :textBtn="mantenimiento.textBtn" @clearForm="clearForm" />
+      </v-col>
+      <v-col
+        cols="12"
+        md="4"
+        v-show="aranda.mantenimiento !== 0">
+        <Aranda :titulo="aranda.titulo" :aranda="aranda.data" :url="aranda.url" :textBtn="aranda.textBtn" :mantenimiento="aranda.mantenimiento" @clearForm="clearForm" />
       </v-col>
     </v-row>
     <v-row>
@@ -23,7 +33,8 @@
   </div>
 </template>
 <script>
-  import Form from '~/components/Mantenimiento/Mantenimientos/FormMantenimiento';
+  import Mantenimiento from '~/components/Mantenimiento/Mantenimientos/FormMantenimiento';
+  import Aranda from '~/components/Mantenimiento/Aranda/FormAranda';
   import Table from '~/components/Site/Table';
   import Pagination from '~/components/Site/Pagination';
 
@@ -57,11 +68,19 @@
         search: {
           label: 'Inventario, serial o numero interno',
           url: ''
+        },
+        aranda: {
+          titulo: 'Registrar Caso Aranda',
+          data: {},
+          url: '',
+          textBtn: 'Registrar',
+          mantenimiento: 0
         }
       }
     },
     components: {
-      Form,
+      Mantenimiento,
+      Aranda,
       Table,
       Pagination
     },
@@ -81,12 +100,32 @@
         this.mantenimiento.data = mantenimiento;
         this.mantenimiento.url = `api/mantenimiento/mantenimientos/${mantenimiento.id}`;
         this.mantenimiento.textBtn = 'Actualizar';
+
+        if (mantenimiento.aranda !== null) {
+          this.aranda.titulo = 'Actualizar Caso Aranda';
+          this.aranda.data = mantenimiento.aranda;
+          this.aranda.url = `api/mantenimiento/arandas/${mantenimiento.aranda.id}`;
+          this.aranda.textBtn = 'Actualizar';
+          this.aranda.mantenimiento = mantenimiento.id;
+        } else {
+          this.aranda.titulo = 'Registrar Caso Aranda';
+          this.aranda.data = {};
+          this.aranda.url = `api/mantenimiento/arandas`;
+          this.aranda.textBtn = 'Registrar';
+          this.aranda.mantenimiento = mantenimiento.id;
+        }
       },
       async clearForm() {
         this.mantenimiento.titulo = 'Nuevo Mantenimiento';
         this.mantenimiento.data = {};
         this.mantenimiento.url = 'api/mantenimiento/mantenimientos';
         this.mantenimiento.textBtn = 'Registrar';
+
+        this.aranda.titulo = 'Registrar Caso Aranda';
+        this.aranda.data = {};
+        this.aranda.url = `api/mantenimiento/arandas`;
+        this.aranda.textBtn = 'Registrar';
+        this.aranda.mantenimiento = 0;
       },
       searchListMantenimientos(mantenimientos) {
         this.mantenimientos = mantenimientos.data.data;

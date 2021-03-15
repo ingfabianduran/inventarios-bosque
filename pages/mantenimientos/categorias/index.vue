@@ -46,7 +46,7 @@
         categoria: {
           titulo: 'Nueva Categoria',
           data: {},
-          url: 'api/mantenimientos/categorias',
+          url: 'api/mantenimiento/categorias',
           textBtn: 'Registrar'
         },
         categorias: [],

@@ -1,5 +1,7 @@
 <template>
-  <v-card>
+  <v-card
+    outlined
+    elevation="4">
     <Loader :isShow="isLoading" color="#212121" size="70" />
     <ValidationObserver
       ref="formEspacio">
@@ -33,7 +35,7 @@
               md="6">
               <ValidationProvider
                 v-slot="{ errors }"
-                name="edificio_id"
+                name="edificio"
                 rules="required|integer">
                 <v-autocomplete
                   v-model="form.edificio_id"
@@ -113,22 +115,25 @@
         const { data } = await this.$axios.$get('api/asignacion/edificios/i/0');
         this.edificios = data;
       },
-      storeEspacio() {
-        Alert.showConfirm(this.titulo, '¿Esta seguro de realizar la petición?', 'question', async(confirmed) => {
-          if (confirmed) {
-            try {
-              this.isLoading = true;
-              const { descripcion } = (this.titulo === 'Nuevo Espacio') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
-              setTimeout(() => {
-                Alert.showToast('success', descripcion);
+      async storeEspacio() {
+        const validate = await this.$refs.formEspacio.validate();
+        if (validate) {
+          Alert.showConfirm(this.titulo, '¿Esta seguro de realizar la petición?', 'question', async(confirmed) => {
+            if (confirmed) {
+              try {
+                this.isLoading = true;
+                const { descripcion } = (this.titulo === 'Nuevo Espacio') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
+                setTimeout(() => {
+                  Alert.showToast('success', descripcion);
+                  this.isLoading = false;
+                  this.clearForm();
+                }, 500);
+              } catch (error) {
                 this.isLoading = false;
-                this.clearForm();
-              }, 500);
-            } catch (error) {
-              this.isLoading = false;
+              }
             }
-          }
-        });
+          });
+        }
       },
       clearForm() {
         this.$refs.formEspacio.reset();

@@ -1,5 +1,7 @@
 <template>
-  <v-card>
+  <v-card
+    outlined
+    elevation="4">
     <Loader :isShow="isLoading" color="#212121" size="90" />
     <ValidationObserver
       ref="formAsignacion">
@@ -193,22 +195,25 @@
         const { data } = await this.$axios.$get('api/asignacion/espacios/i/0');
         this.espacios = data;
       },
-      storeAsignacion() {
-        Alert.showConfirm(this.titulo, `¿Esta seguro de realizar la petición?`, 'question', async(confirmed) => {
-          if (confirmed) {
-            try {
-              this.isLoading = true;
-              const { descripcion } = (this.titulo === 'Nueva Asignación') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
-              setTimeout(() => {
-                Alert.showToast('success', descripcion);
+      async storeAsignacion() {
+        const validate = await this.$refs.formAsignacion.validate();
+        if (validate) {
+          Alert.showConfirm(this.titulo, `¿Esta seguro de realizar la petición?`, 'question', async(confirmed) => {
+            if (confirmed) {
+              try {
+                this.isLoading = true;
+                const { descripcion } = (this.titulo === 'Nueva Asignación') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
+                setTimeout(() => {
+                  Alert.showToast('success', descripcion);
+                  this.isLoading = false;
+                  this.clearForm();
+                }, 500);
+              } catch (error) {
                 this.isLoading = false;
-                this.clearForm();
-              }, 500);
-            } catch (error) {
-              this.isLoading = false;
+              }
             }
-          }
-        });
+          });
+        }
       },
       clearForm() {
         this.$refs.formAsignacion.reset();
