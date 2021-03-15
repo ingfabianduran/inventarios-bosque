@@ -55,7 +55,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: 'http://127.0.0.1'
+    baseURL: 'http://172.18.92.12'
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
@@ -68,7 +68,7 @@ export default {
   // Config server:
   server: {
     port: 3000,
-    host: '127.0.0.1', // Server U Bosque: 172.18.92.12
+    host: '172.18.92.12', // Server U Bosque: 172.18.92.12
     timing: false
   },
 }
