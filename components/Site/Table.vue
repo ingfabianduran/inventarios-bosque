@@ -1,8 +1,20 @@
 <template>
-  <v-card>
-    <v-card-title>
+  <v-card
+    outlined
+    elevation="4">
+    <v-card-title
+      class="font-weight-bold">
       {{ title }}
       <v-spacer></v-spacer>
+      <v-text-field
+        v-model="busqueda"
+        :label="search.label"
+        filled
+        rounded
+        append-icon="mdi-eye-settings"
+        color="#7BC142"
+        @click:append="resetSearch">
+      </v-text-field>
     </v-card-title>
     <v-data-table
       :headers="headers"
@@ -36,7 +48,8 @@
   export default {
     data() {
       return {
-        isLoading: false
+        isLoading: false,
+        busqueda: ''
       }
     },
     props: {
@@ -54,6 +67,10 @@
       },
       url: {
         type: String,
+        required: true
+      },
+      search: {
+        type: Object,
         required: true
       }
     },
@@ -93,6 +110,22 @@
             }
           }
         });
+      },
+      resetSearch() {
+        this.busqueda = '';
+        this.$emit('resetBusqueda');
+      }
+    },
+    watch: {
+      async busqueda(value) {
+        if (value !== null && value.length > 0) {
+          const { data } = await this.$axios.$get(`${this.search.url}${value}`);
+          const pagination = {
+            data: data,
+            url: `${this.url}${value}?page=`
+          };
+          this.$emit('searchModel', pagination);
+        }
       }
     }
   }

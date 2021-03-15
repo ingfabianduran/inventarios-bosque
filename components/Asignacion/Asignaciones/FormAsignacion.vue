@@ -5,7 +5,10 @@
       ref="formAsignacion">
       <v-form
         @submit.prevent="storeAsignacion">
-        <v-card-title>{{ this.titulo }}</v-card-title>
+        <v-card-title
+          class="font-weight-bold">
+          {{ this.titulo }}
+        </v-card-title>
         <v-card-text>
           <v-row>
             <v-col
@@ -31,9 +34,10 @@
               <ValidationProvider
                 v-slot="{ errors }"
                 name="responsable_id"
-                rules="required">
+                rules="required|integer">
                 <v-autocomplete
                   v-model="form.responsable_id"
+                  :search-input.sync="searchResponsable"
                   label="Responsable"
                   :items="responsables"
                   item-text="nombre"
@@ -61,7 +65,7 @@
               <ValidationProvider
                 v-slot="{ errors }"
                 name="edificio"
-                rules="required">
+                rules="required|integer">
                 <v-autocomplete
                   v-model="edificio"
                   label="Edificio"
@@ -80,7 +84,7 @@
               <ValidationProvider
                 v-slot="{ errors }"
                 name="espacio_id"
-                rules="required">
+                rules="required|integer">
                 <v-autocomplete
                   v-model="form.espacio_id"
                   label="Espacio"
@@ -99,7 +103,7 @@
               <ValidationProvider
                 v-slot="{ errors }"
                 name="equipo_id"
-                rules="required">
+                rules="required|integer">
                 <v-autocomplete
                   v-model="form.equipo_id"
                   label="Equipo"
@@ -151,6 +155,7 @@
           equipo_id: null
         },
         edificio: '',
+        searchResponsable: null,
         isLoading: false
       }
     },
@@ -178,7 +183,6 @@
     async created() {
       await this.getEdificios();
       await this.getEspacios();
-      await this.getResponsables();
     },
     methods: {
       async getEdificios() {
@@ -188,10 +192,6 @@
       async getEspacios() {
         const { data } = await this.$axios.$get('api/asignacion/espacios/i/0');
         this.espacios = data;
-      },
-      async getResponsables() {
-        const { data } = await this.$axios.$get('api/asignacion/responsables/i/0');
-        this.responsables = data;
       },
       storeAsignacion() {
         Alert.showConfirm(this.titulo, `¿Esta seguro de realizar la petición?`, 'question', async(confirmed) => {
@@ -218,6 +218,8 @@
         this.form.espacio_id = '';
         this.form.equipo_id = '';
         this.edificio = '';
+        this.searchResponsable = '';
+        this.responsables = [];
         this.$emit('clearForm');
       }
     },
@@ -229,7 +231,14 @@
         this.form.espacio_id = this.asignacion.espacio_id;
         this.form.equipo_id = this.asignacion.equipo_id;
         this.edificio = (this.asignacion.hasOwnProperty('espacio')) ? this.asignacion.espacio.edificio_id : '';
+        this.searchResponsable = (this.asignacion.hasOwnProperty('responsable')) ? this.asignacion.responsable.nombre : '';
       },
+      async searchResponsable(value) {
+        if (value !== null && value.length > 0) {
+          const { data } = await this.$axios.$get(`/api/asignacion/responsables/buscar/nombre/${value}`);
+          this.responsables = data.data;
+        }
+      }
     }
   }
 </script>

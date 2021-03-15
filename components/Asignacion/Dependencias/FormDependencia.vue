@@ -2,10 +2,12 @@
   <v-card>
     <Loader :isShow="isLoading" color="#212121" size="70" />
     <ValidationObserver
-      ref="formEdificio">
+      ref="formDependencia">
       <v-form
-        @submit.prevent="storeEdificio">
-        <v-card-title>{{ this.titulo }}</v-card-title>
+        @submit.prevent="storeDependencia">
+        <v-card-title class="font-weight-bold">
+          {{ this.titulo }}
+        </v-card-title>
         <v-card-text>
           <v-row>
             <v-col
@@ -18,7 +20,7 @@
                 <v-text-field
                   v-model="form.nombre"
                   label="Nombre"
-                  placeholder="Nombre del Bloque"
+                  placeholder="Nombre de la dependecia"
                   outlined
                   color="#7BC142"
                   :error-messages="errors">
@@ -65,7 +67,7 @@
         type: String,
         required: true
       },
-      edificio: {
+      dependencia: {
         type: Object,
         required: false
       },
@@ -82,12 +84,12 @@
       Loader
     },
     methods: {
-      storeEdificio() {
+      storeDependencia() {
         Alert.showConfirm(this.titulo, `¿Esta seguro de realizar la petición?`, 'question', async(confirmed) => {
           if (confirmed) {
             try {
               this.isLoading = true;
-              const { descripcion } = (this.titulo === 'Nuevo Edificio') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
+              const { descripcion } = (this.titulo === 'Nueva Dependencia') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
               setTimeout(() => {
                 Alert.showToast('success', descripcion);
                 this.isLoading = false;
@@ -100,14 +102,14 @@
         });
       },
       clearForm() {
-        this.$refs.formEdificio.reset();
+        this.$refs.formDependencia.reset();
         this.form.nombre = '';
         this.$emit('clearForm');
       }
     },
     watch: {
-      edificio() {
-        this.form.nombre = this.edificio.nombre;
+      dependencia() {
+        this.form.nombre = this.dependencia.nombre;
       }
     }
   }

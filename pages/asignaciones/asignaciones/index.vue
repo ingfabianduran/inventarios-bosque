@@ -1,20 +1,29 @@
 <template>
   <div>
-    <v-row>
+    <v-row
+      align="center"
+      justify="center">
       <v-col>
         <Form :titulo="asignacion.titulo" :asignacion="asignacion.data" :url="asignacion.url" :textBtn="asignacion.textBtn" @clearForm="clearForm" />
       </v-col>
     </v-row>
     <v-row>
       <v-col>
-        <Table title="Asignaciones" :headers="headers" :items="asignaciones" url="api/asignacion/asignaciones/" @getModel="getAsignacion" @updateModels="getAsignaciones" />
+        <Table
+          title="Asignaciones"
+          :headers="headers"
+          :items="asignaciones"
+          url="api/asignacion/asignaciones/"
+          :search="search"
+          @getModel="getAsignacion"
+          @updateModels="$fetch" />
       </v-col>
     </v-row>
     <Pagination :page="page" @getData="updateListAsignaciones" />
   </div>
 </template>
 <script>
-  import Form from '~/components/Asignaciones/FormAsignacion';
+  import Form from '~/components/Asignacion/Asignaciones/FormAsignacion';
   import Table from '~/components/Site/Table';
   import Pagination from '~/components/Site/Pagination';
 
@@ -44,6 +53,10 @@
           current: 1,
           last: 0,
           url: 'api/asignacion/asignaciones/i/10?page='
+        },
+        search: {
+          label: 'Serial del equipo',
+          url: 'api/asignacion/asignaciones/buscar/tipo/'
         }
       }
     },
@@ -52,19 +65,13 @@
       Table,
       Pagination
     },
-    async created() {
-      this.$store.commit('SET_LOADING', true);
-      await this.getAsignaciones();
-      setTimeout(() => {
-        this.$store.commit('SET_LOADING', false);
-      }, 1000);
+    async fetch() {
+      const { data } = await this.$axios.$get(`api/asignacion/asignaciones/i/10?page=${this.page.current}`);
+      this.asignaciones = data.data;
+      this.page.last = data.last_page;
+      this.page.url = 'api/asignacion/asignaciones/i/10?page=';
     },
     methods: {
-      async getAsignaciones() {
-        const { data } = await this.$axios.$get(`api/asignacion/asignaciones/i/10?page=${this.page.current}`);
-        this.asignaciones = data.data;
-        this.page.last = data.last_page;
-      },
       updateListAsignaciones(asignaciones) {
         this.asignaciones = asignaciones.data;
         this.page.current = asignaciones.current;
@@ -80,8 +87,14 @@
         this.asignacion.data = {};
         this.asignacion.url = 'api/asignacion/asignaciones';
         this.asignacion.textBtn = 'Registrar';
-        await this.getAsignaciones();
-      }
+        this.$fetch();
+      },
+      searchListAsignaciones(asignaciones) {
+        this.asignaciones = asignaciones.data.data;
+        this.page.current = 1;
+        this.page.last = asignaciones.data.last_page;
+        this.page.url = asignaciones.url;
+      },
     }
   }
 </script>

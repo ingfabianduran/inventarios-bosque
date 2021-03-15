@@ -5,37 +5,39 @@
       ref="formEspecialista">
       <v-form
         @submit.prevent="storeEspecialista">
-        <v-card-title>{{ this.titulo }}</v-card-title>
+        <v-card-title class="font-weight-bold">
+          {{ this.titulo }}
+        </v-card-title>
         <v-card-text>
           <v-row>
-            <v-col 
+            <v-col
               cols="12"
               md="6">
               <ValidationProvider
                 v-slot="{ errors }"
-                name="documento"
+                name="cedula"
                 rules="required|integer|min_value:10000000|max_value:9999999999">
                 <v-text-field
-                  v-model="form.documento"
-                  label="Documento"
-                  placeholder="Documento del Especialista"
+                  v-model="form.cedula"
+                  label="Cedula"
+                  placeholder="Cedula del Especialista"
                   outlined
                   color="#7BC142"
                   :error-messages="errors">
                 </v-text-field>
               </ValidationProvider>
             </v-col>
-            <v-col 
+            <v-col
               cols="12"
               md="6">
               <ValidationProvider
                 v-slot="{ errors }"
-                name="correo"
+                name="email"
                 rules="required|min:3|max:50">
                 <v-text-field
-                  v-model="form.correo"
-                  label="Correo"
-                  placeholder="Correo del Especialista"
+                  v-model="form.email"
+                  label="Email"
+                  placeholder="Email del Especialista"
                   suffix="@unbosque.edu.co"
                   outlined
                   color="#7BC142"
@@ -45,34 +47,34 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col 
+            <v-col
               cols="12"
               md="6">
               <ValidationProvider
                 v-slot="{ errors }"
-                name="nombres"
+                name="nombre"
                 rules="required|min:3|max:50">
                 <v-text-field
-                  v-model="form.nombres"
-                  label="Nombres"
-                  placeholder="Nombres del Especialista"
+                  v-model="form.nombre"
+                  label="Nombre"
+                  placeholder="Nombre del Especialista"
                   outlined
                   color="#7BC142"
                   :error-messages="errors">
                 </v-text-field>
               </ValidationProvider>
             </v-col>
-            <v-col 
+            <v-col
               cols="12"
               md="6">
               <ValidationProvider
                 v-slot="{ errors }"
-                name="apellidos"
+                name="apellido"
                 rules="required|min:3|max:50">
                 <v-text-field
-                  v-model="form.apellidos"
+                  v-model="form.apellido"
                   label="Apellidos"
-                  placeholder="Apellidos del Especialista"
+                  placeholder="Apellido del Especialista"
                   outlined
                   color="#7BC142"
                   :error-messages="errors">
@@ -81,13 +83,13 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col 
+            <v-col
               cols="12"
               md="4">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="password"
-                rules="required|confirmed:confirmar">
+                rules="required|confirmed:confirmar|min:3">
                 <v-text-field
                   v-model="form.password"
                   :append-icon=" showPassword ? 'mdi-eye' : 'mdi-eye-off' "
@@ -101,15 +103,15 @@
                 </v-text-field>
               </ValidationProvider>
             </v-col>
-            <v-col 
+            <v-col
               cols="12"
               md="4">
               <ValidationProvider
                 v-slot="{ errors }"
-                name="confirmar"
+                name="password_confirmation"
                 vid="confirmar">
                 <v-text-field
-                  v-model="form.confirmar"
+                  v-model="form.password_confirmation"
                   :append-icon=" showPassword ? 'mdi-eye' : 'mdi-eye-off' "
                   :type=" showPassword ? 'text' : 'password' "
                   @click:append=" showPassword = !showPassword "
@@ -121,25 +123,26 @@
                 </v-text-field>
               </ValidationProvider>
             </v-col>
-            <v-col 
+            <v-col
               cols="12"
               md="4">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="rol"
-                rules="required|oneOf:Coordinador,Soporte,Mesa">
+                rules="required|oneOf:COORDINADOR,SOPORTE,MESA">
                 <v-select
                   v-model="form.rol"
                   label="Rol"
                   outlined
                   :items="roles"
+                  color="#7BC142"
                   :error-messages="errors">
                 </v-select>
               </ValidationProvider>
             </v-col>
           </v-row>
         </v-card-text>
-        <v-card-actions 
+        <v-card-actions
           class="justify-end">
           <v-btn
             type="submit"
@@ -150,7 +153,8 @@
           <v-btn
             type="button"
             dark
-            color="#7BC142">
+            color="#7BC142"
+            @click="clearForm()">
             Cancelar
           </v-btn>
         </v-card-actions>
@@ -166,14 +170,14 @@
     data() {
       return {
         showPassword: false,
-        roles: ['Coordinador', 'Soporte', 'Mesa'],
+        roles: ['COORDINADOR', 'SOPORTE', 'MESA'],
         form: {
-          documento: '',
-          correo: '',
-          nombres: '',
-          apellidos: '',
+          cedula: '',
+          email: '',
+          nombre: '',
+          apellido: '',
           password: '',
-          confirmar: '',
+          password_confirmation: '',
           rol: ''
         },
         isLoading: false
@@ -224,22 +228,27 @@
         this.form.correo = '';
         this.form.nombres = '';
         this.form.apellidos = '';
-        this.form.password = ''; 
-        this.form.confirmar = '';
+        this.form.password = '';
+        this.form.password_confirmation = '';
         this.form.rol = '';
         this.$emit('clearForm');
       }
     },
     watch: {
       especialista() {
-        this.form.documento = this.especialista.documento;
-        this.form.correo = this.especialista.correo;
-        this.form.nombres = this.especialista.nombres;
-        this.form.apellidos = this.especialista.apellidos;
-        this.form.password = this.especialista.password; 
+        this.form.cedula = this.especialista.cedula;
+        this.form.email = this.especialista.email;
+        this.form.nombre = this.especialista.nombre;
+        this.form.apellido = this.especialista.apellido;
+        this.form.password = this.especialista.password;
         this.form.confirmar = this.especialista.password;
         this.form.rol = this.especialista.rol;
-      }
+      },
+      'form.cedula': function(value) {
+        if (value !== '') {
+          this.form.cedula = parseInt(this.form.cedula);
+        }
+      },
     }
   }
 </script>

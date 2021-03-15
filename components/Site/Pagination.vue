@@ -30,7 +30,7 @@
           };
           this.$emit('getData', pagination);
         } catch (error) {
-          
+
         }
       }
     }

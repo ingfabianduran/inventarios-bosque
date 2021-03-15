@@ -5,7 +5,10 @@
       ref="formEspacio">
       <v-form
         @submit.prevent="storeEspacio">
-        <v-card-title>{{ this.titulo }}</v-card-title>
+        <v-card-title
+          class="font-weight-bold">
+          {{ this.titulo }}
+        </v-card-title>
         <v-card-text>
           <v-row>
             <v-col

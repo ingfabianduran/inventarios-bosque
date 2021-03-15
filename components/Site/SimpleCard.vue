@@ -1,19 +1,18 @@
 <template>
   <v-card
-    elevation="3"
+    elevation="4"
     outlined>
     <v-card-title
       class="font-weight-bold">
-      {{ dependencia.nombre }}
+      {{ model.nombre }}
     </v-card-title>
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn
         color="#7BC142"
         dark
-        elevation="3"
         :loading="isLoadingVer"
-        @click="getDependencia(dependencia.id)">
+        @click="getModelo(model.id)">
         <v-icon left>
           mdi-pencil
         </v-icon>
@@ -22,9 +21,8 @@
       <v-btn
         color="#F27830"
         dark
-        elevation="3"
         :loading="isLoadingDelete"
-        @click="deleteDependencia(dependencia.id)">
+        @click="deleteModel(model.id)">
         <v-icon left>
           mdi-delete
         </v-icon>
@@ -44,21 +42,25 @@
       }
     },
     props: {
-      dependencia: {
+      model: {
         type: Object,
         required: true
-      }
+      },
+      url: {
+        type: String,
+        required: true
+      },
     },
     methods: {
-      async getDependencia(id) {
+      async getModelo(id) {
         try {
           this.isLoadingVer = true;
-          const { data } = await this.$axios.$get(`api/asignacion/dependencias/${id}`);
+          const { data } = await this.$axios.$get(`${this.url}${id}`);
           if (data !== null) {
             Alert.showToast('success', 'Por favor vizualice y/o actualicé la información');
-            this.$emit('getDependencia', data);
+            this.$emit('getModel', data);
           } else {
-            Alert.showToast('error', 'Dependencia no encontrada');
+            Alert.showToast('error', 'Elemento no encontrado');
           }
           setTimeout(() => {
             this.isLoadingVer = false;
@@ -67,16 +69,16 @@
           this.isLoadingVer = false;
         }
       },
-      deleteDependencia(id) {
-        Alert.showConfirm('Eliminar Dependencia', '¿Esta seguro de eliminar el registro?', 'question', async(confirmed) => {
+      deleteModel(id) {
+        Alert.showConfirm('Eliminar Registro', '¿Esta seguro de eliminar el registro?', 'question', async(confirmed) => {
           if (confirmed) {
             try {
               this.isLoadingDelete = true;
-              const { descripcion } = await this.$axios.$delete(`api/asignacion/dependencias/${id}`);
+              const { descripcion } = await this.$axios.$delete(`${this.url}${id}`);
               setTimeout(() => {
                 Alert.showToast('success', descripcion);
                 this.isLoadingDelete = false;
-                this.$emit('getDependencias');
+                this.$emit('getModels');
               },1000);
             } catch (error) {
               this.isLoadingDelete = false;

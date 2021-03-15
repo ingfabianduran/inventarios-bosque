@@ -13,7 +13,7 @@ export default {
         toast.addEventListener('mouseleave', Swal.resumeTimer)
       }
     });
-    
+
     Toast.fire({
       icon: icon,
       title: text
@@ -32,5 +32,5 @@ export default {
     }).then((confirmed) => {
       callback(confirmed && confirmed.value == true);
     });
-  }
+  },
 }
