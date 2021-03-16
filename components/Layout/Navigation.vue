@@ -67,19 +67,8 @@
           ] },
         ],
         inventario: [
-          { titulo: 'Equipos', icon: 'mdi-desktop-classic', link: '#' },
-          { titulo: 'Hardware', icon: 'mdi-harddisk', subtitulos: [
-            { titulo: 'Discos Duros', link: '#' },
-            { titulo: 'Memorias Ram', link: '#' },
-            { titulo: 'Procesadores', link: '#' },
-            { titulo: 'Pantallas', link: '#' },
-          ] },
-          { titulo: 'Software', icon: 'mdi-blender-software', subtitulos: [
-            { titulo: 'Sistemas Operativos', link: '#' },
-            { titulo: 'Programas', link: '#' },
-          ] },
-          { titulo: 'Redes', icon: 'mdi-ip-network', subtitulos: [
-            { titulo: 'Direcciones Mac', link: '#' },
+          { titulo: 'Inventarios', icon: 'mdi-desktop-classic', link: '#', subtitulos: [
+            { titulo: 'Equipos', link: '/inventarios/equipos' },
           ] },
         ]
       }
