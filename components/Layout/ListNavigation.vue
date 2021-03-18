@@ -6,10 +6,10 @@
       :key="i"
       rounded>
       <template v-if="link.subtitulos">
-        <v-list-group  
+        <v-list-group
           :prepend-icon="link.icon"
           no-action
-          color="#F27830">
+          color="#FAFAFA">
           <template v-slot:activator>
             <v-list-item-content>
               <v-list-item-title v-text="link.titulo"></v-list-item-title>
@@ -30,10 +30,10 @@
       <template v-else>
         <nuxt-link :to="link.link" class="link">
           <v-list-item
-            link> 
+            link>
               <v-list-item-icon>
                 <v-icon>{{ link.icon }}</v-icon>
-              </v-list-item-icon>  
+              </v-list-item-icon>
               <v-list-item-title v-text="link.titulo" class="text-link"></v-list-item-title>
           </v-list-item>
         </nuxt-link>

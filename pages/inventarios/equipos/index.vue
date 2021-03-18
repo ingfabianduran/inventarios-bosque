@@ -39,9 +39,7 @@
           { text: 'Usuario de Dominio', value: 'usuarioDominio', sortable: false },
           { text: 'Actions', value: 'actions', sortable: false }
         ],
-        equipos: [
-
-        ],
+        equipos: [],
         page: {
           current: 1,
           last: 0,

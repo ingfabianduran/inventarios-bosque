@@ -69,6 +69,7 @@
         inventario: [
           { titulo: 'Inventarios', icon: 'mdi-desktop-classic', link: '#', subtitulos: [
             { titulo: 'Equipos', link: '/inventarios/equipos' },
+            { titulo: 'Modelos', link: '/inventarios/modelos' },
           ] },
         ]
       }

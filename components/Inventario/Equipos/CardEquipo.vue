@@ -35,15 +35,21 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
+      <v-btn
+        dark
+        color="#F27830"
+        class="mr-1">
+        Agregar Equipo
+      </v-btn>
       <v-menu
         offset-y>
         <template v-slot:activator="{ attrs, on }">
           <v-btn
             dark
-            color="#F27830"
+            color="#7BC142"
             v-bind="attrs"
             v-on="on">
-            Ver mas información
+            Mas Información
           </v-btn>
         </template>
         <v-list>
@@ -63,9 +69,11 @@
     data() {
       return {
         menuOpciones: [
-          { text: 'Monitor' },
-          { text: 'Software' },
           { text: 'Mantenimientos' },
+          { text: 'Monitores' },
+          { text: 'Observaciones' },
+          { text: 'Perifericos' },
+          { text: 'Software' },
         ],
         dataEquipo: [
           { titulo: 'Hardware', col: 3, data: [
