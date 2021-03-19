@@ -2,7 +2,7 @@
   <div>
     <v-row>
       <v-col>
-        <Card />
+        <Card :equipo="equipo" />
       </v-col>
     </v-row>
     <v-row>
@@ -12,10 +12,11 @@
           :headers="headers"
           :items="equipos"
           url="api/inventario/equipos/"
-          :search="search" />
+          :search="search"
+          @getModel="getEquipo" />
       </v-col>
     </v-row>
-    <Pagination :page="page" />
+    <Pagination :page="page" @getData="updateListEquipos" />
   </div>
 </template>
 <script>
@@ -32,11 +33,10 @@
     data() {
       return {
         headers: [
-          { text: 'Id', value: 'id', aling: ' d-none' },
-          { text: 'Serie', value: 'serie', sortable: false },
+          { text: 'Id', value: 'id', align: ' d-none' },
           { text: 'Tipo de Equipo', value: 'tipo', sortable: false },
-          { text: 'Nombre de Red', value: 'nombreRed', sortable: false },
-          { text: 'Usuario de Dominio', value: 'usuarioDominio', sortable: false },
+          { text: 'Serie', value: 'serie', sortable: false },
+          { text: 'Usuario de Dominio', value: 'caracteristica.usuario_dominio', sortable: false },
           { text: 'Actions', value: 'actions', sortable: false }
         ],
         equipos: [],
@@ -49,12 +49,28 @@
           label: 'Inventario, serial o numero interno',
           url: ''
         },
+        equipo: {}
       }
     },
     components: {
       Card,
       Table,
       Pagination
+    },
+    async fetch() {
+      const { data } = await this.$axios.$get(`api/inventario/equipos/i/10?page=${this.page.current}`);
+      this.equipos = data.data;
+      this.page.last = data.last_page;
+      this.url = 'api/inventario/equipos/i/10?page=';
+    },
+    methods: {
+      updateListEquipos(equipos) {
+        this.equipos = equipos.data;
+        this.page.current = equipos.current;
+      },
+      getEquipo(equipo) {
+        this.equipo = equipo;
+      }
     }
   }
 </script>

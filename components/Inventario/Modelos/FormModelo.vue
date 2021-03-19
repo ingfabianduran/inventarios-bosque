@@ -1,14 +1,8 @@
 <template>
-  <v-card
-    outlined
-    elevation="4">
+  <v-card>
     <ValidationObserver
       ref="formModelo">
       <v-form>
-        <v-card-title
-          class="font-weight-bold">
-          Nuevo Modelo
-        </v-card-title>
         <v-card-text>
           <v-row>
             <v-col
@@ -62,8 +56,9 @@
           </v-row>
           <v-row>
             <v-col
+              v-if="marcas"
               cols="12"
-              md="6">
+              :md="(procesadores && marcas) ? 6 : 12">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="marca"
@@ -80,8 +75,9 @@
               </ValidationProvider>
             </v-col>
             <v-col
+              v-if="procesadores"
               cols="12"
-              md="6">
+              :md="(procesadores && marcas) ? 6 : 12">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="procesador"
@@ -105,12 +101,13 @@
             type="submit"
             dark
             color="#F27830">
-            Registrar
+            {{ textBtn }}
           </v-btn>
           <v-btn
             type="button"
             dark
-            color="#7BC142">
+            color="#7BC142"
+            @click="clearForm()">
             Cancelar
           </v-btn>
         </v-card-actions>
@@ -130,6 +127,43 @@
           procesador_id: '',
         },
         tipos: ['All in One', 'Desktop', 'Portatil', 'Portatil Mini', 'Tablet', 'Tiny,WorkStation']
+      }
+    },
+    props: {
+      marcas: {
+        type: Boolean,
+        default: false,
+      },
+      procesadores: {
+        type: Boolean,
+        default: false
+      },
+      textBtn: {
+        type: String,
+        default: 'Finalizar'
+      }
+    },
+    methods: {
+      async storeModelo() {
+        const validate = await this.$refs.formModelo.validate();
+        if (validate) {
+          this.$emit('getModelo', this.form);
+          this.$refs.formProcesador.reset();
+          this.form.descripcion = '';
+          this.form.tipo = '';
+          this.form.modulos_memoria = '';
+          this.form.marca_id = '';
+          this.form.procesador_id = '';
+        }
+      },
+      clearForm() {
+        this.$refs.formModelo.reset();
+        this.form.descripcion = '';
+        this.form.tipo = '';
+        this.form.modulos_memoria = '';
+        this.form.marca_id = '';
+        this.form.procesador_id = '';
+        this.$emit('clearForm');
       }
     }
   }

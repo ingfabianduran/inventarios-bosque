@@ -1,14 +1,9 @@
 <template>
-  <v-card
-    outlined
-    elevation="4">
+  <v-card>
     <ValidationObserver
       ref="formMarca">
-      <v-form>
-        <v-card-title
-          class="font-weight-bold">
-          Nueva Marca
-        </v-card-title>
+      <v-form
+        @submit.prevent="storeMarca">
         <v-card-text>
           <v-row>
             <v-col
@@ -19,6 +14,7 @@
                 name="nombre"
                 rules="required|min:3|max:60">
                 <v-text-field
+                  v-model="form.nombre"
                   label="Nombre"
                   placeholder="Nombre de la marca"
                   outlined
@@ -40,7 +36,15 @@
           <v-btn
             type="button"
             dark
-            color="#7BC142">
+            color="#3C4024"
+            @click="omitir()">
+            Omitir
+          </v-btn>
+          <v-btn
+            type="button"
+            dark
+            color="#7BC142"
+            @click="clearForm()">
             Cancelar
           </v-btn>
         </v-card-actions>
@@ -54,7 +58,25 @@
       return {
         form: {
           nombre: ''
+        },
+      }
+    },
+    methods: {
+      async storeMarca() {
+        const validate = await this.$refs.formMarca.validate();
+        if (validate) {
+          this.$emit('getMarca', this.form);
+          this.$refs.formMarca.reset();
+          this.form.nombre = '';
         }
+      },
+      omitir() {
+        this.$emit('omitir');
+      },
+      clearForm() {
+        this.$refs.formMarca.reset();
+        this.form.nombre = '';
+        this.$emit('clearForm');
       }
     }
   }

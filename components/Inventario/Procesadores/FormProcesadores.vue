@@ -1,14 +1,9 @@
 <template>
-  <v-card
-    outlined
-    elevation="4">
+  <v-card>
     <ValidationObserver
       ref="formProcesador">
-      <v-form>
-        <v-card-title
-          class="font-weight-bold">
-          Nuevo Procesador
-        </v-card-title>
+      <v-form
+        @submit.prevent="storeProcesador">
         <v-card-text>
           <v-row>
             <v-col
@@ -58,7 +53,15 @@
           <v-btn
             type="button"
             dark
-            color="#7BC142">
+            color="#3C4024"
+            @click="omitir()">
+            Omitir
+          </v-btn>
+          <v-btn
+            type="button"
+            dark
+            color="#7BC142"
+            @click="clearForm()">
             Cancelar
           </v-btn>
         </v-card-actions>
@@ -73,8 +76,28 @@
         form: {
           nombre: '',
           frecuencia: ''
-        },
+        }
       }
     },
+    methods: {
+      async storeProcesador() {
+        const validate = await this.$refs.formProcesador.validate();
+        if (validate) {
+          this.$emit('getProcesador', this.form);
+          this.$refs.formProcesador.reset();
+          this.form.nombre = '';
+          this.form.frecuencia = '';
+        }
+      },
+      omitir() {
+        this.$emit('omitir');
+      },
+      clearForm() {
+        this.$refs.formProcesador.reset();
+        this.form.nombre = '';
+        this.form.frecuencia = '';
+        this.$emit('clearForm');
+      }
+    }
   }
 </script>

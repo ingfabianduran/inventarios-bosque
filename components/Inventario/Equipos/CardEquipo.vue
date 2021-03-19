@@ -4,9 +4,9 @@
     elevation="4">
     <v-card-title
       class="font-weight-bold">
-      Equipo PF02NDXJ
+      {{ `Equipo ${this.dataEquipo[2].data[2].value}` }}
     </v-card-title>
-    <v-card-subtitle>UBSCOB404-02</v-card-subtitle>
+    <v-card-subtitle>{{ this.dataEquipo[1].data[4].value }}</v-card-subtitle>
     <v-card-text>
       <v-row>
         <v-col
@@ -37,30 +37,14 @@
       <v-spacer></v-spacer>
       <v-btn
         dark
-        color="#F27830"
-        class="mr-1">
+        color="#F27830">
         Agregar Equipo
       </v-btn>
-      <v-menu
-        offset-y>
-        <template v-slot:activator="{ attrs, on }">
-          <v-btn
-            dark
-            color="#7BC142"
-            v-bind="attrs"
-            v-on="on">
-            Mas Información
-          </v-btn>
-        </template>
-        <v-list>
-          <v-list-item
-            v-for="(opcion, i) in menuOpciones"
-            :key="i"
-            link>
-            <v-list-item-title v-text="opcion.text"></v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+      <v-btn
+        dark
+        color="#7BC142">
+        Mas información
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -77,29 +61,57 @@
         ],
         dataEquipo: [
           { titulo: 'Hardware', col: 3, data: [
-            { titulo: 'Marca:', value: 'Lenovo' },
-            { titulo: 'Modelo:', value: 'Lenovo L460' },
-            { titulo: 'Procesador:', value: 'Intel Core i7-6500' },
-            { titulo: 'Memoria RAM:', value: '16 GB' },
-            { titulo: 'Disco Duro:', value: 'Lenovo' },
+            { titulo: 'Marca:', value: 'No consultado' },
+            { titulo: 'Modelo:', value: 'No consultado' },
+            { titulo: 'Procesador:', value: 'No consultado' },
+            { titulo: 'Memoria RAM:', value: 'No consultado' },
+            { titulo: 'Disco Duro:', value: 'No consultado' },
           ] },
           { titulo: 'Ubicación y Usuario', col: 3, data: [
-            { titulo: 'Dependencia - Área:', value: 'Aulas informaticas' },
-            { titulo: 'Ubicación:', value: 'A-404' },
-            { titulo: 'Nombre del responsable:', value: 'Fabian Duran' },
-            { titulo: 'Nombre de red:', value: 'UBSCOB404-02' },
-            { titulo: 'Usuario de dominio:', value: 'Aula Informatica' },
+            { titulo: 'Dependencia - Área:', value: 'No consultado' },
+            { titulo: 'Ubicación:', value: 'No consultado' },
+            { titulo: 'Nombre del responsable:', value: 'No consultado' },
+            { titulo: 'Nombre de red:', value: 'No consultado' },
+            { titulo: 'Usuario de dominio:', value: 'No consultado' },
           ] },
           { titulo: 'Placas y Seriales', col: 3, data: [
-            { titulo: 'Numero interno:', value: '274581' },
-            { titulo: 'Placa de inventario:', value: '300000029852' },
-            { titulo: 'Serial:', value: 'PF02NDXJ' },
+            { titulo: 'Numero interno:', value: 'No consultado' },
+            { titulo: 'Placa de inventario:', value: 'No consultado' },
+            { titulo: 'Serial:', value: 'No consultado' },
           ] },
           { titulo: 'Redes', col: 3, data: [
-            { titulo: 'Dirección MAC LAN:', value: 'C8-5B-76-9D-57-76' },
-            { titulo: 'Dirección MAC WIFI:', value: 'F0-D5-BF-44-E5-AD' },
+            { titulo: 'Dirección MAC LAN:', value: 'No consultado' },
+            { titulo: 'Dirección MAC WIFI:', value: 'No consultado' },
           ] }
         ]
+      }
+    },
+    props: {
+      equipo: {
+        type: Object,
+        required: true
+      }
+    },
+    watch: {
+      equipo() {
+        this.dataEquipo[0].data[0].value = this.equipo.modelo.marca.nombre;
+        this.dataEquipo[0].data[1].value = this.equipo.modelo.descripcion;
+        this.dataEquipo[0].data[2].value = this.equipo.modelo.procesador.nombre;
+        this.dataEquipo[0].data[3].value = this.equipo.memoria.capacidad;
+        this.dataEquipo[0].data[4].value = this.equipo.disco.capacidad;
+
+        this.dataEquipo[1].data[0].value = (this.equipo.asignaciones.length > 0 ? this.equipo.asignaciones[0].responsable.dependencia.nombre : 'No registrar');
+        this.dataEquipo[1].data[1].value = (this.equipo.asignaciones.length > 0 ? this.equipo.asignaciones[0].espacio.nombre : 'No registra');
+        this.dataEquipo[1].data[2].value = (this.equipo.asignaciones.length > 0 ? this.equipo.asignaciones[0].responsable.nombre : 'No registra');
+        this.dataEquipo[1].data[3].value = 'UBSCOB404-01';
+        this.dataEquipo[1].data[4].value = (Object.keys(this.equipo.caracteristica).length !== 0 ? this.equipo.caracteristica.usuario_dominio : 'No registra');
+
+        this.dataEquipo[2].data[0].value = '45877';
+        this.dataEquipo[2].data[1].value = (Object.keys(this.equipo.inventario).length !== 0 ? this.equipo.inventario.inventario : 'No registra');
+        this.dataEquipo[2].data[2].value = (Object.keys(this.equipo.inventario).length !== 0 ? this.equipo.serie : 'No registra');
+
+        this.dataEquipo[3].data[0].value = (this.equipo.macs[0].mac ? this.equipo.macs[0].mac : 'No registra');
+        this.dataEquipo[3].data[1].value = (this.equipo.macs[1].mac ? this.equipo.macs[1].mac : 'No registra');
       }
     }
   }
