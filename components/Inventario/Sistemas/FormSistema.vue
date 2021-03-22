@@ -4,9 +4,9 @@
     elevation="4">
     <Loader :isShow="isLoading" color="#212121" size="70" />
     <ValidationObserver
-      ref="formEdificio">
+      ref="formSistema">
       <v-form
-        @submit.prevent="storeEdificio">
+        @submit.prevent="storeSistema">
         <v-card-title
           class="font-weight-bold">
           {{ this.titulo }}
@@ -23,7 +23,7 @@
                 <v-text-field
                   v-model="form.nombre"
                   label="Nombre"
-                  placeholder="Nombre del Bloque"
+                  placeholder="Nombre del Sistema"
                   outlined
                   color="#7BC142"
                   :error-messages="errors">
@@ -70,7 +70,7 @@
         type: String,
         required: true
       },
-      edificio: {
+      sistema: {
         type: Object,
         required: false
       },
@@ -87,14 +87,14 @@
       Loader
     },
     methods: {
-      async storeEdificio() {
-        const validate = await this.$refs.formEdificio.validate();
+      async storeSistema() {
+        const validate = await this.$refs.formSistema.validate();
         if (validate) {
           Alert.showConfirm(this.titulo, `¿Esta seguro de realizar la petición?`, 'question', async(confirmed) => {
             if (confirmed) {
               try {
                 this.isLoading = true;
-                const { descripcion } = (this.titulo === 'Nuevo Edificio') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
+                const { descripcion } = (this.titulo === 'Nuevo Sistema') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
                 setTimeout(() => {
                   Alert.showToast('success', descripcion);
                   this.isLoading = false;
@@ -108,14 +108,14 @@
         }
       },
       clearForm() {
-        this.$refs.formEdificio.reset();
+        this.$refs.formSistema.reset();
         this.form.nombre = '';
         this.$emit('clearForm');
       }
     },
     watch: {
-      edificio() {
-        this.form.nombre = this.edificio.nombre;
+      sistema() {
+        this.form.nombre = this.sistema.nombre;
       }
     }
   }

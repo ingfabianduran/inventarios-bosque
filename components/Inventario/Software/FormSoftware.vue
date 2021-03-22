@@ -4,9 +4,9 @@
     elevation="4">
     <Loader :isShow="isLoading" color="#212121" size="70" />
     <ValidationObserver
-      ref="formEdificio">
+      ref="formSoftware">
       <v-form
-        @submit.prevent="storeEdificio">
+        @submit.prevent="storeSoftware">
         <v-card-title
           class="font-weight-bold">
           {{ this.titulo }}
@@ -15,7 +15,7 @@
           <v-row>
             <v-col
               cols="12"
-              md="12">
+              md="6">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="nombre"
@@ -23,11 +23,28 @@
                 <v-text-field
                   v-model="form.nombre"
                   label="Nombre"
-                  placeholder="Nombre del Bloque"
+                  placeholder="Nombre del software"
                   outlined
                   color="#7BC142"
                   :error-messages="errors">
                 </v-text-field>
+              </ValidationProvider>
+            </v-col>
+            <v-col
+              cols="12"
+              md="6">
+              <ValidationProvider
+                v-slot="{ errors }"
+                name="tipo"
+                rules="required|oneOf:Gratuito,Licenciado">
+                <v-select
+                  v-model="form.tipo"
+                  :items="tipos"
+                  label="Tipo"
+                  outlined
+                  color="#7BC142"
+                  :error-messages="errors">
+                </v-select>
               </ValidationProvider>
             </v-col>
           </v-row>
@@ -59,8 +76,10 @@
   export default {
     data() {
       return {
+        tipos: ['Gratuito', 'Licenciado'],
         form: {
-          nombre: ''
+          nombre: '',
+          tipo: ''
         },
         isLoading: false
       }
@@ -70,7 +89,7 @@
         type: String,
         required: true
       },
-      edificio: {
+      software: {
         type: Object,
         required: false
       },
@@ -87,14 +106,14 @@
       Loader
     },
     methods: {
-      async storeEdificio() {
-        const validate = await this.$refs.formEdificio.validate();
+      async storeSoftware() {
+        const validate = await this.$refs.formSoftware.validate();
         if (validate) {
           Alert.showConfirm(this.titulo, `¿Esta seguro de realizar la petición?`, 'question', async(confirmed) => {
             if (confirmed) {
               try {
                 this.isLoading = true;
-                const { descripcion } = (this.titulo === 'Nuevo Edificio') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
+                const { descripcion } = (this.titulo === 'Nuevo Software') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
                 setTimeout(() => {
                   Alert.showToast('success', descripcion);
                   this.isLoading = false;
@@ -108,14 +127,16 @@
         }
       },
       clearForm() {
-        this.$refs.formEdificio.reset();
+        this.$refs.formSoftware.reset();
         this.form.nombre = '';
+        this.form.tipo = '';
         this.$emit('clearForm');
       }
     },
     watch: {
-      edificio() {
-        this.form.nombre = this.edificio.nombre;
+      software() {
+        this.form.nombre = this.software.nombre;
+        this.form.tipo = this.software.tipo;
       }
     }
   }

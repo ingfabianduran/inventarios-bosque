@@ -71,6 +71,10 @@
             { titulo: 'Equipos', link: '/inventarios/equipos' },
             { titulo: 'Modelos', link: '/inventarios/modelos' },
           ] },
+          { titulo: 'Software', icon: 'mdi-blender-software', link: '#', subtitulos: [
+            { titulo: 'Sistemas Operativos', link: '/inventarios/sistemas' },
+            { titulo: 'Software', link: '/inventarios/softwares' },
+          ] }
         ]
       }
     },
