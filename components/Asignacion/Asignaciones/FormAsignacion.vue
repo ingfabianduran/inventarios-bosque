@@ -108,7 +108,9 @@
                 rules="required|integer">
                 <v-autocomplete
                   v-model="form.equipo_id"
+                  :search-input.sync="searchEquipo"
                   label="Equipo"
+                  :items="equipos"
                   outlined
                   color="#7BC142"
                   :error-messages="errors">
@@ -154,10 +156,11 @@
           estado: false,
           responsable_id: '',
           espacio_id: '',
-          equipo_id: null
+          equipo_id: ''
         },
         edificio: '',
-        searchResponsable: null,
+        searchResponsable: '',
+        searchEquipo: '',
         isLoading: false
       }
     },
@@ -243,6 +246,12 @@
           const { data } = await this.$axios.$get(`/api/asignacion/responsables/buscar/nombre/${value}`);
           this.responsables = data.data;
         }
+      },
+      async searchEquipo(value) {
+         if (value !== null && value.length > 0) {
+           const { data } = await this.$axios.$get(`api/inventario/equipos/buscar/serie/${value}`);
+           this.equipos = data.data;
+         }
       }
     }
   }

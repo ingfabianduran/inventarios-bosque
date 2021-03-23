@@ -2,7 +2,8 @@
   <div>
     <v-row>
       <v-col>
-        <Modelo />
+        <ModeloUpdate v-show="isViewModeloUpdate" titulo="Actualizar Modelo" :modelo="modelo" :marca="true" :procesador="true" @clearForm="isViewModeloUpdate = false" />
+        <Modelo v-show="!isViewModeloUpdate" @listModelos="$fetch" />
       </v-col>
     </v-row>
     <v-row>
@@ -13,6 +14,7 @@
           :items="modelos"
           url="api/inventario/modelos/"
           :search="search"
+          @getModel="getModelo"
           @searchModel="searchListModelos"
           @resetBusqueda="$fetch" />
       </v-col>
@@ -24,6 +26,7 @@
   import Modelo from '~/components/Inventario/Modelos/StepperModelo';
   import Table from '~/components/Site/Table';
   import Pagination from '~/components/Site/Pagination';
+  import ModeloUpdate from '~/components/Inventario/Modelos/FormModelo';
 
   export default {
     head() {
@@ -41,6 +44,8 @@
           { text: 'Actions', value: 'actions', sortable: false }
         ],
         modelos: [],
+        modelo: null,
+        isViewModeloUpdate: false,
         page: {
           current: 1,
           last: 0,
@@ -55,7 +60,8 @@
     components: {
       Modelo,
       Table,
-      Pagination
+      Pagination,
+      ModeloUpdate
     },
     async fetch() {
       const { data } = await this.$axios.$get(`api/inventario/modelos/i/10?page=${this.page.current}`);
@@ -67,6 +73,10 @@
       updateListModelos(modelos) {
         this.modelos = modelos.data;
         this.page.current = modelos.current;
+      },
+      getModelo(modelo) {
+        this.modelo = modelo;
+        this.isViewModeloUpdate = true;
       },
       searchListModelos(modelos) {
         this.modelos = modelos.data.data;

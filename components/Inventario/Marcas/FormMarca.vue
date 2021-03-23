@@ -31,7 +31,7 @@
             type="submit"
             dark
             color="#F27830">
-            Registrar
+            Siguiente
           </v-btn>
           <v-btn
             type="button"
@@ -66,18 +66,19 @@
         const validate = await this.$refs.formMarca.validate();
         if (validate) {
           this.$emit('getMarca', this.form);
-          this.$refs.formMarca.reset();
-          this.form.nombre = '';
         }
       },
       omitir() {
         this.$emit('omitir');
       },
       clearForm() {
+        this.resetData();
+        this.$emit('clearForm');
+      },
+      resetData() {
         this.$refs.formMarca.reset();
         this.form.nombre = '';
-        this.$emit('clearForm');
       }
-    }
+    },
   }
 </script>

@@ -1,8 +1,14 @@
 <template>
   <v-card>
+    <v-card-title 
+      v-if="titulo !== ''"
+      class="font-weight-bold">
+      {{ this.titulo }}
+    </v-card-title>
     <ValidationObserver
       ref="formModelo">
-      <v-form>
+      <v-form
+        @submit.prevent="storeModelo">
         <v-card-text>
           <v-row>
             <v-col
@@ -13,6 +19,7 @@
                 name="nombre"
                 rules="required|min:3|max:60">
                 <v-text-field
+                  v-model="form.descripcion"
                   label="Descripción"
                   placeholder="Descripción de la marca"
                   outlined
@@ -29,6 +36,7 @@
                 name="tipo"
                 rules="required|oneOf:All in One,Desktop,Portatil,Portatil Mini,Tablet,Tiny,WorkStation">
                 <v-select
+                  v-model="form.tipo"
                   label="Tipo"
                   outlined
                   :items="tipos"
@@ -45,6 +53,7 @@
                 name="modulos de memoria"
                 rules="integer">
                 <v-text-field
+                  v-model="form.modulos_memoria"
                   label="Modulos"
                   placeholder="Modulos de memoria"
                   outlined
@@ -56,9 +65,9 @@
           </v-row>
           <v-row>
             <v-col
-              v-if="marcas"
+              v-if="marca"
               cols="12"
-              :md="(procesadores && marcas) ? 6 : 12">
+              :md="(procesador && marca) ? 6 : 12">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="marca"
@@ -66,6 +75,7 @@
                 <v-autocomplete
                   v-model="form.marca_id"
                   label="Marca"
+                  :items="marcas"
                   item-text="nombre"
                   item-value="id"
                   outlined
@@ -75,9 +85,9 @@
               </ValidationProvider>
             </v-col>
             <v-col
-              v-if="procesadores"
+              v-if="procesador"
               cols="12"
-              :md="(procesadores && marcas) ? 6 : 12">
+              :md="(procesador && marca) ? 6 : 12">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="procesador"
@@ -85,6 +95,7 @@
                 <v-autocomplete
                   v-model="form.procesador_id"
                   label="Procesador"
+                  :items="procesadores"
                   item-text="nombre"
                   item-value="id"
                   outlined
@@ -126,44 +137,72 @@
           marca_id: '',
           procesador_id: '',
         },
-        tipos: ['All in One', 'Desktop', 'Portatil', 'Portatil Mini', 'Tablet', 'Tiny,WorkStation']
+        tipos: ['All in One', 'Desktop', 'Portatil', 'Portatil Mini', 'Tablet', 'Tiny,WorkStation'],
+        marcas: [],
+        procesadores: []
       }
     },
     props: {
-      marcas: {
+      titulo: {
+        type: String,
+        required: false
+      },
+      marca: {
         type: Boolean,
         default: false,
       },
-      procesadores: {
+      procesador: {
         type: Boolean,
         default: false
+      },
+      modelo: {
+        type: Object,
+        required: false
       },
       textBtn: {
         type: String,
         default: 'Finalizar'
-      }
+      },
+    },
+    async created() {
+      await this.getMarcas();
+      await this.getProcesadores();
     },
     methods: {
+      async getMarcas() {
+        const { data } = await this.$axios.$get('api/inventario/marcas/i/0');
+        this.marcas = data;
+      },
+      async getProcesadores() {
+        const { data } = await this.$axios.$get('api/inventario/procesadores/i/0');
+        this.procesadores = data;
+      },
       async storeModelo() {
         const validate = await this.$refs.formModelo.validate();
         if (validate) {
           this.$emit('getModelo', this.form);
-          this.$refs.formProcesador.reset();
-          this.form.descripcion = '';
-          this.form.tipo = '';
-          this.form.modulos_memoria = '';
-          this.form.marca_id = '';
-          this.form.procesador_id = '';
         }
       },
       clearForm() {
+        this.resetData();
+        this.$emit('clearForm');
+      },
+      resetData() {
         this.$refs.formModelo.reset();
         this.form.descripcion = '';
         this.form.tipo = '';
         this.form.modulos_memoria = '';
         this.form.marca_id = '';
         this.form.procesador_id = '';
-        this.$emit('clearForm');
+      }
+    },
+    watch: {
+      modelo() {
+        this.form.descripcion = this.modelo.descripcion;
+        this.form.tipo = this.modelo.tipo;
+        this.form.modulos_memoria = this.modelo.modulos_memoria;
+        this.form.marca_id = this.modelo.marca_id;
+        this.form.procesador_id = this.modelo.procesador_id;
       }
     }
   }

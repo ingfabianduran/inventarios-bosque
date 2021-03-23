@@ -48,7 +48,7 @@
             type="submit"
             dark
             color="#F27830">
-            Registrar
+            Siguiente
           </v-btn>
           <v-btn
             type="button"
@@ -84,19 +84,18 @@
         const validate = await this.$refs.formProcesador.validate();
         if (validate) {
           this.$emit('getProcesador', this.form);
-          this.$refs.formProcesador.reset();
-          this.form.nombre = '';
-          this.form.frecuencia = '';
         }
       },
       omitir() {
         this.$emit('omitir');
       },
       clearForm() {
+        this.resetData();
+        this.$emit('clearForm');
+      },
+      resetData() {
         this.$refs.formProcesador.reset();
         this.form.nombre = '';
-        this.form.frecuencia = '';
-        this.$emit('clearForm');
       }
     }
   }
