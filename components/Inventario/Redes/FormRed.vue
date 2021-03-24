@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <ValidationObserver
-      ref="formDisco">
+      ref="formRed">
       <v-form>
         <v-card-text>
           <v-row>
@@ -10,27 +10,9 @@
               md="6">
               <ValidationProvider
                 v-slot="{ errors }"
-                name="capacidad"
-                rules="required|min:3|max:20">
-                <v-text-field
-                  v-model="form.tipo"
-                  label="Capacidad"
-                  placeholder="Capacidad del disco"
-                  outlined
-                  color="#7BC142"
-                  :error-messages="errors">
-                </v-text-field>
-              </ValidationProvider>
-            </v-col>
-            <v-col
-              cols="12"
-              md="6">
-              <ValidationProvider
-                v-slot="{ errors }"
                 name="tipo"
-                rules="required|oneOf:HDD,SSD">
+                rules="required|oneOf:LAN,WAN">
                 <v-select
-                  v-model="form.tipo"
                   label="Tipo"
                   outlined
                   :items="tipos"
@@ -39,24 +21,34 @@
                 </v-select>
               </ValidationProvider>
             </v-col>
-          </v-row>
-          <v-row>
             <v-col
               cols="12"
-              md="12">
+              md="5">
               <ValidationProvider
                 v-slot="{ errors }"
-                name="descripcion"
-                rules="min:3|max:50">
-                <v-textarea
-                  v-model="form.descripcion"
+                name="mac"
+                rules="required|max:20">
+                <v-text-field
+                  label="Mac"
+                  placeholder="Mac del equipo"
                   outlined
-                  label="Descripción de la memoria"
-                  auto-grow
                   color="#7BC142"
                   :error-messages="errors">
-                </v-textarea>
+                </v-text-field>
               </ValidationProvider>
+            </v-col>
+            <v-col
+              cols="12"
+              md="1">
+              <v-btn
+                class="mx-2"
+                fab
+                dark
+                color="#F27830">
+                <v-icon dark>
+                  mdi-plus
+                </v-icon>
+              </v-btn>
             </v-col>
           </v-row>
         </v-card-text>
@@ -66,13 +58,7 @@
             type="submit"
             dark
             color="#F27830">
-            Registrar
-          </v-btn>
-          <v-btn
-            type="button"
-            dark
-            color="#3C4024">
-            Omitir
+            Siguiente
           </v-btn>
           <v-btn
             type="button"
@@ -89,12 +75,7 @@
   export default {
     data() {
       return {
-        form: {
-          capacidad: '',
-          tipo: '',
-          descripcion: ''
-        },
-        tipos: ['HDD', 'SSD']
+        tipos: ['LAN', 'WAN']
       }
     }
   }

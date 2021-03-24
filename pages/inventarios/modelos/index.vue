@@ -2,7 +2,16 @@
   <div>
     <v-row>
       <v-col>
-        <ModeloUpdate v-show="isViewModeloUpdate" titulo="Actualizar Modelo" :modelo="modelo" :marca="true" :procesador="true" @clearForm="isViewModeloUpdate = false" />
+        <ModeloUpdate
+          v-show="isViewModeloUpdate"
+          titulo="Actualizar Modelo"
+          :modelo="modelo"
+          :marca="true"
+          :procesador="true"
+          textBtn="Actualizar"
+          :isLoading="isLoading"
+          @getModelo="updateModelo"
+          @clearForm="isViewModeloUpdate = false" />
         <Modelo v-show="!isViewModeloUpdate" @listModelos="$fetch" />
       </v-col>
     </v-row>
@@ -23,6 +32,7 @@
   </div>
 </template>
 <script>
+  import Alert from '~/components/Site/SweetAlert';
   import Modelo from '~/components/Inventario/Modelos/StepperModelo';
   import Table from '~/components/Site/Table';
   import Pagination from '~/components/Site/Pagination';
@@ -54,7 +64,8 @@
         search: {
           label: 'Nombre del modelo',
           url: 'api/inventario/modelos/buscar/descripcion/'
-        }
+        },
+        isLoading: false
       }
     },
     components: {
@@ -84,6 +95,23 @@
         this.page.last = modelos.data.last_page;
         this.page.url = modelos.url;
       },
+      updateModelo(modelo) {
+        Alert.showConfirm('Actualizar Modelo', '¿Esta seguro de realizar la petición?', 'question', async(confirmed) => {
+          if (confirmed) {
+            try {
+              this.isLoading = true;
+              const { descripcion } = await this.$axios.$put(`api/inventario/modelos/${this.modelo.id}`, modelo);
+              setTimeout(() => {
+                Alert.showToast('success', descripcion);
+                this.isLoading = false;
+                this.isViewModeloUpdate = false;
+              }, 500);
+            } catch (error) {
+              this.isLoading = false;
+            }
+          }
+        });
+      }
     }
   }
 </script>

@@ -37,7 +37,8 @@
       <v-spacer></v-spacer>
       <v-btn
         dark
-        color="#F27830">
+        color="#F27830"
+        @click="addEquipo()">
         Agregar Equipo
       </v-btn>
       <v-btn
@@ -92,6 +93,11 @@
         required: true
       }
     },
+    methods: {
+      addEquipo() {
+        this.$emit('addEquipo');
+      }
+    },
     watch: {
       equipo() {
         this.dataEquipo[0].data[0].value = this.equipo.modelo.marca.nombre;
@@ -100,18 +106,41 @@
         this.dataEquipo[0].data[3].value = this.equipo.memoria.capacidad;
         this.dataEquipo[0].data[4].value = this.equipo.disco.capacidad;
 
-        this.dataEquipo[1].data[0].value = (this.equipo.asignaciones.length > 0 ? this.equipo.asignaciones[0].responsable.dependencia.nombre : 'No registrar');
-        this.dataEquipo[1].data[1].value = (this.equipo.asignaciones.length > 0 ? this.equipo.asignaciones[0].espacio.nombre : 'No registra');
-        this.dataEquipo[1].data[2].value = (this.equipo.asignaciones.length > 0 ? this.equipo.asignaciones[0].responsable.nombre : 'No registra');
-        this.dataEquipo[1].data[3].value = 'UBSCOB404-01';
-        this.dataEquipo[1].data[4].value = (Object.keys(this.equipo.caracteristica).length !== 0 ? this.equipo.caracteristica.usuario_dominio : 'No registra');
+        if (this.equipo.asignaciones.length > 0) {
+          this.dataEquipo[1].data[0].value = (this.equipo.asignaciones[0].responsable.dependencia.nombre ? this.equipo.asignaciones[0].responsable.dependencia.nombre : 'No registrar');
+          this.dataEquipo[1].data[1].value = (this.equipo.asignaciones[0].espacio.nombre ? this.equipo.asignaciones[0].espacio.nombre : 'No registra');
+          this.dataEquipo[1].data[2].value = (this.equipo.asignaciones[0].responsable.nombre ? this.equipo.asignaciones[0].responsable.nombre : 'No registra');
+        } else {
+          this.dataEquipo[1].data[0].value = 'No registra';
+          this.dataEquipo[1].data[1].value = 'No registra';
+          this.dataEquipo[1].data[2].value = 'No registra';
+        }
 
-        this.dataEquipo[2].data[0].value = '45877';
-        this.dataEquipo[2].data[1].value = (Object.keys(this.equipo.inventario).length !== 0 ? this.equipo.inventario.inventario : 'No registra');
-        this.dataEquipo[2].data[2].value = (Object.keys(this.equipo.inventario).length !== 0 ? this.equipo.serie : 'No registra');
+        if (Object.keys(this.equipo.caracteristica).length !== 0) {
+          this.dataEquipo[1].data[3].value = (this.equipo.caracteristica.nombre_red ? this.equipo.caracteristica.nombre_red : 'No registra');
+          this.dataEquipo[1].data[4].value = (this.equipo.caracteristica.usuario_dominio ? this.equipo.caracteristica.usuario_dominio : 'No registra');
+        } else {
+           this.dataEquipo[1].data[3].value = 'No registra';
+           this.dataEquipo[1].data[4].value = 'No registra';
+        }
 
-        this.dataEquipo[3].data[0].value = (this.equipo.macs[0].mac ? this.equipo.macs[0].mac : 'No registra');
-        this.dataEquipo[3].data[1].value = (this.equipo.macs[1].mac ? this.equipo.macs[1].mac : 'No registra');
+        if (Object.keys(this.equipo.inventario).length !== 0) {
+          this.dataEquipo[2].data[0].value = (this.equipo.inventario.n_interno ? this.equipo.inventario.n_interno : 'No registra');
+          this.dataEquipo[2].data[1].value = (this.equipo.inventario.inventario ? this.equipo.inventario.inventario : 'No registra');
+          this.dataEquipo[2].data[2].value = (this.equipo.serie ? this.equipo.serie : 'No registra');
+        } else {
+          this.dataEquipo[2].data[0].value = 'No registra';
+          this.dataEquipo[2].data[1].value = 'No registra';
+          this.dataEquipo[2].data[2].value = 'No registra';
+        }
+
+        if (this.equipo.macs.length > 0) {
+          this.dataEquipo[3].data[0].value = (this.equipo.macs[0].mac ? this.equipo.macs[0].mac : 'No registra');
+          this.dataEquipo[3].data[1].value = (this.equipo.macs[1].mac ? this.equipo.macs[1].mac : 'No registra');
+        } else {
+          this.dataEquipo[3].data[0].value = 'No registra';
+          this.dataEquipo[3].data[1].value = 'No registra';
+        }
       }
     }
   }

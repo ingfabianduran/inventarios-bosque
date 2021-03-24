@@ -2,7 +2,8 @@
   <div>
     <v-row>
       <v-col>
-        <Card :equipo="equipo" />
+        <Equipo v-if="isViewAddEquipo" />
+        <Card v-if="!isViewAddEquipo" :equipo="equipo" @addEquipo="isViewAddEquipo = true" />
       </v-col>
     </v-row>
     <v-row>
@@ -13,13 +14,16 @@
           :items="equipos"
           url="api/inventario/equipos/"
           :search="search"
-          @getModel="getEquipo" />
+          @getModel="getEquipo"
+          @updateModels="$fetch" />
       </v-col>
     </v-row>
     <Pagination :page="page" @getData="updateListEquipos" />
   </div>
 </template>
 <script>
+
+  import Equipo from '~/components/Inventario/Equipos/StepperEquipo';
   import Card from '~/components/Inventario/Equipos/CardEquipo';
   import Table from '~/components/Site/Table';
   import Pagination from '~/components/Site/Pagination';
@@ -49,13 +53,15 @@
           label: 'Inventario, serial o numero interno',
           url: ''
         },
-        equipo: {}
+        equipo: {},
+        isViewAddEquipo: false
       }
     },
     components: {
+      Equipo,
       Card,
       Table,
-      Pagination
+      Pagination,
     },
     async fetch() {
       const { data } = await this.$axios.$get(`api/inventario/equipos/i/10?page=${this.page.current}`);

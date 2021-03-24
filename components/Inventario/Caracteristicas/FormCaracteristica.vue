@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <ValidationObserver
-      ref="formDisco">
+      ref="formInventario">
       <v-form>
         <v-card-text>
           <v-row>
@@ -10,12 +10,11 @@
               md="6">
               <ValidationProvider
                 v-slot="{ errors }"
-                name="capacidad"
-                rules="required|min:3|max:20">
+                name="usuario_dominio"
+                rules="min:3|max:60">
                 <v-text-field
-                  v-model="form.tipo"
-                  label="Capacidad"
-                  placeholder="Capacidad del disco"
+                  label="Usuario de dominio"
+                  placeholder="Usuario de dominio del equipo"
                   outlined
                   color="#7BC142"
                   :error-messages="errors">
@@ -27,31 +26,45 @@
               md="6">
               <ValidationProvider
                 v-slot="{ errors }"
-                name="tipo"
-                rules="required|oneOf:HDD,SSD">
-                <v-select
-                  v-model="form.tipo"
-                  label="Tipo"
+                name="nombre_red"
+                rules="min:3|max:60">
+                <v-text-field
+                  label="Nombre de red"
+                  placeholder="Nombre de red del equipo"
                   outlined
-                  :items="tipos"
                   color="#7BC142"
                   :error-messages="errors">
-                </v-select>
+                </v-text-field>
               </ValidationProvider>
             </v-col>
           </v-row>
           <v-row>
             <v-col
               cols="12"
-              md="12">
+              md="6">
               <ValidationProvider
                 v-slot="{ errors }"
-                name="descripcion"
-                rules="min:3|max:50">
+                name="perifericos"
+                rules="min:3|max:1000">
                 <v-textarea
-                  v-model="form.descripcion"
                   outlined
-                  label="Descripción de la memoria"
+                  label="Perifericos"
+                  auto-grow
+                  color="#7BC142"
+                  :error-messages="errors">
+                </v-textarea>
+              </ValidationProvider>
+            </v-col>
+            <v-col
+              cols="12"
+              md="6">
+              <ValidationProvider
+                v-slot="{ errors }"
+                name="observaciones"
+                rules="min:3|max:1000">
+                <v-textarea
+                  outlined
+                  label="Observaciones"
                   auto-grow
                   color="#7BC142"
                   :error-messages="errors">
@@ -66,13 +79,7 @@
             type="submit"
             dark
             color="#F27830">
-            Registrar
-          </v-btn>
-          <v-btn
-            type="button"
-            dark
-            color="#3C4024">
-            Omitir
+            Siguiente
           </v-btn>
           <v-btn
             type="button"
@@ -85,17 +92,3 @@
     </ValidationObserver>
   </v-card>
 </template>
-<script>
-  export default {
-    data() {
-      return {
-        form: {
-          capacidad: '',
-          tipo: '',
-          descripcion: ''
-        },
-        tipos: ['HDD', 'SSD']
-      }
-    }
-  }
-</script>

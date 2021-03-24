@@ -28,7 +28,7 @@
               <ValidationProvider
                 v-slot="{ errors }"
                 name="capacidad"
-                rules="required">
+                rules="required|min:2|max:10">
                 <v-text-field
                   v-model="form.capacidad"
                   label="Capacidad"
@@ -47,7 +47,7 @@
               <ValidationProvider
                 v-slot="{ errors }"
                 name="descripcion"
-                rules="required|max:45">
+                rules="min:3|max:200">
                 <v-textarea
                   v-model="form.descripcion"
                   outlined
@@ -71,8 +71,13 @@
           <v-btn
             type="button"
             dark
-            color="#7BC142"
-            @click="clearForm()">
+            color="#3C4024">
+            Omitir
+          </v-btn>
+          <v-btn
+            type="button"
+            dark
+            color="#7BC142">
             Cancelar
           </v-btn>
         </v-card-actions>
