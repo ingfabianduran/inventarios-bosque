@@ -13,6 +13,7 @@
                 name="inventario"
                 rules="min:3|max:50">
                 <v-text-field
+                  v-model="form.inventario"
                   label="Inventario"
                   placeholder="Numero de inventario del equipo"
                   outlined
@@ -29,6 +30,7 @@
                 name="interno"
                 rules="min:3|max:50">
                 <v-text-field
+                  v-model="form.n_interno"
                   label="Numero Interno"
                   placeholder="Numero interno del equipo"
                   outlined
@@ -50,6 +52,12 @@
           <v-btn
             type="button"
             dark
+            color="#3C4024">
+            Omitir
+          </v-btn>
+          <v-btn
+            type="button"
+            dark
             color="#7BC142">
             Cancelar
           </v-btn>
@@ -58,3 +66,15 @@
     </ValidationObserver>
   </v-card>
 </template>
+<script>
+  export default {
+    data() {
+      return {
+        form: {
+          inventario: '',
+          n_interno: ''
+        }
+      }
+    }
+  }
+</script>

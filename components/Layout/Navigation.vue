@@ -75,7 +75,7 @@
             { titulo: 'Sistemas Operativos', link: '/inventarios/sistemas' },
             { titulo: 'Software', link: '/inventarios/softwares' },
           ] },
-          { titulo: 'Monitores', icon: 'mdi-monitor', link: '#' },
+          { titulo: 'Monitores', icon: 'mdi-monitor', link: '/inventarios/pantallas' },
         ]
       }
     },

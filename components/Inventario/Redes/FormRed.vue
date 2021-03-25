@@ -13,6 +13,7 @@
                 name="tipo"
                 rules="required|oneOf:LAN,WAN">
                 <v-select
+                  v-model="form.tipo"
                   label="Tipo"
                   outlined
                   :items="tipos"
@@ -29,6 +30,7 @@
                 name="mac"
                 rules="required|max:20">
                 <v-text-field
+                  v-model="form.mac"
                   label="Mac"
                   placeholder="Mac del equipo"
                   outlined
@@ -41,10 +43,12 @@
               cols="12"
               md="1">
               <v-btn
-                class="mx-2"
+                class="mx-2 text-center"
                 fab
                 dark
-                color="#F27830">
+                
+                outlined
+                color="#7BC142">
                 <v-icon dark>
                   mdi-plus
                 </v-icon>
@@ -63,6 +67,12 @@
           <v-btn
             type="button"
             dark
+            color="#3C4024">
+            Omitir
+          </v-btn>
+          <v-btn
+            type="button"
+            dark
             color="#7BC142">
             Cancelar
           </v-btn>
@@ -75,7 +85,12 @@
   export default {
     data() {
       return {
-        tipos: ['LAN', 'WAN']
+        form: {
+          tipo: '',
+          mac: ''
+        },
+        tipos: ['LAN', 'WAN'],
+        macs: []
       }
     }
   }

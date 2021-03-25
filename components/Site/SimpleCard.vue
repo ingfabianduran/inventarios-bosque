@@ -1,6 +1,5 @@
 <template>
   <v-card
-    elevation="4"
     outlined>
     <v-card-title
       class="font-weight-bold">

@@ -1,7 +1,6 @@
 <template>
   <v-card
-    outlined
-    elevation="4">
+    outlined>
     <Loader :isShow="isLoading" color="#212121" size="70" />
     <ValidationObserver
       ref="formEdificio">

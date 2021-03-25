@@ -1,7 +1,6 @@
 <template>
   <v-card
-    outlined
-    elevation="4">
+    outlined>
     <Loader :isShow="isLoading" color="#212121" size="90" />
     <ValidationObserver
       ref="formResponsable">
@@ -39,7 +38,7 @@
                 rules="required|min:3|max:60">
                 <v-text-field
                   v-model="form.cargo"
-                  label="cargo"
+                  label="Cargo"
                   placeholder="Cargo del responsable"
                   outlined
                   color="#7BC142"
@@ -164,7 +163,7 @@
     components: {
       Loader
     },
-    async created() {
+    async fetch() {
       await this.getDependencias();
     },
     methods: {

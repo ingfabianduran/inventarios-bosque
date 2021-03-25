@@ -13,8 +13,10 @@
                 name="compra"
                 rules="required">
                 <v-text-field
+                  v-model="form.fecha_compra"
                   label="Compra"
                   placeholder="Fecha de la compra del equipo"
+                  v-mask="'####-##-##'"
                   outlined
                   color="#7BC142"
                   :error-messages="errors">
@@ -29,8 +31,10 @@
                 name="garantia"
                 rules="required">
                 <v-text-field
+                  v-model="form.vence_garantia"
                   label="Garatia"
                   placeholder="Fecha de la garantia del equipo"
+                  v-mask="'####-##-##'"
                   outlined
                   color="#7BC142"
                   :error-messages="errors">
@@ -47,6 +51,7 @@
                 name="tipo"
                 rules="required|oneOf:Compra,Leasing">
                 <v-select
+                  v-model="form.tipo"
                   label="Tipo"
                   outlined
                   :items="tipos"
@@ -63,6 +68,7 @@
                 name="serie"
                 rules="required|min:3|max:100">
                 <v-text-field
+                  v-model="form.serie"
                   label="Serie"
                   placeholder="Serie del equipo"
                   outlined
@@ -79,6 +85,7 @@
                 name="valor"
                 rules="required|integer">
                 <v-text-field
+                  v-model="form.valor"
                   label="Valor"
                   placeholder="Valor del equipo"
                   outlined
@@ -97,9 +104,11 @@
                 name="modelo"
                 rules="required|integer">
                 <v-autocomplete
+                  v-model="form.modelo_id"
                   label="Modelo"
-                  item-text="nombre"
+                  item-text="descripcion"
                   item-value="id"
+                  :items="modelos"
                   outlined
                   color="#7BC142"
                   :error-messages="errors">
@@ -114,9 +123,11 @@
                 name="disco"
                 rules="required|integer">
                 <v-autocomplete
+                  v-model="form.disco_id"
                   label="Disco Duro"
-                  item-text="nombre"
+                  :item-text="item => item.tipo +' - '+ item.capacidad"
                   item-value="id"
+                  :items="discos"
                   outlined
                   color="#7BC142"
                   :error-messages="errors">
@@ -131,9 +142,11 @@
                 name="memoria"
                 rules="required|integer">
                 <v-autocomplete
+                  v-model="form.memoria_id"
                   label="Memoria Ram"
-                  item-text="nombre"
+                  :item-text="item => item.tipo +' - '+ item.capacidad"
                   item-value="id"
+                  :items="memorias"
                   outlined
                   color="#7BC142"
                   :error-messages="errors">
@@ -165,7 +178,39 @@
   export default {
     data() {
       return {
-        tipos: ['Compra', 'Leasing']
+        form: {
+          fecha_compra: '',
+          vence_garantia: '',
+          tipo: '',
+          serie: '',
+          valor: '',
+          modelo_id: '',
+          disco_id: '',
+          memoria_id: ''
+        },
+        tipos: ['Compra', 'Leasing'],
+        modelos: [],
+        discos: [],
+        memorias: [],
+      }
+    },
+    async fetch() {
+      await this.getModelos();
+      await this.getDiscos();
+      await this.getMemorias();
+    },
+    methods: {
+      async getModelos() {
+        const { data } = await this.$axios.$get('api/inventario/modelos/i/0');
+        this.modelos = data;
+      },
+      async getDiscos() {
+        const { data } = await this.$axios.$get('api/inventario/discos/i/0');
+        this.discos = data;
+      },
+      async getMemorias() {
+        const { data } = await this.$axios.$get('api/inventario/memorias/i/0');
+        this.memorias = data;
       }
     }
   }

@@ -8,7 +8,8 @@
           :key="`${i}-step`"
           :complete="paso > step.step"
           :step="step.step"
-          color="#7BC142">
+          color="#7BC142"
+          editable>
           {{ step.titulo }}
           <small v-if="step.opcional">Opcional</small>
         </v-stepper-step>
@@ -57,7 +58,6 @@
   export default {
     data() {
       return {
-        isView: false,
         paso: 1,
         pasos: [
           { titulo: 'Disco Duro', step: 1, opcional: true },

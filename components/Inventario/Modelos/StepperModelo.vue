@@ -106,9 +106,6 @@
               setTimeout(() => {
                 Alert.showToast('success', descripcion);
                 this.isLoading = false;
-                this.$refs.marca.resetData();
-                this.$refs.procesador.resetData();
-                this.$refs.modelo.resetData();
                 this.clearForm();
                 this.$emit('listModelos');
               }, 500);
@@ -125,6 +122,9 @@
         this.modelo.modelo = null;
         this.showMarcas = false;
         this.showProcesadores = false;
+        this.$refs.marca.resetData();
+        this.$refs.procesador.resetData();
+        this.$refs.modelo.resetData();
       }
     }
   }
