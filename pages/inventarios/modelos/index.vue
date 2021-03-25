@@ -105,6 +105,7 @@
                 Alert.showToast('success', descripcion);
                 this.isLoading = false;
                 this.isViewModeloUpdate = false;
+                this.$fetch();
               }, 500);
             } catch (error) {
               this.isLoading = false;

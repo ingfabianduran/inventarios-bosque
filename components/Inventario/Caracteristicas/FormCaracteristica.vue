@@ -13,6 +13,7 @@
                 name="usuario_dominio"
                 rules="min:3|max:60">
                 <v-text-field
+                  v-model="form.usuario_dominio"
                   label="Usuario de dominio"
                   placeholder="Usuario de dominio del equipo"
                   outlined
@@ -29,6 +30,7 @@
                 name="nombre_red"
                 rules="min:3|max:60">
                 <v-text-field
+                  v-model="form.nombre_red"
                   label="Nombre de red"
                   placeholder="Nombre de red del equipo"
                   outlined
@@ -47,6 +49,7 @@
                 name="perifericos"
                 rules="min:3|max:1000">
                 <v-textarea
+                  v-model="form.perifericos"
                   outlined
                   label="Perifericos"
                   auto-grow
@@ -63,6 +66,7 @@
                 name="observaciones"
                 rules="min:3|max:1000">
                 <v-textarea
+                  v-model="form.observaciones"
                   outlined
                   label="Observaciones"
                   auto-grow
@@ -84,6 +88,12 @@
           <v-btn
             type="button"
             dark
+            color="#3C4024">
+            Omitir
+          </v-btn>
+          <v-btn
+            type="button"
+            dark
             color="#7BC142">
             Cancelar
           </v-btn>
@@ -92,3 +102,17 @@
     </ValidationObserver>
   </v-card>
 </template>
+<script>
+  export default {
+    data() {
+      return {
+        form: {
+          usuario_dominio: '',
+          nombre_red: '',
+          perifericos: '',
+          observaciones: ''
+        }
+      }
+    }
+  }
+</script>

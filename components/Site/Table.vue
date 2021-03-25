@@ -1,7 +1,6 @@
 <template>
   <v-card
-    outlined
-    elevation="4">
+    outlined>
     <v-card-title
       class="font-weight-bold">
       {{ title }}

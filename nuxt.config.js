@@ -25,6 +25,7 @@ export default {
   plugins: [
     { src: '~/plugins/VeeValidate.js' },
     { src: '~/plugins/Axios.js' },
+    { src: '~/plugins/Mask.js' },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

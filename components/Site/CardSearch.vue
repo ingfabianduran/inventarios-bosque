@@ -1,7 +1,7 @@
 <template>
   <v-card
     outlined
-    elevation="4">
+    >
     <v-card-title
       class="font-weight-bold">
       Busqueda

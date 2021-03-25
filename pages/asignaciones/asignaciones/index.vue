@@ -55,7 +55,7 @@
           url: 'api/asignacion/asignaciones/i/10?page='
         },
         search: {
-          label: 'Serial del equipo',
+          label: 'Inventario, serial o numero interno',
           url: 'api/asignacion/asignaciones/buscar/tipo/'
         }
       }

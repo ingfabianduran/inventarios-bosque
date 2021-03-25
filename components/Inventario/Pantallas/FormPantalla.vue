@@ -7,22 +7,22 @@
       {{ this.titulo }}
     </v-card-title>
     <ValidationObserver
-      ref="formModelo">
+      ref="formPantalla">
       <v-form
-        @submit.prevent="storeModelo">
+        @submit.prevent="storeMarca">
         <v-card-text>
           <v-row>
             <v-col
               cols="12"
-              md="5">
+              :md="(!marca) ? 6 : 4">
               <ValidationProvider
                 v-slot="{ errors }"
-                name="nombre"
-                rules="required|min:3|max:60">
+                name="pulgadas"
+                rules="required|integer">
                 <v-text-field
-                  v-model="form.descripcion"
-                  label="Descripción"
-                  placeholder="Descripción de la marca"
+                  v-model="form.pulgadas"
+                  label="Pulgadas"
+                  placeholder="Pulgadas de la pantalla"
                   outlined
                   color="#7BC142"
                   :error-messages="errors">
@@ -31,11 +31,11 @@
             </v-col>
             <v-col
               cols="12"
-              md="5">
+              :md="(!marca) ? 6 : 4">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="tipo"
-                rules="required|oneOf:All in One,Desktop,Portatil,Portatil Mini,Tablet,Tiny,WorkStation">
+                rules="required|oneOf:Externa,Integrada">
                 <v-select
                   v-model="form.tipo"
                   label="Tipo"
@@ -48,27 +48,8 @@
             </v-col>
             <v-col
               cols="12"
-              md="2">
-              <ValidationProvider
-                v-slot="{ errors }"
-                name="modulos de memoria"
-                rules="integer">
-                <v-text-field
-                  v-model="form.modulos_memoria"
-                  label="Modulos"
-                  placeholder="Modulos de memoria"
-                  outlined
-                  color="#7BC142"
-                  :error-messages="errors">
-                </v-text-field>
-              </ValidationProvider>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col
-              v-if="marca"
-              cols="12"
-              :md="(procesador && marca) ? 6 : 12">
+              md="4"
+              v-if="marca">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="marca"
@@ -76,29 +57,9 @@
                 <v-autocomplete
                   v-model="form.marca_id"
                   label="Marca"
+                  item-text="nombre"
+                  item-value="id"
                   :items="marcas"
-                  item-text="nombre"
-                  item-value="id"
-                  outlined
-                  color="#7BC142"
-                  :error-messages="errors">
-                </v-autocomplete>
-              </ValidationProvider>
-            </v-col>
-            <v-col
-              v-if="procesador"
-              cols="12"
-              :md="(procesador && marca) ? 6 : 12">
-              <ValidationProvider
-                v-slot="{ errors }"
-                name="procesador"
-                rules="required|integer">
-                <v-autocomplete
-                  v-model="form.procesador_id"
-                  label="Procesador"
-                  :items="procesadores"
-                  item-text="nombre"
-                  item-value="id"
                   outlined
                   color="#7BC142"
                   :error-messages="errors">
@@ -134,15 +95,12 @@
     data() {
       return {
         form: {
-          descripcion: '',
+          pulgadas: '',
           tipo: '',
-          modulos_memoria: '',
-          marca_id: '',
-          procesador_id: '',
+          marca_id: ''
         },
-        tipos: ['All in One', 'Desktop', 'Portatil', 'Portatil Mini', 'Tablet', 'Tiny,WorkStation'],
-        marcas: [],
-        procesadores: []
+        tipos: ['Externa', 'Integrada'],
+        marcas: []
       }
     },
     props: {
@@ -154,11 +112,7 @@
         type: Boolean,
         default: false,
       },
-      procesador: {
-        type: Boolean,
-        default: false
-      },
-      modelo: {
+      pantalla: {
         type: Object,
         required: false
       },
@@ -176,21 +130,16 @@
     },
     async fetch() {
       await this.getMarcas();
-      await this.getProcesadores();
     },
     methods: {
       async getMarcas() {
         const { data } = await this.$axios.$get('api/inventario/marcas/i/0');
         this.marcas = data;
       },
-      async getProcesadores() {
-        const { data } = await this.$axios.$get('api/inventario/procesadores/i/0');
-        this.procesadores = data;
-      },
-      async storeModelo() {
-        const validate = await this.$refs.formModelo.validate();
+      async storeMarca() {
+        const validate = await this.$refs.formPantalla.validate();
         if (validate) {
-          this.$emit('getModelo', this.form);
+          this.$emit('getPantalla', this.form);
         }
       },
       clearForm() {
@@ -198,21 +147,17 @@
         this.$emit('clearForm');
       },
       resetData() {
-        this.$refs.formModelo.reset();
-        this.form.descripcion = '';
+        this.$refs.formPantalla.reset();
+        this.form.pulgadas = '';
         this.form.tipo = '';
-        this.form.modulos_memoria = '';
         this.form.marca_id = '';
-        this.form.procesador_id = '';
       }
     },
     watch: {
-      modelo() {
-        this.form.descripcion = this.modelo.descripcion;
-        this.form.tipo = this.modelo.tipo;
-        this.form.modulos_memoria = this.modelo.modulos_memoria;
-        this.form.marca_id = this.modelo.marca_id;
-        this.form.procesador_id = this.modelo.procesador_id;
+      pantalla() {
+        this.form.pulgadas = this.pantalla.pulgadas;
+        this.form.tipo = this.pantalla.tipo;
+        this.form.marca_id = this.pantalla.marca_id;
       }
     }
   }
