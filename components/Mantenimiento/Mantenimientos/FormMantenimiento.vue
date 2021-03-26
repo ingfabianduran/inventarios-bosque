@@ -77,10 +77,11 @@
                 rules="required|integer">
                 <v-autocomplete
                   v-model="form.equipo_id"
+                  :search-input.sync="searchEquipo"
                   label="Equipo"
-                  :items="equipos"
-                  item-text="nombre"
+                  item-text="serie"
                   item-value="id"
+                  :items="equipos"
                   outlined
                   color="#7BC142"
                   :error-messages="errors">
@@ -147,6 +148,7 @@
           equipo_id: ''
         },
         isLoading: false,
+        searchEquipo: ''
       }
     },
     props: {
@@ -221,6 +223,12 @@
         this.form.categoria_id = this.mantenimiento.categoria_id;
         this.form.equipo_id = this.mantenimiento.equipo_id;
       },
-    }
+      async searchEquipo(value) {
+        if (value !== null && value.length > 0) {
+          const { data } = await this.$axios.$get(`api/inventario/equipos/buscar/${value}`);
+          this.equipos = data.data;
+        }
+      }
+    },
   }
 </script>

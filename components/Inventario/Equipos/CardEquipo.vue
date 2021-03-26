@@ -1,55 +1,69 @@
 <template>
-  <v-card
-    outlined
-    elevation="4">
-    <v-card-title
-      class="font-weight-bold">
-      {{ `Equipo ${this.dataEquipo[2].data[2].value}` }}
-    </v-card-title>
-    <v-card-subtitle>{{ this.dataEquipo[1].data[4].value }}</v-card-subtitle>
-    <v-card-text>
-      <v-row>
-        <v-col
-          v-for="(equipo, i) in dataEquipo"
-          :key="i"
-          cols="12"
-          :md="equipo.col">
-          <v-card
-            tile>
-            <v-card-title
-              class="subheading font-weight-bold head-card-style">
-              {{ equipo.titulo }}
-            </v-card-title>
-            <v-list
-              dense>
-              <v-list-item
-                v-for="(data, j) in equipo.data"
-                :key="j">
-                <v-list-item-content>{{ data.titulo }}</v-list-item-content>
-                <v-list-item-content>{{ data.value }}</v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-card-text>
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn
-        dark
-        color="#F27830"
-        @click="addEquipo()">
-        Agregar Equipo
-      </v-btn>
-      <v-btn
-        dark
-        color="#7BC142">
-        Mas información
-      </v-btn>
-    </v-card-actions>
-  </v-card>
+  <div>
+    <Equipo
+      :dialog="dialog"
+      @closeModal="closeModal"
+      v-if="dialog.isView" />
+    <v-card
+      outlined
+      elevation="4">
+      <v-card-title
+        class="font-weight-bold">
+        {{ `Equipo ${this.dataEquipo[2].data[2].value}` }}
+      </v-card-title>
+      <v-card-subtitle>{{ this.dataEquipo[1].data[4].value }}</v-card-subtitle>
+      <v-card-text>
+        <v-row>
+          <v-col
+            v-for="(equipo, i) in dataEquipo"
+            :key="i"
+            cols="12"
+            :md="equipo.col">
+            <v-card
+              tile>
+              <v-card-title
+                class="subheading font-weight-bold head-card-style">
+                {{ equipo.titulo }}
+              </v-card-title>
+              <v-list
+                dense>
+                <v-list-item
+                  v-for="(data, j) in equipo.data"
+                  :key="j">
+                  <v-list-item-content>{{ data.titulo }}</v-list-item-content>
+                  <v-list-item-content>{{ data.value }}</v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn
+          dark
+          color="#F27830"
+          @click="addEquipo()">
+          Agregar Equipo
+        </v-btn>
+        <v-btn
+          dark
+          color="#7BC142"
+          @click="openModal()">
+          Mas información
+        </v-btn>
+        <v-btn
+          dark
+          color="#3C4024">
+          Hoja de Vida
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </div>
 </template>
 <script>
+  import Equipo from '~/components/Inventario/Equipos/TabsEquipo';
+
   export default {
     data() {
       return {
@@ -83,8 +97,12 @@
           { titulo: 'Redes', col: 3, data: [
             { titulo: 'Dirección MAC LAN:', value: 'No consultado' },
             { titulo: 'Dirección MAC WIFI:', value: 'No consultado' },
-          ] }
-        ]
+          ] },
+        ],
+        dialog: {
+          isView: false,
+          data: {}
+        }
       }
     },
     props: {
@@ -93,9 +111,19 @@
         required: true
       }
     },
+    components: {
+      Equipo
+    },
     methods: {
       addEquipo() {
         this.$emit('addEquipo');
+      },
+      openModal() {
+        this.dialog.data = this.equipo;
+        this.dialog.isView = true;
+      },
+      closeModal(value) {
+        this.dialog.isView = value;
       }
     },
     watch: {

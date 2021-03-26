@@ -109,6 +109,8 @@
                   v-model="form.equipo_id"
                   :search-input.sync="searchEquipo"
                   label="Equipo"
+                  item-text="serie"
+                  item-value="id"
                   :items="equipos"
                   outlined
                   color="#7BC142"
@@ -227,6 +229,7 @@
         this.edificio = '';
         this.searchResponsable = '';
         this.responsables = [];
+        this.searchEquipo = '';
         this.$emit('clearForm');
       }
     },
@@ -237,8 +240,9 @@
         this.form.responsable_id = this.asignacion.responsable_id;
         this.form.espacio_id = this.asignacion.espacio_id;
         this.form.equipo_id = this.asignacion.equipo_id;
-        this.edificio = (this.asignacion.hasOwnProperty('espacio')) ? this.asignacion.espacio.edificio_id : '';
-        this.searchResponsable = (this.asignacion.hasOwnProperty('responsable')) ? this.asignacion.responsable.nombre : '';
+        this.edificio = (this.asignacion.hasOwnProperty('espacio') ? this.asignacion.espacio.edificio_id : '');
+        this.searchResponsable = (this.asignacion.hasOwnProperty('responsable') ? this.asignacion.responsable.nombre : '');
+        this.searchEquipo = (this.asignacion.hasOwnProperty('equipo') ? this.asignacion.equipo.serie : '');
       },
       async searchResponsable(value) {
         if (value !== null && value.length > 0) {
@@ -248,7 +252,7 @@
       },
       async searchEquipo(value) {
          if (value !== null && value.length > 0) {
-           const { data } = await this.$axios.$get(`api/inventario/equipos/buscar/serie/${value}`);
+           const { data } = await this.$axios.$get(`api/inventario/equipos/buscar/${value}`);
            this.equipos = data.data;
          }
       }
