@@ -2,7 +2,8 @@
   <v-card
     outlined>
     <v-card-title
-      class="font-weight-bold">
+      class="font-weight-bold"
+      v-if="!isRead">
       {{ title }}
       <v-spacer></v-spacer>
       <v-text-field
@@ -20,7 +21,7 @@
       :items="items"
       hide-default-footer
       :loading="isLoading">
-      <template v-slot:[`item.actions`]="{ item }">
+      <template v-slot:[`item.actions`]="{ item }" v-if="!isRead">
         <v-btn
           icon
           @click="getModel(item.id)">
@@ -54,7 +55,7 @@
     props: {
       title: {
         type: String,
-        required: true
+        required: false
       },
       headers: {
         type: Array,
@@ -66,11 +67,15 @@
       },
       url: {
         type: String,
-        required: true
+        required: false
       },
       search: {
         type: Object,
-        required: true
+        required: false
+      },
+      isRead: {
+        type: Boolean,
+        default: false
       }
     },
     methods: {

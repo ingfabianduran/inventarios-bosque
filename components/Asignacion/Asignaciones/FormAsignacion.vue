@@ -188,16 +188,11 @@
     },
     async fetch() {
       await this.getEdificios();
-      await this.getEspacios();
     },
     methods: {
       async getEdificios() {
         const { data } = await this.$axios.$get('api/asignacion/edificios/i/0');
         this.edificios = data;
-      },
-      async getEspacios() {
-        const { data } = await this.$axios.$get('api/asignacion/espacios/i/0');
-        this.espacios = data;
       },
       async storeAsignacion() {
         const validate = await this.$refs.formAsignacion.validate();
@@ -241,7 +236,7 @@
         this.form.espacio_id = this.asignacion.espacio_id;
         this.form.equipo_id = this.asignacion.equipo_id;
         this.edificio = (this.asignacion.hasOwnProperty('espacio') ? this.asignacion.espacio.edificio_id : '');
-        this.searchResponsable = (this.asignacion.hasOwnProperty('responsable') ? this.asignacion.responsable.nombre : '');
+        this.searchResponsable = (this.asignacion.hasOwnPro('responsable') ? this.asignacion.responsable.nombre : '');
         this.searchEquipo = (this.asignacion.hasOwnProperty('equipo') ? this.asignacion.equipo.serie : '');
       },
       async searchResponsable(value) {
@@ -255,6 +250,10 @@
            const { data } = await this.$axios.$get(`api/inventario/equipos/buscar/${value}`);
            this.equipos = data.data;
          }
+      },
+      async edificio(value) {
+        const { data } = await this.$axios.$get(`api/asignacion/edificios/${value}`);
+        this.espacios = data.espacios;
       }
     }
   }

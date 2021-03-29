@@ -54,7 +54,8 @@
         </v-btn>
         <v-btn
           dark
-          color="#3C4024">
+          color="#3C4024"
+          @click="generarHojaVida()">
           Hoja de Vida
         </v-btn>
       </v-card-actions>
@@ -63,6 +64,7 @@
 </template>
 <script>
   import Equipo from '~/components/Inventario/Equipos/TabsEquipo';
+  import Pdf from '~/components/Site/HojaVida';
 
   export default {
     data() {
@@ -124,6 +126,9 @@
       },
       closeModal(value) {
         this.dialog.isView = value;
+      },
+      generarHojaVida() {
+        Pdf.getHojaVida();
       }
     },
     watch: {
