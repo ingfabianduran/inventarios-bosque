@@ -128,7 +128,7 @@
         this.dialog.isView = value;
       },
       generarHojaVida() {
-        Pdf.getHojaVida();
+        Pdf.getHojaVida(this.equipo);
       }
     },
     watch: {
