@@ -2,7 +2,7 @@
   <div>
     <v-row>
       <v-col>
-        <Equipo v-show="isViewAddEquipo" />
+        <Equipo v-show="isViewAddEquipo" :url="url" :equipo="equipo" />
         <Card v-show="!isViewAddEquipo" :equipo="equipo" @addEquipo="isViewAddEquipo = true" />
       </v-col>
     </v-row>
@@ -55,8 +55,9 @@
           label: 'Inventario, serial o numero interno',
           url: 'api/inventario/equipos/buscar/'
         },
+        isViewAddEquipo: true,
+        url: 'api/inventario/equipos',
         equipo: {},
-        isViewAddEquipo: true
       }
     },
     components: {

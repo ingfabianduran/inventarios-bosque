@@ -4,9 +4,7 @@
       :dialog="dialog"
       @closeModal="closeModal"
       v-if="dialog.isView" />
-    <v-card
-      outlined
-      elevation="4">
+    <v-card>
       <v-card-title
         class="font-weight-bold">
         {{ `Equipo ${this.dataEquipo[2].data[2].value}` }}
@@ -40,24 +38,32 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn
-          dark
-          color="#F27830"
-          @click="addEquipo()">
-          Agregar Equipo
-        </v-btn>
-        <v-btn
-          dark
-          color="#7BC142"
-          @click="openModal()">
-          Mas información
-        </v-btn>
-        <v-btn
-          dark
-          color="#3C4024"
-          @click="generarHojaVida()">
-          Hoja de Vida
-        </v-btn>
+        <v-menu
+          bottom
+          origin="center center"
+          transition="scale-transition">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="#F27830"
+              dark
+              v-bind="attrs"
+              v-on="on"
+              large>
+              Mas Opciones
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item
+              v-for="(opc, i) in opciones"
+              :key="i"
+              link
+              @click="eventMasOpciones(opc.opcion)">
+              <v-list-item-title
+                v-text="opc.text">
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </v-card-actions>
     </v-card>
   </div>
@@ -101,6 +107,12 @@
             { titulo: 'Dirección MAC WIFI:', value: 'No consultado' },
           ] },
         ],
+        opciones: [
+          { text: 'Agregar Equipo', opcion: 'agregarEquipo' },
+          { text: 'Hoja de Vida', opcion: 'hojaVida' },
+          { text: 'Mas Información', opcion: 'masInformacion' },
+          { text: 'Modificar Equipo', opcion: 'modificarEquipo' }
+        ],
         dialog: {
           isView: false,
           data: {}
@@ -117,18 +129,18 @@
       Equipo
     },
     methods: {
-      addEquipo() {
-        this.$emit('addEquipo');
-      },
-      openModal() {
-        this.dialog.data = this.equipo;
-        this.dialog.isView = true;
-      },
       closeModal(value) {
         this.dialog.isView = value;
       },
-      generarHojaVida() {
-        Pdf.getHojaVida(this.equipo);
+      eventMasOpciones(opcion) {
+        if (opcion === 'agregarEquipo') {
+          this.$emit('addEquipo');
+        } else if (opcion === 'hojaVida') {
+          Pdf.getHojaVida(this.equipo);
+        } else if (opcion === 'masInformacion') {
+          this.dialog.data = this.equipo;
+          this.dialog.isView = true;
+        }
       }
     },
     watch: {

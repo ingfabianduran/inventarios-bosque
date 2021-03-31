@@ -2,7 +2,8 @@
   <v-card>
     <ValidationObserver
       ref="formInventario">
-      <v-form>
+      <v-form
+        @submit.prevent="storeInventario">
         <v-card-text>
           <v-row>
             <v-col
@@ -52,13 +53,15 @@
           <v-btn
             type="button"
             dark
-            color="#3C4024">
+            color="#3C4024"
+            @click="omitir()">
             Omitir
           </v-btn>
           <v-btn
             type="button"
             dark
-            color="#7BC142">
+            color="#7BC142"
+            @click="clearForm()">
             Cancelar
           </v-btn>
         </v-card-actions>
@@ -74,6 +77,26 @@
           inventario: '',
           n_interno: ''
         }
+      }
+    },
+    methods: {
+      async storeInventario() {
+        const validate = await this.$refs.formInventario.validate();
+        if (validate) {
+          this.$emit('getInventario', this.form);
+        }
+      },
+      omitir() {
+        this.$emit('omitir');
+      },
+      clearForm() {
+        this.resetData();
+        this.$emit('clearForm');
+      },
+      resetData() {
+        this.$refs.formInventario.reset();
+        this.form.inventario = '';
+        this.form.n_interno = '';
       }
     }
   }

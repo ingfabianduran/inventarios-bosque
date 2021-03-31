@@ -13,6 +13,11 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export default {
   getHojaVida(equipo) {
+    try {
+
+    } catch (error) {
+
+    }
     let pdf = {
       content: [
         {
@@ -82,7 +87,7 @@ export default {
           table: {
             widths: ['*', '*', '*'],
             body: this.tablaDinamica(equipo.pantallas,
-              [{ text: 'Tipo', style: 'subtitulos', col: 'tipo', alignment: 'center' }, { text: 'Marca', style: 'subtitulos', col: 'marca', alignment: 'center' }, { text: 'Pulgadas', style: 'subtitulos', col: 'pulgadas', alignment: 'center' }],
+              [{ text: 'Tipo', style: 'subtitulos', col: 'tipo', alignment: 'center' }, { text: 'Marca', style: 'subtitulos', col: 'marca.nombre', alignment: 'center' }, { text: 'Pulgadas', style: 'subtitulos', col: 'pulgadas', alignment: 'center' }],
               [{ colSpan: 3, text: '5. MONITORES Y/O PANTALLAS', style: 'titulos' }, '', ''],
             )
           }
@@ -102,7 +107,7 @@ export default {
           table: {
             widths: ['*', '*', '*', '*'],
             body: this.tablaDinamica(equipo.mantenimientos,
-              [{ text: 'Fecha', style: 'subtitulos', col: 'created_at', alignment: 'center' }, { text: 'Tipo', style: 'subtitulos', col: 'tipo', alignment: 'center' }, { text: 'Categoria', style: 'subtitulos', col: 'categoria', alignment: 'center' }, { text: 'Tecnico', style: 'subtitulos', col: 'user', alignment: 'center' }],
+              [{ text: 'Fecha', style: 'subtitulos', col: 'created_at', alignment: 'center' }, { text: 'Tipo', style: 'subtitulos', col: 'tipo', alignment: 'center' }, { text: 'Categoria', style: 'subtitulos', col: 'categoria.nombre', alignment: 'center' }, { text: 'Tecnico', style: 'subtitulos', col: 'user.nombre', alignment: 'center' }],
               [{ colSpan: 4, text: '7. MANTENIMIENTOS', style: 'titulos' }, '', '', ''],
             )
           }
@@ -112,7 +117,7 @@ export default {
           table: {
             widths: ['*', '*', '*'],
             body: this.tablaDinamica(equipo.asignaciones,
-              [{ text: 'Fecha', style: 'subtitulos', col: 'created_at', alignment: 'center' }, { text: 'Ubicación', style: 'subtitulos', col: 'espacio', alignment: 'center' }, { text: 'Responsable', style: 'subtitulos', col: 'responsable', alignment: 'center' }],
+              [{ text: 'Fecha', style: 'subtitulos', col: 'created_at', alignment: 'center' }, { text: 'Ubicación', style: 'subtitulos', col: 'espacio.nombre', alignment: 'center' }, { text: 'Responsable', style: 'subtitulos', col: 'responsable.nombre', alignment: 'center' }],
               [{ colSpan: 3, text: '8. MOVIMIENTOS', style: 'titulos' }, '', ''],
             )
           }
@@ -139,25 +144,27 @@ export default {
     let body = [];
     body.push(tituloTabla);
     body.push(columnas);
-    data.forEach(function(row) {
+    if (data.length > 0) {
+      data.forEach(function(row) {
+        let dataRow = [];
+        columnas.forEach(function(columna) {
+          const cadenaCol = columna.col.split('.');
+          if (cadenaCol.length > 1) {
+            dataRow.push({ text: row[cadenaCol[0]][cadenaCol[1]], alignment: 'center' });
+          } else {
+            dataRow.push({ text: row[cadenaCol[0]], alignment: 'center' });
+          }
+        })
+        body.push(dataRow);
+      });
+    } else {
       let dataRow = [];
-      columnas.forEach(function(columna) {
-        if (columna.col === 'marca') {
-          dataRow.push({ text: row.marca.nombre, alignment: 'center' });
-        } else if (columna.col === 'categoria') {
-          dataRow.push({ text: row.categoria.nombre, alignment: 'center' });
-        } else if (columna.col === 'user') {
-          dataRow.push({ text: `${row.user.nombre} ${row.user.apellido}`, alignment: 'center' });
-        } else if (columna.col === 'espacio') {
-          dataRow.push({ text: row.espacio.nombre, alignment: 'center' });
-        } else if (columna.col === 'responsable') {
-          dataRow.push({ text: row.responsable.nombre, alignment: 'center' });
-        } else {
-          dataRow.push({ text: row[columna.col], alignment: 'center' });
-        }
-      })
+      for (let i = 0; i < columnas.length; i ++) {
+        dataRow.push([{ text: 'No registra', alignment: 'center' }]);
+      }
       body.push(dataRow);
-    });
+    }
+
     return body;
   },
 };

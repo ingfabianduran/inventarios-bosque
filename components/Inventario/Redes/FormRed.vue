@@ -46,7 +46,7 @@
                 class="mx-2 text-center"
                 fab
                 dark
-                
+
                 outlined
                 color="#7BC142">
                 <v-icon dark>
@@ -62,12 +62,13 @@
             type="submit"
             dark
             color="#F27830">
-            Siguiente
+            Registrar
           </v-btn>
           <v-btn
             type="button"
             dark
-            color="#3C4024">
+            color="#3C4024"
+            @click="omitir()">
             Omitir
           </v-btn>
           <v-btn
@@ -91,6 +92,21 @@
         },
         tipos: ['LAN', 'WAN'],
         macs: []
+      }
+    },
+    methods: {
+      omitir() {
+        this.$emit('omitir');
+      },
+      clearForm() {
+        this.resetData();
+        this.$emit('clearForm');
+      },
+      resetData() {
+        this.$refs.formRed.reset();
+        this.form.tipo = '';
+        this.form.mac = '';
+        this.macs = [];
       }
     }
   }

@@ -2,7 +2,8 @@
   <v-card>
     <ValidationObserver
       ref="formMemoria">
-      <v-form>
+      <v-form
+        @submit.prevent="storeMemoria">
         <v-card-text>
           <v-row>
             <v-col
@@ -71,13 +72,15 @@
           <v-btn
             type="button"
             dark
-            color="#3C4024">
+            color="#3C4024"
+            @click="omitir()">
             Omitir
           </v-btn>
           <v-btn
             type="button"
             dark
-            color="#7BC142">
+            color="#7BC142"
+            @click="clearForm()">
             Cancelar
           </v-btn>
         </v-card-actions>
@@ -94,6 +97,27 @@
           capacidad: '',
           descripcion: ''
         }
+      }
+    },
+    methods: {
+      async storeMemoria() {
+        const validate = await this.$refs.formMemoria.validate();
+        if (validate) {
+          this.$emit('getMemoria', this.form);
+        }
+      },
+      omitir() {
+        this.$emit('omitirMemoria');
+      },
+      clearForm() {
+        this.resetData();
+        this.$emit('clearForm');
+      },
+      resetData() {
+        this.$refs.formMemoria.reset();
+        this.form.tipo = '';
+        this.form.capacidad = '';
+        this.form.descripcion = '';
       }
     }
   }
