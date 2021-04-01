@@ -8,7 +8,8 @@
           :key="`${i}-step`"
           :complete="paso > step.step"
           :step="step.step"
-          color="#7BC142">
+          color="#7BC142"
+          editable>
           {{ step.titulo }}
           <small v-if="step.opcional">Opcional</small>
         </v-stepper-step>
@@ -41,7 +42,7 @@
       </v-stepper-content>
       <v-stepper-content
         step="6">
-        <Red ref="red" @omitir="omitir" @clearForm="cancelarRegistro" />
+        <Red ref="red" @getMacs="setMacs" @omitir="omitir" @clearForm="cancelarRegistro" />
       </v-stepper-content>
     </v-stepper-items>
   </v-stepper>
@@ -134,6 +135,9 @@
         this.form.caracteristica = caracteristica;
         this.paso += 1;
       },
+      setMacs(macs) {
+        this.form.mac = macs;
+      },
       omitirDisco() {
         this.showDiscos = true;
         this.paso += 1;
@@ -168,6 +172,8 @@
         this.form.pantallas = [];
         this.form.sistema_operativos = [];
         this.form.software = [];
+
+        this.paso = 1;
       }
     },
     watch: {
