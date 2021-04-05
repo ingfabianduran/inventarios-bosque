@@ -13,6 +13,9 @@ export default function ({ $axios }) {
     } else if (code === 404) {
       const errors = error.response.data;
       Errors.showErrors404(errors);
+    } else if (code === 400) {
+      const errors = error.response.data;
+      Errors.showErrors404(errors);
     }
   });
 }

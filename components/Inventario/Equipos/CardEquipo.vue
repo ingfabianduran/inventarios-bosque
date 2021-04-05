@@ -140,6 +140,8 @@
         } else if (opcion === 'masInformacion') {
           this.dialog.data = this.equipo;
           this.dialog.isView = true;
+        } else if (opcion === 'modificarEquipo') {
+          this.$emit('updateEquipo');
         }
       }
     },

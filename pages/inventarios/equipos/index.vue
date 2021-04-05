@@ -2,8 +2,8 @@
   <div>
     <v-row>
       <v-col>
-        <Equipo v-show="isViewAddEquipo" :url="url" :equipo="equipo" />
-        <Card v-show="!isViewAddEquipo" :equipo="equipo" @addEquipo="isViewAddEquipo = true" />
+        <Equipo v-show="isViewAddEquipo" :titulo="titulo" :url="url" :data="equipo" @clearForm="clearForm" />
+        <Card v-show="!isViewAddEquipo" :equipo="equipo" @addEquipo="isViewAddEquipo = true" @updateEquipo="updateEquipo" />
       </v-col>
     </v-row>
     <v-row>
@@ -56,6 +56,7 @@
           url: 'api/inventario/equipos/buscar/'
         },
         isViewAddEquipo: true,
+        titulo: 'Agregar Equipo',
         url: 'api/inventario/equipos',
         equipo: {},
       }
@@ -70,7 +71,7 @@
       const { data } = await this.$axios.$get(`api/inventario/equipos/i/10?page=${this.page.current}`);
       this.equipos = data.data;
       this.page.last = data.last_page;
-      this.url = 'api/inventario/equipos/i/10?page=';
+      this.page.url = 'api/inventario/equipos/i/10?page=';
     },
     methods: {
       updateListEquipos(equipos) {
@@ -87,6 +88,17 @@
         this.page.last = equipos.data.last_page;
         this.page.url = equipos.url;
       },
+      updateEquipo() {
+        this.isViewAddEquipo = true;
+        this.titulo = 'Modificar Equipo';
+        this.url = `api/inventario/equipos/${this.equipo.id}`;
+      },
+      clearForm() {
+        this.titulo = 'Nuevo Equipo';
+        this.url = 'api/inventario/equipos';
+        this.data = {};
+        this.$fetch();
+      }
     }
   }
 </script>

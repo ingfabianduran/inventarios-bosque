@@ -36,10 +36,10 @@
             <Texto :texto="(dialog.data.caracteristica.perifericos) ? dialog.data.caracteristica.perifericos : 'No registra'" />
           </v-tab-item>
           <v-tab-item>
-            <Carrito url="api/inventario/sistemaoperativos/i/0" :data="dialog.data.sistema_operativos" label="Sistema operativo" />
+            <Sistemas :data="dialog.data.sistema_operativos" />
           </v-tab-item>
           <v-tab-item>
-            <Carrito url="api/inventario/softwares/i/0" :data="dialog.data.software" label="Software" />
+            <Softwares :data="dialog.data.software" />
           </v-tab-item>
         </v-tabs-items>
       </v-card>
@@ -47,7 +47,8 @@
 </template>
 <script>
   import Texto from '~/components/Site/CardAreaText';
-  import Carrito from '~/components/Site/CarritoSoftware';
+  import Softwares from '~/components/Inventario/Software/CarritoSoftware';
+  import Sistemas from '~/components/Inventario/Sistemas/CarritoSistemas';
   import Pantallas from '~/components/Inventario/Pantallas/CarritoPantalla';
   import Mantenimientos from '~/components/Site/Table';
 
@@ -79,7 +80,8 @@
     },
     components: {
       Texto,
-      Carrito,
+      Softwares,
+      Sistemas,
       Pantallas,
       Mantenimientos
     },

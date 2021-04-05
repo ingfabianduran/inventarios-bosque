@@ -36,7 +36,7 @@
                   v-model="form.fecha_compra"
                   label="Compra"
                   placeholder="Fecha de la compra del equipo"
-                  v-mask="'####-##-##'"
+                  v-mask="'##-##-####'"
                   outlined
                   color="#7BC142"
                   :error-messages="errors">
@@ -54,7 +54,7 @@
                   v-model="form.vence_garantia"
                   label="Garatia"
                   placeholder="Fecha de la garantia del equipo"
-                  v-mask="'####-##-##'"
+                  v-mask="'##-##-####'"
                   outlined
                   color="#7BC142"
                   :error-messages="errors">
@@ -201,11 +201,15 @@
     props: {
       showDiscos: {
         type: Boolean,
-        required: true
+        default: true
       },
       showMemorias: {
         type: Boolean,
-        required: true
+        default: true
+      },
+      equipo: {
+        type: Object,
+        required: false
       }
     },
     async fetch() {
@@ -246,6 +250,18 @@
         this.form.modelo_id = '';
         this.form.disco_id = '';
         this.form.memoria_id = '';
+      }
+    },
+    watch: {
+      equipo() {
+        this.form.fecha_compra = this.equipo.fecha_compra;
+        this.form.vence_garantia = this.equipo.vence_garantia;
+        this.form.tipo = this.equipo.tipo;
+        this.form.serie = this.equipo.serie;
+        this.form.valor = this.equipo.valor;
+        this.form.modelo_id = this.equipo.modelo.id;
+        this.form.disco_id = this.equipo.disco.id;
+        this.form.memoria_id = this.equipo.memoria.id;
       }
     }
   }

@@ -5,21 +5,21 @@
         v-for="(item, i) in data"
         :key="i">
         <ValidationObserver
-          ref="formUpdatePantalla">
+          ref="formUpdateSoftware">
           <v-form>
             <v-row>
               <v-col
                 cols="12"
-                md="5">
+                md="10">
                 <ValidationProvider
                   v-slot="{ errors }"
                   name="pantalla"
                   rules="required|integer">
                   <v-autocomplete
-                    v-model="item.pivot.pantalla_id"
-                    label="Pantalla"
+                    v-model="item.id"
+                    label="Nombre"
                     :items="items"
-                    :item-text="item => `${item.marca.nombre} - ${item.pulgadas}`"
+                    item-text="nombre"
                     item-value="id"
                     dense
                     outlined
@@ -30,26 +30,8 @@
               </v-col>
               <v-col
                 cols="12"
-                md="5"
+                md="2"
                 class="text-center">
-                <ValidationProvider
-                  v-slot="{ errors }"
-                  name="serial"
-                  rules="required|min:3|max:100">
-                  <v-text-field
-                    v-model="item.pivot.serial"
-                    label="Serial"
-                    placeholder="Serial de la pantalla"
-                    outlined
-                    dense
-                    color="#7BC142"
-                    :error-messages="errors">
-                  </v-text-field>
-                </ValidationProvider>
-              </v-col>
-              <v-col
-                cols="12"
-                md="2">
                 <v-btn
                   type="submit"
                   elevation="2"
@@ -79,45 +61,27 @@
         </ValidationObserver>
       </div>
       <ValidationObserver
-        ref="formAddPantalla">
+        ref="formAddSoftware">
         <v-form>
           <v-row>
             <v-col
               cols="12"
-              md="5">
+              md="10">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="pantalla"
                 rules="required|integer">
                 <v-autocomplete
-                  v-model="form.pantalla_id"
-                  label="Pantalla"
+                  v-model="form.software_id"
+                  label="Nombre"
                   :items="items"
-                  :item-text="item => `${item.marca.nombre} - ${item.pulgadas}`"
+                  item-text="nombre"
                   item-value="id"
                   dense
                   outlined
                   color="#7BC142"
                   :error-messages="errors">
                 </v-autocomplete>
-              </ValidationProvider>
-            </v-col>
-            <v-col
-              cols="12"
-              md="5">
-              <ValidationProvider
-                v-slot="{ errors }"
-                name="serial"
-                rules="required|min:3|max:100">
-                <v-text-field
-                  v-model="form.serial"
-                  label="Serial"
-                  placeholder="Serial de la pantalla"
-                  outlined
-                  dense
-                  color="#7BC142"
-                  :error-messages="errors">
-                </v-text-field>
               </ValidationProvider>
             </v-col>
             <v-col
@@ -148,8 +112,7 @@
     data() {
       return {
         form: {
-          serial: '',
-          pantalla_id: ''
+          software_id: ''
         },
         items: []
       }
@@ -158,20 +121,20 @@
       data: {
         type: Array,
         required: true
-      }
+      },
     },
     async fetch() {
-      const { data } = await this.$axios.$get('api/inventario/pantallas/i/0');
+      const { data } = await this.$axios.$get('api/inventario/softwares/i/0');
       this.items = data;
     },
     methods: {
-      async addPantalla() {
+      async addSoftware() {
 
       },
-      async updatePantalla() {
+      async updateSoftware() {
 
       },
-      async deletePantalla() {
+      async deleteSoftware() {
 
       }
     }

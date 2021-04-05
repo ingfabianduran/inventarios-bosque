@@ -5,21 +5,21 @@
         v-for="(item, i) in data"
         :key="i">
         <ValidationObserver
-          ref="formUpdatePantalla">
+          ref="formUpdateSistema">
           <v-form>
             <v-row>
               <v-col
                 cols="12"
-                md="5">
+                md="6">
                 <ValidationProvider
                   v-slot="{ errors }"
-                  name="pantalla"
+                  name="sistema"
                   rules="required|integer">
                   <v-autocomplete
-                    v-model="item.pivot.pantalla_id"
-                    label="Pantalla"
+                    v-model="item.id"
+                    label="Nombre"
                     :items="items"
-                    :item-text="item => `${item.marca.nombre} - ${item.pulgadas}`"
+                    item-text="nombre"
                     item-value="id"
                     dense
                     outlined
@@ -30,16 +30,15 @@
               </v-col>
               <v-col
                 cols="12"
-                md="5"
-                class="text-center">
+                md="4">
                 <ValidationProvider
                   v-slot="{ errors }"
-                  name="serial"
-                  rules="required|min:3|max:100">
+                  name="compilacion"
+                  rules="required|min:2|max:10">
                   <v-text-field
-                    v-model="item.pivot.serial"
-                    label="Serial"
-                    placeholder="Serial de la pantalla"
+                    v-model="item.compilacion"
+                    label="Compilacion"
+                    placeholder="Compilación del Sistema"
                     outlined
                     dense
                     color="#7BC142"
@@ -49,7 +48,8 @@
               </v-col>
               <v-col
                 cols="12"
-                md="2">
+                md="2"
+                class="text-center">
                 <v-btn
                   type="submit"
                   elevation="2"
@@ -79,21 +79,21 @@
         </ValidationObserver>
       </div>
       <ValidationObserver
-        ref="formAddPantalla">
+        ref="formAddSistema">
         <v-form>
           <v-row>
             <v-col
               cols="12"
-              md="5">
+              md="6">
               <ValidationProvider
                 v-slot="{ errors }"
-                name="pantalla"
+                name="sistema"
                 rules="required|integer">
                 <v-autocomplete
-                  v-model="form.pantalla_id"
-                  label="Pantalla"
+                  v-model="form.sistema_operativo_id"
+                  label="Nombre"
                   :items="items"
-                  :item-text="item => `${item.marca.nombre} - ${item.pulgadas}`"
+                  item-text="nombre"
                   item-value="id"
                   dense
                   outlined
@@ -104,15 +104,15 @@
             </v-col>
             <v-col
               cols="12"
-              md="5">
+              md="4">
               <ValidationProvider
                 v-slot="{ errors }"
-                name="serial"
-                rules="required|min:3|max:100">
+                name="compilacion"
+                rules="required|min:2|max:10">
                 <v-text-field
-                  v-model="form.serial"
-                  label="Serial"
-                  placeholder="Serial de la pantalla"
+                  v-model="form.compilacion"
+                  label="Compilacion"
+                  placeholder="Compilación del Sistema"
                   outlined
                   dense
                   color="#7BC142"
@@ -148,8 +148,8 @@
     data() {
       return {
         form: {
-          serial: '',
-          pantalla_id: ''
+          compilacion: '',
+          sistema_operativo_id: ''
         },
         items: []
       }
@@ -158,20 +158,20 @@
       data: {
         type: Array,
         required: true
-      }
+      },
     },
     async fetch() {
-      const { data } = await this.$axios.$get('api/inventario/pantallas/i/0');
+      const { data } = await this.$axios.$get('api/inventario/sistemaoperativos/i/0');
       this.items = data;
     },
     methods: {
-      async addPantalla() {
+      async addSistema() {
 
       },
-      async updatePantalla() {
+      async updateSistema() {
 
       },
-      async deletePantalla() {
+      async deleteSistema() {
 
       }
     }

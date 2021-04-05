@@ -117,6 +117,12 @@
         }
       }
     },
+    props: {
+      caracteristica: {
+        type: Object,
+        required: false
+      }
+    },
     methods: {
       async storeCaracteristica() {
         const validate = await this.$refs.formCaracteristica.validate();
@@ -137,6 +143,14 @@
         this.form.nombre_red = '';
         this.form.perifericos = '';
         this.form.observaciones = '';
+      }
+    },
+    watch: {
+      caracteristica() {
+        this.form.usuario_dominio = this.caracteristica.usuario_dominio;
+        this.form.nombre_red = this.caracteristica.nombre_red;
+        this.form.perifericos = this.caracteristica.perifericos;
+        this.form.observaciones = this.caracteristica.observaciones;
       }
     }
   }

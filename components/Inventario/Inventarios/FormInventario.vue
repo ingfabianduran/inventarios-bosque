@@ -79,6 +79,12 @@
         }
       }
     },
+    props: {
+      inventario: {
+        type: Object,
+        required: false
+      }
+    },
     methods: {
       async storeInventario() {
         const validate = await this.$refs.formInventario.validate();
@@ -97,6 +103,12 @@
         this.$refs.formInventario.reset();
         this.form.inventario = '';
         this.form.n_interno = '';
+      }
+    },
+    watch: {
+      inventario() {
+        this.form.inventario = this.inventario.inventario;
+        this.form.n_interno = this.inventario.n_interno;
       }
     }
   }

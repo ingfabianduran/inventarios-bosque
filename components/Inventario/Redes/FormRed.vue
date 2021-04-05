@@ -104,13 +104,6 @@
           <v-btn
             type="button"
             dark
-            color="#3C4024"
-            @click="omitir()">
-            Omitir
-          </v-btn>
-          <v-btn
-            type="button"
-            dark
             color="#7BC142"
             @click="clearForm()">
             Cancelar
@@ -130,6 +123,12 @@
         },
         tipos: ['LAN', 'WAN'],
         macs: []
+      }
+    },
+    props: {
+      redes: {
+        type: Array,
+        required: false
       }
     },
     methods: {
@@ -160,6 +159,11 @@
         this.form.tipo = '';
         this.form.mac = '';
         this.macs = [];
+      }
+    },
+    watch: {
+      redes() {
+        this.macs = this.redes;
       }
     }
   }

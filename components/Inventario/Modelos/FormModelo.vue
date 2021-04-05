@@ -1,11 +1,5 @@
 <template>
   <v-card>
-    <Loader :isShow="isLoading" color="#212121" size="80" />
-    <v-card-title
-      v-if="titulo !== ''"
-      class="font-weight-bold">
-      {{ this.titulo }}
-    </v-card-title>
     <ValidationObserver
       ref="formModelo">
       <v-form
@@ -113,7 +107,7 @@
             type="submit"
             dark
             color="#F27830">
-            {{ this.textBtn }}
+            Finalizar
           </v-btn>
           <v-btn
             type="button"
@@ -128,8 +122,6 @@
   </v-card>
 </template>
 <script>
-  import Loader from '~/components/Site/Loader';
-
   export default {
     data() {
       return {
@@ -146,33 +138,18 @@
       }
     },
     props: {
-      titulo: {
-        type: String,
-        required: false
-      },
       marca: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       procesador: {
         type: Boolean,
-        default: false
+        default: true
       },
       modelo: {
         type: Object,
         required: false
       },
-      textBtn: {
-        type: String,
-        default: 'Finalizar'
-      },
-      isLoading: {
-        type: Boolean,
-        default: false
-      }
-    },
-    components: {
-      Loader
     },
     async fetch() {
       await this.getMarcas();

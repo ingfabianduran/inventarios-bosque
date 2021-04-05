@@ -8,8 +8,7 @@
           :key="`${i}-step`"
           :complete="paso > step.step"
           :step="step.step"
-          color="#7BC142"
-          editable>
+          color="#7BC142">
           {{ step.titulo }}
           <small v-if="step.opcional">Opcional</small>
         </v-stepper-step>
@@ -30,19 +29,20 @@
       </v-stepper-content>
       <v-stepper-content
         step="3">
-        <Equipo ref="equipo" :showDiscos="showDiscos" :showMemorias="showMemorias" @getEquipo="setEquipo" @clearForm="cancelarRegistro" />
+        <Equipo :equipo="data" ref="equipo" :showDiscos="showDiscos" :showMemorias="showMemorias" @getEquipo="setEquipo" @clearForm="cancelarRegistro" />
       </v-stepper-content>
       <v-stepper-content
         step="4">
-        <Inventario ref="inventario" @getInventario="setInventario" @omitir="omitir" @clearForm="cancelarRegistro" />
+        <Inventario :inventario="data.inventario" ref="inventario" @getInventario="setInventario" @omitir="omitir" @clearForm="cancelarRegistro" />
       </v-stepper-content>
       <v-stepper-content
         step="5">
-        <Caracteristica ref="caracteristica" @getCaracteristica="setCaracteristica" @omitir="omitir" @clearForm="cancelarRegistro" />
+        <Caracteristica :caracteristica="data.caracteristica" ref="caracteristica" @getCaracteristica="setCaracteristica" @omitir="omitir" @clearForm="cancelarRegistro" />
       </v-stepper-content>
       <v-stepper-content
         step="6">
-        <Red ref="red" @getMacs="setMacs" @omitir="omitir" @clearForm="cancelarRegistro" />
+        <Red :redes="data.macs" ref="red" @getMacs="setMacs" @clearForm="cancelarRegistro" />
+        <Loader :isShow="isLoading" color="#212121" size="80" />
       </v-stepper-content>
     </v-stepper-items>
   </v-stepper>
@@ -54,6 +54,8 @@
   import Inventario from '~/components/Inventario/Inventarios/FormInventario';
   import Caracteristica from '~/components/Inventario/Caracteristicas/FormCaracteristica';
   import Red from '~/components/Inventario/Redes/FormRed';
+  import Alert from '~/components/Site/SweetAlert';
+  import Loader from '~/components/Site/Loader';
 
   export default {
     data() {
@@ -79,22 +81,24 @@
           inventario: {},
           caracteristica: {},
           mac: [],
-          pantallas: [],
-          sistema_operativos: [],
-          software: []
         },
         disco: {},
         memoria: {},
-        showDiscos: false,
-        showMemorias: false
+        showDiscos: true,
+        showMemorias: true,
+        isLoading: false
       }
     },
     props: {
+      titulo: {
+        type: String,
+        required: true
+      },
       url: {
         type: String,
         required: true,
       },
-      equipo: {
+      data: {
         type: Object,
         required: true
       }
@@ -105,16 +109,19 @@
       Equipo,
       Inventario,
       Caracteristica,
-      Red
+      Red,
+      Loader
     },
     methods: {
       setDisco(disco) {
         this.disco = disco;
         this.showDiscos = false;
+        this.paso += 1;
       },
       setMemoria(memoria) {
         this.memoria = memoria;
         this.showMemorias = false;
+        this.paso += 1;
       },
       setEquipo(equipo) {
         this.form.fecha_compra = equipo.fecha_compra;
@@ -137,6 +144,7 @@
       },
       setMacs(macs) {
         this.form.mac = macs;
+        this.setEquipo();
       },
       omitirDisco() {
         this.showDiscos = true;
@@ -147,7 +155,44 @@
         this.paso += 1;
       },
       omitir() {
-        this.paso += 1;
+        if (this.paso !== 6) this.paso += 1;
+      },
+      setEquipo() {
+        Alert.showConfirm(this.titulo, '¿Esta seguro de realizar la petición?', 'question', async(confirmed) => {
+          if (confirmed) {
+            try {
+              this.isLoading = true;
+              const descripcion = (this.titulo === 'Nuevo Equipo') ? await this.storeEquipo() : await this.updateEquipo();
+              setTimeout(() => {
+                Alert.showToast('success', descripcion);
+                this.isLoading = false;
+                this.cancelarRegistro();
+              }, 500);
+            } catch (error) {
+              this.isLoading = false;
+            }
+          }
+        });
+      },
+      async storeEquipo() {
+        if (Object.keys(this.disco).length !== 0 && Object.keys(this.memoria).length !== 0) {
+          const disco = await this.$axios.$post('api/inventario/discos', this.disco);
+          const memoria = await this.$axios.$post('api/inventario/memorias', this.memoria);
+          this.form.disco_id = disco.data.id;
+          this.form.memoria_id = memoria.data.id;
+        } else if (Object.keys(this.disco).length !== 0) {
+          const disco = await this.$axios.$post('api/inventario/discos', this.disco);
+          this.form.disco_id = disco.data.id;
+        } else if (Object.keys(this.memoria).length !== 0) {
+          const memoria = await this.$axios.$post('api/inventario/memorias', this.memoria);
+          this.form.memoria_id = memoria.data.id;
+        }
+        const { descripcion } = await this.$axios.$post(this.url, this.form);
+        return descripcion;
+      },
+      async updateEquipo() {
+        const { descripcion } = await this.$axios.$put(this.url, this.form);
+        return descripcion;
       },
       cancelarRegistro() {
         this.$refs.disco.resetData();
@@ -169,18 +214,34 @@
         this.form.inventario = {};
         this.form.caracteristica = {};
         this.form.mac = [];
-        this.form.pantallas = [];
-        this.form.sistema_operativos = [];
-        this.form.software = [];
 
         this.paso = 1;
+        this.$emit('clearForm');
       }
     },
     watch: {
-      paso(value) {
-        if (value > 6) {
-          // Registro o actualizacion
-        }
+      data() {
+        this.paso = 3;
+
+        this.form.fecha_compra = this.data.fecha_compra;
+        this.form.vence_garantia = this.data.vence_garantia;
+        this.form.tipo = this.data.tipo;
+        this.form.serie = this.data.serie;
+        this.form.valor = this.data.valor;
+        this.form.modelo_id = this.data.modelo.id;
+        this.form.disco_id = this.data.disco.id;
+        this.form.memoria_id = this.data.memoria.id;
+        this.form.inventario = {
+          n_interno: this.data.inventario.n_interno,
+          inventario: this.data.inventario
+        };
+        this.form.caracteristica = {
+          usuario_dominio: this.data.caracteristica.usuario_dominio,
+          nombre_red: this.data.caracteristica.nombre_red,
+          perifericos: this.data.caracteristica.perifericos,
+          observaciones: this.data.caracteristica.observaciones
+        };
+        this.form.mac = this.data.macs;
       }
     }
   }
