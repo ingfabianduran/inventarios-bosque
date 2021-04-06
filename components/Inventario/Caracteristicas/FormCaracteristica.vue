@@ -1,8 +1,9 @@
 <template>
   <v-card>
     <ValidationObserver
-      ref="formInventario">
-      <v-form>
+      ref="formCaracteristica">
+      <v-form
+        @submit.prevent="storeCaracteristica">
         <v-card-text>
           <v-row>
             <v-col
@@ -88,13 +89,15 @@
           <v-btn
             type="button"
             dark
-            color="#3C4024">
+            color="#3C4024"
+            @click="omitir()">
             Omitir
           </v-btn>
           <v-btn
             type="button"
             dark
-            color="#7BC142">
+            color="#7BC142"
+            @click="clearForm()">
             Cancelar
           </v-btn>
         </v-card-actions>
@@ -112,6 +115,42 @@
           perifericos: '',
           observaciones: ''
         }
+      }
+    },
+    props: {
+      caracteristica: {
+        type: Object,
+        required: false
+      }
+    },
+    methods: {
+      async storeCaracteristica() {
+        const validate = await this.$refs.formCaracteristica.validate();
+        if (validate) {
+          this.$emit('getCaracteristica', this.form);
+        }
+      },
+      omitir() {
+        this.$emit('omitir');
+      },
+      clearForm() {
+        this.resetData();
+        this.$emit('clearForm');
+      },
+      resetData() {
+        this.$refs.formCaracteristica.reset();
+        this.form.usuario_dominio = '';
+        this.form.nombre_red = '';
+        this.form.perifericos = '';
+        this.form.observaciones = '';
+      }
+    },
+    watch: {
+      caracteristica() {
+        this.form.usuario_dominio = this.caracteristica.usuario_dominio;
+        this.form.nombre_red = this.caracteristica.nombre_red;
+        this.form.perifericos = this.caracteristica.perifericos;
+        this.form.observaciones = this.caracteristica.observaciones;
       }
     }
   }

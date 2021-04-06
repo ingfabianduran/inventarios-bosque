@@ -30,7 +30,7 @@
       </v-stepper-content>
       <v-stepper-content
         step="3">
-        <Modelo ref="modelo" @getModelo="storeModelo" :marca="showMarcas" :procesador="showProcesadores" @clearForm="clearForm" />
+        <Modelo ref="modelo" @getModelo="setModelo" :marca="showMarcas" :procesador="showProcesadores" :modelo="data" @clearForm="clearForm" />
       </v-stepper-content>
     </v-stepper-items>
   </v-stepper>
@@ -56,9 +56,23 @@
           procesador: null,
           modelo: null
         },
-        showMarcas: false,
-        showProcesadores: false,
+        showMarcas: true,
+        showProcesadores: true,
         isLoading: false
+      }
+    },
+    props: {
+      titulo: {
+        type: String,
+        required: true
+      },
+      url: {
+        type: String,
+        required: true,
+      },
+      data: {
+        type: Object,
+        required: true
       }
     },
     components: {
@@ -70,10 +84,12 @@
     methods: {
       setProcesador(procesador) {
         this.modelo.procesador = procesador;
+        this.showProcesadores = false;
         this.paso += 1;
       },
       setMarca(marca) {
         this.modelo.marca = marca;
+        this.showMarcas = false;
         this.paso += 1;
       },
       setShowMarcas() {
@@ -84,36 +100,43 @@
         this.showProcesadores = true;
         this.paso += 1;
       },
-      storeModelo(modelo) {
+      setModelo(modelo) {
         this.modelo.modelo = modelo;
-        Alert.showConfirm('Agregar Modelo', '¿Esta seguro de realizar la petición?', 'question', async(confirm) => {
-          if (confirm) {
+        Alert.showConfirm(this.titulo, '¿Esta seguro de realizar la petición?', 'question', async(confirmed) => {
+          if (confirmed) {
             try {
               this.isLoading = true;
-              if (this.modelo.modelo.marca_id === '' && this.modelo.modelo.procesador_id === '') {
-                const marca = await this.$axios.$post('api/inventario/marcas', this.modelo.marca);
-                const procesador = await this.$axios.$post('api/inventario/procesadores', this.modelo.procesador);
-                this.modelo.modelo.marca_id = marca.data.id;
-                this.modelo.modelo.procesador_id = procesador.data.id;
-              } else if (this.modelo.modelo.procesador_id === '') {
-                const procesador = await this.$axios.$post('api/inventario/procesadores', this.modelo.procesador);
-                this.modelo.modelo.procesador_id = procesador.data.id;
-              } else if (this.modelo.modelo.marca_id === '') {
-                const marca = await this.$axios.$post('api/inventario/marcas', this.modelo.marca);
-                this.modelo.modelo.marca_id = marca.data.id;
-              }
-              const { descripcion } = await this.$axios.$post('api/inventario/modelos', this.modelo.modelo);
+              const descripcion = (this.titulo === 'Nuevo Modelo' ? await this.storeModelo() : await this.updateModelo());
               setTimeout(() => {
                 Alert.showToast('success', descripcion);
                 this.isLoading = false;
                 this.clearForm();
-                this.$emit('listModelos');
               }, 500);
             } catch (error) {
               this.isLoading = false;
             }
           }
         });
+      },
+      async storeModelo() {
+        if (this.modelo.modelo.marca_id === '' && this.modelo.modelo.procesador_id === '') {
+          const marca = await this.$axios.$post('api/inventario/marcas', this.modelo.marca);
+          const procesador = await this.$axios.$post('api/inventario/procesadores', this.modelo.procesador);
+          this.modelo.modelo.marca_id = marca.data.id;
+          this.modelo.modelo.procesador_id = procesador.data.id;
+        } else if (this.modelo.modelo.procesador_id === '') {
+          const procesador = await this.$axios.$post('api/inventario/procesadores', this.modelo.procesador);
+          this.modelo.modelo.procesador_id = procesador.data.id;
+        } else if (this.modelo.modelo.marca_id === '') {
+          const marca = await this.$axios.$post('api/inventario/marcas', this.modelo.marca);
+          this.modelo.modelo.marca_id = marca.data.id;
+        }
+        const { descripcion } = await this.$axios.$post(this.url, this.modelo.modelo);
+        return descripcion;
+      },
+      async updateModelo() {
+        const { descripcion } = await this.$axios.$put(this.url, this.modelo.modelo);
+        return descripcion;
       },
       clearForm() {
         this.paso = 1;
@@ -125,6 +148,16 @@
         this.$refs.marca.resetData();
         this.$refs.procesador.resetData();
         this.$refs.modelo.resetData();
+      }
+    },
+    watch: {
+      data() {
+        if (Object.keys(this.data).length > 0) {
+          this.modelo.modelo = this.data;
+          this.showMarcas = true;
+          this.showProcesadores = true;
+          this.paso = 3;
+        }
       }
     }
   }

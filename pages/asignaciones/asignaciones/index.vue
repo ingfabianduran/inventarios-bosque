@@ -16,7 +16,9 @@
           url="api/asignacion/asignaciones/"
           :search="search"
           @getModel="getAsignacion"
-          @updateModels="$fetch" />
+          @updateModels="$fetch"
+          @searchModel="searchListAsignaciones"
+          @resetBusqueda="$fetch" />
       </v-col>
     </v-row>
     <Pagination :page="page" @getData="updateListAsignaciones" />
@@ -56,7 +58,7 @@
         },
         search: {
           label: 'Inventario, serial o numero interno',
-          url: 'api/asignacion/asignaciones/buscar/tipo/'
+          url: 'api/asignacion/asignaciones/buscar/'
         }
       }
     },

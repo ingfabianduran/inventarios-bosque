@@ -2,8 +2,8 @@
   <div>
     <v-row>
       <v-col>
-        <Equipo v-if="isViewAddEquipo" />
-        <Card v-if="!isViewAddEquipo" :equipo="equipo" @addEquipo="isViewAddEquipo = true" />
+        <Equipo v-show="isViewAddEquipo" :titulo="titulo" :url="url" :data="equipo" @clearForm="clearForm" />
+        <Card v-show="!isViewAddEquipo" :equipo="equipo" @addEquipo="isViewAddEquipo = true" @updateEquipo="updateEquipo" />
       </v-col>
     </v-row>
     <v-row>
@@ -15,7 +15,9 @@
           url="api/inventario/equipos/"
           :search="search"
           @getModel="getEquipo"
-          @updateModels="$fetch" />
+          @updateModels="$fetch"
+          @searchModel="searchListEquipos"
+          @resetBusqueda="$fetch" />
       </v-col>
     </v-row>
     <Pagination :page="page" @getData="updateListEquipos" />
@@ -51,10 +53,12 @@
         },
         search: {
           label: 'Inventario, serial o numero interno',
-          url: ''
+          url: 'api/inventario/equipos/buscar/'
         },
+        isViewAddEquipo: true,
+        titulo: 'Agregar Equipo',
+        url: 'api/inventario/equipos',
         equipo: {},
-        isViewAddEquipo: false
       }
     },
     components: {
@@ -67,7 +71,7 @@
       const { data } = await this.$axios.$get(`api/inventario/equipos/i/10?page=${this.page.current}`);
       this.equipos = data.data;
       this.page.last = data.last_page;
-      this.url = 'api/inventario/equipos/i/10?page=';
+      this.page.url = 'api/inventario/equipos/i/10?page=';
     },
     methods: {
       updateListEquipos(equipos) {
@@ -76,6 +80,24 @@
       },
       getEquipo(equipo) {
         this.equipo = equipo;
+        this.isViewAddEquipo = false;
+      },
+      searchListEquipos(equipos) {
+        this.equipos = equipos.data.data;
+        this.page.current = 1;
+        this.page.last = equipos.data.last_page;
+        this.page.url = equipos.url;
+      },
+      updateEquipo() {
+        this.isViewAddEquipo = true;
+        this.titulo = 'Modificar Equipo';
+        this.url = `api/inventario/equipos/${this.equipo.id}`;
+      },
+      clearForm() {
+        this.titulo = 'Nuevo Equipo';
+        this.url = 'api/inventario/equipos';
+        this.data = {};
+        this.$fetch();
       }
     }
   }

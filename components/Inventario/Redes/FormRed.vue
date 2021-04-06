@@ -2,7 +2,8 @@
   <v-card>
     <ValidationObserver
       ref="formRed">
-      <v-form>
+      <v-form
+        @submit.prevent="addMac">
         <v-card-text>
           <v-row>
             <v-col
@@ -43,10 +44,10 @@
               cols="12"
               md="1">
               <v-btn
+                type="submit"
                 class="mx-2 text-center"
                 fab
                 dark
-                
                 outlined
                 color="#7BC142">
                 <v-icon dark>
@@ -55,25 +56,56 @@
               </v-btn>
             </v-col>
           </v-row>
+          <v-row
+            v-if="macs.length > 0">
+            <v-col
+              cols="12"
+              md="12">
+              <v-simple-table
+                dense>
+                <thead>
+                  <tr>
+                    <th>Tipo</th>
+                    <th>Mac</th>
+                    <th>Eliminar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="(mac, i) in macs"
+                    :key="i">
+                    <td>{{ mac.tipo }}</td>
+                    <td>{{ mac.mac }}</td>
+                    <td>
+                      <v-btn
+                        icon
+                        @click="deleteMac(i)">
+                        <v-icon
+                          color="#F27830">
+                          mdi-delete
+                        </v-icon>
+                      </v-btn>
+                    </td>
+                  </tr>
+                </tbody>
+              </v-simple-table>
+            </v-col>
+          </v-row>
         </v-card-text>
         <v-card-actions
           class="justify-end">
           <v-btn
-            type="submit"
+            type="button"
             dark
-            color="#F27830">
-            Siguiente
+            color="#F27830"
+            @click="sendMacs()">
+            Finalizar
           </v-btn>
           <v-btn
             type="button"
             dark
-            color="#3C4024">
-            Omitir
-          </v-btn>
-          <v-btn
-            type="button"
-            dark
-            color="#7BC142">
+            color="#7BC142"
+            @click="clearForm()">
             Cancelar
           </v-btn>
         </v-card-actions>
@@ -91,6 +123,47 @@
         },
         tipos: ['LAN', 'WAN'],
         macs: []
+      }
+    },
+    props: {
+      redes: {
+        type: Array,
+        required: false
+      }
+    },
+    methods: {
+      async addMac() {
+        const validate = await this.$refs.formRed.validate();
+        if (validate) {
+          this.macs.push({
+            tipo: this.form.tipo,
+            mac: this.form.mac
+          });
+        }
+      },
+      deleteMac(indice) {
+        this.macs.splice(indice, 1);
+      },
+      sendMacs() {
+        this.$emit('getMacs', this.macs);
+      },
+      omitir() {
+        this.$emit('omitir');
+      },
+      clearForm() {
+        this.resetData();
+        this.$emit('clearForm');
+      },
+      resetData() {
+        this.$refs.formRed.reset();
+        this.form.tipo = '';
+        this.form.mac = '';
+        this.macs = [];
+      }
+    },
+    watch: {
+      redes() {
+        this.macs = this.redes;
       }
     }
   }

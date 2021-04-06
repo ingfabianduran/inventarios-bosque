@@ -2,17 +2,7 @@
   <div>
     <v-row>
       <v-col>
-        <ModeloUpdate
-          v-show="isViewModeloUpdate"
-          titulo="Actualizar Modelo"
-          :modelo="modelo"
-          :marca="true"
-          :procesador="true"
-          textBtn="Actualizar"
-          :isLoading="isLoading"
-          @getModelo="updateModelo"
-          @clearForm="isViewModeloUpdate = false" />
-        <Modelo v-show="!isViewModeloUpdate" @listModelos="$fetch" />
+        <Modelo :titulo="titulo" :url="url" :data="modelo" @clearForm="clearForm" />
       </v-col>
     </v-row>
     <v-row>
@@ -32,11 +22,9 @@
   </div>
 </template>
 <script>
-  import Alert from '~/components/Site/SweetAlert';
   import Modelo from '~/components/Inventario/Modelos/StepperModelo';
   import Table from '~/components/Site/Table';
   import Pagination from '~/components/Site/Pagination';
-  import ModeloUpdate from '~/components/Inventario/Modelos/FormModelo';
 
   export default {
     head() {
@@ -54,8 +42,6 @@
           { text: 'Actions', value: 'actions', sortable: false }
         ],
         modelos: [],
-        modelo: null,
-        isViewModeloUpdate: false,
         page: {
           current: 1,
           last: 0,
@@ -65,14 +51,15 @@
           label: 'Nombre del modelo',
           url: 'api/inventario/modelos/buscar/descripcion/'
         },
-        isLoading: false
+        titulo: 'Nuevo Modelo',
+        modelo: {},
+        url: 'api/inventario/modelos'
       }
     },
     components: {
       Modelo,
       Table,
       Pagination,
-      ModeloUpdate
     },
     async fetch() {
       const { data } = await this.$axios.$get(`api/inventario/modelos/i/10?page=${this.page.current}`);
@@ -87,7 +74,8 @@
       },
       getModelo(modelo) {
         this.modelo = modelo;
-        this.isViewModeloUpdate = true;
+        this.titulo = 'Actualizar Modelo';
+        this.url = `api/inventario/modelos/${this.modelo.id}`
       },
       searchListModelos(modelos) {
         this.modelos = modelos.data.data;
@@ -95,23 +83,11 @@
         this.page.last = modelos.data.last_page;
         this.page.url = modelos.url;
       },
-      updateModelo(modelo) {
-        Alert.showConfirm('Actualizar Modelo', '¿Esta seguro de realizar la petición?', 'question', async(confirmed) => {
-          if (confirmed) {
-            try {
-              this.isLoading = true;
-              const { descripcion } = await this.$axios.$put(`api/inventario/modelos/${this.modelo.id}`, modelo);
-              setTimeout(() => {
-                Alert.showToast('success', descripcion);
-                this.isLoading = false;
-                this.isViewModeloUpdate = false;
-                this.$fetch();
-              }, 500);
-            } catch (error) {
-              this.isLoading = false;
-            }
-          }
-        });
+      clearForm() {
+        this.titulo = 'Nuevo Equipo';
+        this.url = 'api/inventario/equipos';
+        this.modelo = {};
+        this.$fetch();
       }
     }
   }

@@ -2,7 +2,8 @@
   <v-card>
     <ValidationObserver
       ref="formDisco">
-      <v-form>
+      <v-form
+        @submit.prevent="storeDisco">
         <v-card-text>
           <v-row>
             <v-col
@@ -51,7 +52,7 @@
                 <v-textarea
                   v-model="form.descripcion"
                   outlined
-                  label="Descripción de la memoria"
+                  label="Descripción del disco"
                   auto-grow
                   color="#7BC142"
                   :error-messages="errors">
@@ -71,13 +72,15 @@
           <v-btn
             type="button"
             dark
-            color="#3C4024">
+            color="#3C4024"
+            @click="omitir()">
             Omitir
           </v-btn>
           <v-btn
             type="button"
             dark
-            color="#7BC142">
+            color="#7BC142"
+            @click="clearForm()">
             Cancelar
           </v-btn>
         </v-card-actions>
@@ -95,6 +98,27 @@
           descripcion: ''
         },
         tipos: ['HDD', 'SSD']
+      }
+    },
+    methods: {
+      async storeDisco() {
+        const validate = await this.$refs.formDisco.validate();
+        if (validate) {
+          this.$emit('getDisco', this.form);
+        }
+      },
+      omitir() {
+        this.$emit('omitirDisco');
+      },
+      clearForm() {
+        this.resetData();
+        this.$emit('clearForm');
+      },
+      resetData() {
+        this.$refs.formDisco.reset();
+        this.form.capacidad = '';
+        this.form.tipo = '';
+        this.form.descripcion = '';
       }
     }
   }

@@ -109,6 +109,8 @@
                   v-model="form.equipo_id"
                   :search-input.sync="searchEquipo"
                   label="Equipo"
+                  item-text="serie"
+                  item-value="id"
                   :items="equipos"
                   outlined
                   color="#7BC142"
@@ -186,16 +188,11 @@
     },
     async fetch() {
       await this.getEdificios();
-      await this.getEspacios();
     },
     methods: {
       async getEdificios() {
         const { data } = await this.$axios.$get('api/asignacion/edificios/i/0');
         this.edificios = data;
-      },
-      async getEspacios() {
-        const { data } = await this.$axios.$get('api/asignacion/espacios/i/0');
-        this.espacios = data;
       },
       async storeAsignacion() {
         const validate = await this.$refs.formAsignacion.validate();
@@ -224,9 +221,12 @@
         this.form.responsable_id = '';
         this.form.espacio_id = '';
         this.form.equipo_id = '';
+        this.espacios = [];
+        this.responsables = [];
+        this.equipos = [];
         this.edificio = '';
         this.searchResponsable = '';
-        this.responsables = [];
+        this.searchEquipo = '';
         this.$emit('clearForm');
       }
     },
@@ -237,8 +237,11 @@
         this.form.responsable_id = this.asignacion.responsable_id;
         this.form.espacio_id = this.asignacion.espacio_id;
         this.form.equipo_id = this.asignacion.equipo_id;
-        this.edificio = (this.asignacion.hasOwnProperty('espacio')) ? this.asignacion.espacio.edificio_id : '';
-        this.searchResponsable = (this.asignacion.hasOwnProperty('responsable')) ? this.asignacion.responsable.nombre : '';
+        if (Object.keys(this.asignacion).length > 0) {
+          this.edificio = this.asignacion.espacio.edificio_id;
+          this.searchResponsable = this.asignacion.responsable.nombre;
+          this.searchEquipo = this.asignacion.equipo.serie;
+        }
       },
       async searchResponsable(value) {
         if (value !== null && value.length > 0) {
@@ -248,9 +251,13 @@
       },
       async searchEquipo(value) {
          if (value !== null && value.length > 0) {
-           const { data } = await this.$axios.$get(`api/inventario/equipos/buscar/serie/${value}`);
+           const { data } = await this.$axios.$get(`api/inventario/equipos/buscar/${value}`);
            this.equipos = data.data;
          }
+      },
+      async edificio(value) {
+        const { data } = await this.$axios.$get(`api/asignacion/edificios/${value}`);
+        this.espacios = data.espacios;
       }
     }
   }

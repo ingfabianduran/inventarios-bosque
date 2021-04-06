@@ -14,7 +14,9 @@
     "@nuxtjs/axios": "^5.13.1",
     "core-js": "^3.8.3",
     "moment": "^2.29.1",
+    "numbro": "^2.3.2",
     "nuxt": "^2.14.12",
+    "pdfmake": "^0.1.70",
     "sweetalert2": "^10.15.5",
     "vee-validate": "^3.4.5",
     "vue-the-mask": "^0.11.1"
