@@ -26,7 +26,7 @@
       </v-stepper-content>
       <v-stepper-content
         step="2">
-        <Pantalla ref="pantalla" :marca="showMarcas" @getPantalla="storePantalla" @clearForm="clearForm" />
+        <Pantalla ref="pantalla" :pantalla="data" :marca="showMarcas" @getPantalla="setPantalla" @clearForm="clearForm" />
       </v-stepper-content>
     </v-stepper-items>
   </v-stepper>
@@ -49,8 +49,22 @@
           marca: null,
           pantalla: null
         },
-        showMarcas: false,
+        showMarcas: true,
         isLoading: false
+      }
+    },
+    props: {
+      titulo: {
+        type: String,
+        required: true
+      },
+      url: {
+        type: String,
+        required: true,
+      },
+      data: {
+        type: Object,
+        required: true
       }
     },
     components: {
@@ -61,34 +75,43 @@
     methods: {
       setMarca(marca) {
         this.pantalla.marca = marca;
+        this.showMarcas = false;
         this.paso += 1;
       },
       setShowMarcas() {
         this.showMarcas = true;
         this.paso += 1;
       },
-      storePantalla(pantalla) {
+      setPantalla(pantalla) {
         this.pantalla.pantalla = pantalla;
-        Alert.showConfirm('Agregar Pantalla', '¿Esta seguro de realizar la peticion?', 'question', async(confirm) => {
+        Alert.showConfirm(this.titulo, '¿Esta seguro de realizar la peticion?', 'question', async(confirm) => {
           if (confirm) {
             try {
               this.isLoading = true;
-              if (this.pantalla.pantalla.marca_id === '') {
-                const marca = await this.$axios.$post('api/inventario/marcas', this.pantalla.marca);
-                this.pantalla.pantalla.marca_id = marca.data.id;
-              }
-              const { descripcion } = await this.$axios.$post('api/inventario/pantallas', this.pantalla.pantalla);
+              const descripcion = (this.titulo === 'Nueva Pantalla' ? await this.storePantalla() : await this.updatePantalla());
               setTimeout(() => {
                 Alert.showToast('success', descripcion);
                 this.isLoading = false;
                 this.clearForm();
-                this.$emit('listPantallas');
+                this.$emit('clearForm');
               }, 500);
             } catch (error) {
               this.isLoading = false;
             }
           }
         });
+      },
+      async storePantalla() {
+        if (this.pantalla.pantalla.marca_id === '') {
+          const marca = await this.$axios.$post('api/inventario/marcas', this.pantalla.marca);
+          this.pantalla.pantalla.marca_id = marca.data.id;
+        }
+        const { descripcion } = await this.$axios.$post(this.url, this.pantalla.pantalla);
+        return descripcion;
+      },
+      async updatePantalla() {
+        const { descripcion } = await this.$axios.$put(this.url, this.pantalla.pantalla);
+        return descripcion;
       },
       clearForm() {
         this.paso = 1;
@@ -97,6 +120,15 @@
         this.showMarcas = false;
         this.$refs.marca.resetData();
         this.$refs.pantalla.resetData();
+      }
+    },
+    watch: {
+      data() {
+        if (Object.keys(this.data).length > 0) {
+          this.pantalla.pantalla = this.data;
+          this.showMarcas = true;
+          this.paso = 2;
+        }
       }
     }
   }

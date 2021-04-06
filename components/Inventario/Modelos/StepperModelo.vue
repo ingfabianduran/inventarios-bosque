@@ -102,12 +102,11 @@
       },
       setModelo(modelo) {
         this.modelo.modelo = modelo;
-
         Alert.showConfirm(this.titulo, '¿Esta seguro de realizar la petición?', 'question', async(confirmed) => {
           if (confirmed) {
             try {
               this.isLoading = true;
-              const descripcion = (this.titulo === 'Nuevo Modelo') ? await this.storeModelo() : await this.updateModelo();
+              const descripcion = (this.titulo === 'Nuevo Modelo' ? await this.storeModelo() : await this.updateModelo());
               setTimeout(() => {
                 Alert.showToast('success', descripcion);
                 this.isLoading = false;
@@ -149,13 +148,16 @@
         this.$refs.marca.resetData();
         this.$refs.procesador.resetData();
         this.$refs.modelo.resetData();
-        this.$emit('clearForm');
       }
     },
     watch: {
       data() {
-        this.modelo.modelo = this.data;
-        this.paso = 3;
+        if (Object.keys(this.data).length > 0) {
+          this.modelo.modelo = this.data;
+          this.showMarcas = true;
+          this.showProcesadores = true;
+          this.paso = 3;
+        }
       }
     }
   }

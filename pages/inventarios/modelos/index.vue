@@ -66,8 +66,6 @@
       this.modelos = data.data;
       this.page.last = data.last_page;
       this.page.url = 'api/inventario/modelos/i/10?page=';
-      this.titulo = 'Nuevo Modelo';
-      this.url = 'api/inventario/modelos';
     },
     methods: {
       updateListModelos(modelos) {
@@ -88,7 +86,7 @@
       clearForm() {
         this.titulo = 'Nuevo Equipo';
         this.url = 'api/inventario/equipos';
-        this.data = {};
+        this.modelo = {};
         this.$fetch();
       }
     }

@@ -4,16 +4,7 @@
       align="center"
       justify="center">
       <v-col>
-        <Pantalla v-show="!isViewPantallaUpdate" @listPantallas="$fetch" />
-        <PantallaUpdate
-          v-show="isViewPantallaUpdate"
-          titulo="Actualizar Pantalla"
-          textBtn="Actualizar"
-          :pantalla="pantalla"
-          :marca="true"
-          :isLoading="isLoading"
-          @getPantalla="updatePantalla"
-          @clearForm="isViewPantallaUpdate = false" />
+        <Pantalla :titulo="titulo" :url="url" :data="pantalla" @clearForm="clearForm" />
       </v-col>
     </v-row>
     <v-row>
@@ -34,12 +25,9 @@
   </div>
 </template>
 <script>
-
   import Pantalla from '~/components/Inventario/Pantallas/StepperPantalla';
-  import PantallaUpdate from '~/components/Inventario/Pantallas/FormPantalla';
   import Table from '~/components/Site/Table';
   import Pagination from '~/components/Site/Pagination';
-  import Alert from '~/components/Site/SweetAlert';
 
   export default {
     head() {
@@ -66,14 +54,14 @@
           label: 'Tipo de pantalla',
           url: 'api/inventario/pantallas/buscar/tipo/'
         },
-        pantalla: null,
-        isViewPantallaUpdate: false,
-        isLoading: false
+        isLoading: false,
+        titulo: 'Nueva Pantalla',
+        pantalla: {},
+        url: 'api/inventario/pantallas'
       }
     },
     components: {
       Pantalla,
-      PantallaUpdate,
       Table,
       Pagination
     },
@@ -90,25 +78,8 @@
       },
       getPantalla(pantalla) {
         this.pantalla = pantalla;
-        this.isViewPantallaUpdate = true;
-      },
-      updatePantalla(pantalla) {
-        Alert.showConfirm('Actualizar Pantalla', '¿Esta seguro de realizar la petición?', 'question', async(confirmed) => {
-          if (confirmed) {
-            try {
-              this.isLoading = true;
-              const { descripcion } = await this.$axios.$put(`api/inventario/pantallas/${this.pantalla.id}`, pantalla);
-              setTimeout(() => {
-                Alert.showToast('success', descripcion);
-                this.isLoading = false;
-                this.isViewPantallaUpdate = false;
-                this.$fetch();
-              }, 500);
-            } catch (error) {
-              this.isLoading = false;
-            }
-          }
-        });
+        this.titulo = 'Actualizar Pantalla';
+        this.url = `api/inventario/pantallas/${this.pantalla.id}`;
       },
       searchListPantallas(pantallas) {
         this.pantallas = pantallas.data.data;
@@ -116,6 +87,12 @@
         this.page.last = pantallas.data.last_page;
         this.page.url = pantallas.url;
       },
+      clearForm() {
+        this.titulo = 'Nueva Pantalla';
+        this.url = 'api/inventario/pantallas';
+        this.pantalla = {};
+        this.$fetch();
+      }
     }
   }
 </script>

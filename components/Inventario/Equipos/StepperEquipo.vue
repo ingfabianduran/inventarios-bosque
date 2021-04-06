@@ -144,7 +144,7 @@
       },
       setMacs(macs) {
         this.form.mac = macs;
-        this.setEquipo();
+        this.setInfoEquipo();
       },
       omitirDisco() {
         this.showDiscos = true;
@@ -157,7 +157,7 @@
       omitir() {
         if (this.paso !== 6) this.paso += 1;
       },
-      setEquipo() {
+      setInfoEquipo() {
         Alert.showConfirm(this.titulo, '¿Esta seguro de realizar la petición?', 'question', async(confirmed) => {
           if (confirmed) {
             try {
@@ -221,27 +221,28 @@
     },
     watch: {
       data() {
-        this.paso = 3;
-
-        this.form.fecha_compra = this.data.fecha_compra;
-        this.form.vence_garantia = this.data.vence_garantia;
-        this.form.tipo = this.data.tipo;
-        this.form.serie = this.data.serie;
-        this.form.valor = this.data.valor;
-        this.form.modelo_id = this.data.modelo.id;
-        this.form.disco_id = this.data.disco.id;
-        this.form.memoria_id = this.data.memoria.id;
-        this.form.inventario = {
-          n_interno: this.data.inventario.n_interno,
-          inventario: this.data.inventario
-        };
-        this.form.caracteristica = {
-          usuario_dominio: this.data.caracteristica.usuario_dominio,
-          nombre_red: this.data.caracteristica.nombre_red,
-          perifericos: this.data.caracteristica.perifericos,
-          observaciones: this.data.caracteristica.observaciones
-        };
-        this.form.mac = this.data.macs;
+        if (Object.keys(this.data).length > 0) {
+          this.paso = 3;
+          this.form.fecha_compra = this.data.fecha_compra;
+          this.form.vence_garantia = this.data.vence_garantia;
+          this.form.tipo = this.data.tipo;
+          this.form.serie = this.data.serie;
+          this.form.valor = this.data.valor;
+          this.form.modelo_id = this.data.modelo.id;
+          this.form.disco_id = this.data.disco.id;
+          this.form.memoria_id = this.data.memoria.id;
+          this.form.inventario = {
+            n_interno: this.data.inventario.n_interno,
+            inventario: this.data.inventario
+          };
+          this.form.caracteristica = {
+            usuario_dominio: this.data.caracteristica.usuario_dominio,
+            nombre_red: this.data.caracteristica.nombre_red,
+            perifericos: this.data.caracteristica.perifericos,
+            observaciones: this.data.caracteristica.observaciones
+          };
+          this.form.mac = this.data.macs;
+        }
       }
     }
   }

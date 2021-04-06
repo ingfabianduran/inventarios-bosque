@@ -221,9 +221,11 @@
         this.form.responsable_id = '';
         this.form.espacio_id = '';
         this.form.equipo_id = '';
+        this.espacios = [];
+        this.responsables = [];
+        this.equipos = [];
         this.edificio = '';
         this.searchResponsable = '';
-        this.responsables = [];
         this.searchEquipo = '';
         this.$emit('clearForm');
       }
@@ -235,9 +237,11 @@
         this.form.responsable_id = this.asignacion.responsable_id;
         this.form.espacio_id = this.asignacion.espacio_id;
         this.form.equipo_id = this.asignacion.equipo_id;
-        this.edificio = (this.asignacion.hasOwnProperty('espacio') ? this.asignacion.espacio.edificio_id : '');
-        this.searchResponsable = (this.asignacion.hasOwnPro('responsable') ? this.asignacion.responsable.nombre : '');
-        this.searchEquipo = (this.asignacion.hasOwnProperty('equipo') ? this.asignacion.equipo.serie : '');
+        if (Object.keys(this.asignacion).length > 0) {
+          this.edificio = this.asignacion.espacio.edificio_id;
+          this.searchResponsable = this.asignacion.responsable.nombre;
+          this.searchEquipo = this.asignacion.equipo.serie;
+        }
       },
       async searchResponsable(value) {
         if (value !== null && value.length > 0) {

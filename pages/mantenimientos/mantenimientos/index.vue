@@ -66,8 +66,8 @@
           url: 'api/mantenimiento/mantenimientos/i/10?page='
         },
         search: {
-          label: 'Inventario, serial o numero interno',
-          url: ''
+          label: 'Inventario, serial, numero interno o tecnico',
+          url: 'api/mantenimiento/mantenimientos/buscar/'
         },
         aranda: {
           titulo: 'Registrar Caso Aranda',
