@@ -56,7 +56,11 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: 'http://127.0.0.1'
+    baseURL: 'http://127.0.0.1',
+    credentials: true,
+    common: {
+      Accept: 'application/json'
+    },
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
@@ -73,5 +77,17 @@ export default {
     timing: false
   },
 
-  loading: '~/components/Site/LoaderPage.vue'
+  loading: '~/components/Site/LoaderPage.vue',
+
+  auth: {
+    strategies: {
+      'laravelSanctum': {
+        provider: 'laravel/sanctum',
+        url: 'http://127.0.0.1',
+        cookie: {
+          name: 'X-XSRF-TOKEN',
+        },
+      },
+    }
+  }
 }

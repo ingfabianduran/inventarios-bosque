@@ -1,9 +1,13 @@
 <template>
   <div>
     <Equipo
-      :dialog="dialog"
-      @closeModal="closeModal"
-      v-if="dialog.isView" />
+      :dialog="dialogEquipo"
+      @closeModal="closeModalEquipo"
+      v-if="dialogEquipo.isView" />
+    <Reporte
+      :dialog="dialogReporte"
+      @closeModal="closeModalReporte"
+      v-if="dialogReporte.isView" />
     <v-card>
       <v-card-title
         class="font-weight-bold">
@@ -70,6 +74,7 @@
 </template>
 <script>
   import Equipo from '~/components/Inventario/Equipos/TabsEquipo';
+  import Reporte from '~/components/Inventario/Equipos/TabsReportes';
   import Pdf from '~/components/Site/HojaVida';
 
   export default {
@@ -111,11 +116,15 @@
           { text: 'Agregar Equipo', opcion: 'agregarEquipo' },
           { text: 'Hoja de Vida', opcion: 'hojaVida' },
           { text: 'Mas Información', opcion: 'masInformacion' },
-          { text: 'Modificar Equipo', opcion: 'modificarEquipo' }
+          { text: 'Modificar Equipo', opcion: 'modificarEquipo' },
+          { text: 'Reportes de Inventario', opcion: 'reporteInventario' },
         ],
-        dialog: {
+        dialogEquipo: {
           isView: false,
           data: {}
+        },
+        dialogReporte: {
+          isView: false
         }
       }
     },
@@ -126,11 +135,15 @@
       }
     },
     components: {
-      Equipo
+      Equipo,
+      Reporte
     },
     methods: {
-      closeModal(value) {
-        this.dialog.isView = value;
+      closeModalEquipo(value) {
+        this.dialogEquipo.isView = value;
+      },
+      closeModalReporte(value) {
+        this.dialogReporte.isView = value;
       },
       eventMasOpciones(opcion) {
         if (opcion === 'agregarEquipo') {
@@ -138,10 +151,12 @@
         } else if (opcion === 'hojaVida') {
           Pdf.getHojaVida(this.equipo);
         } else if (opcion === 'masInformacion') {
-          this.dialog.data = this.equipo;
-          this.dialog.isView = true;
+          this.dialogEquipo.data = this.equipo;
+          this.dialogEquipo.isView = true;
         } else if (opcion === 'modificarEquipo') {
           this.$emit('updateEquipo');
+        } else if (opcion === 'reporteInventario') {
+          this.dialogReporte.isView = true;
         }
       }
     },

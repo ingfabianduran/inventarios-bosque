@@ -1,13 +1,16 @@
 <template>
-  <ValidationObserver ref="formLogin">
-    <v-form @submit.prevent="" class="text-center">
+  <ValidationObserver
+    ref="formLogin">
+    <v-form
+      @submit.prevent="logIn"
+      class="text-center">
       <p class="text-h2 mb-10">Login</p>
       <ValidationProvider
         v-slot="{ errors }"
         name="usuario"
         rules="required|email">
         <v-text-field
-          v-model="form.usuario"
+          v-model="form.email"
           label="Usuario"
           placeholder="Nombre de Usuario"
           prepend-inner-icon="mdi-account"
@@ -54,10 +57,15 @@
     data() {
       return {
         form: {
-          usuario: '',
+          email: '',
           password: ''
         }
       }
-    },  
+    },
+    methods: {
+      async logIn() {
+        await this.$auth.loginWith('laravelSanctum', { data: this.form });
+      }
+    }
   }
 </script>
