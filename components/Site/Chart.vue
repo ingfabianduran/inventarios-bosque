@@ -1,5 +1,8 @@
 <template>
-  <canvas id="chart"></canvas>
+  <v-card
+    flat>
+    <canvas :id="idChart"></canvas>
+  </v-card>
 </template>
 <script>
 import Chart from 'chart.js';
@@ -12,16 +15,46 @@ import Chart from 'chart.js';
       }
     },
     props: {
+      idChart: {
+        type: String,
+        required: true
+      },
       data: {
         type: Object,
         required: true
       }
     },
     mounted() {
-      this.ctx = document.getElementById('chart').getContext('2d');
+      this.ctx = document.getElementById(this.idChart).getContext('2d');
       this.chart = new Chart(this.ctx, {
         type: 'bar',
-        data: this.data
+        data: this.data,
+        options: {
+          legend: {
+            display: true,
+            labels: {
+              fontFamily: "'Open Sans Condensed', 'sans-serif'",
+              fontSize: 14
+            }
+          },
+          tooltips: {
+            titleFontFamily: "'Open Sans Condensed', 'sans-serif'",
+            bodyFontFamily: "'Open Sans Condensed', 'sans-serif'",
+          },
+          scales: {
+            yAxes: [{
+              ticks: {
+                fontFamily: "'Open Sans Condensed', 'sans-serif'",
+                beginAtZero: true,
+              }
+            }],
+            xAxes: [{
+              ticks: {
+                fontFamily: "'Open Sans Condensed', 'sans-serif'",
+              }
+            }]
+          }
+        }
       });
     }
   }
