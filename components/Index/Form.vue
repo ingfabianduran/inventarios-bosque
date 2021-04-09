@@ -34,6 +34,7 @@
         </v-text-field>
       </ValidationProvider>
       <v-btn
+        :loading="isLoading"
         type="submit"
         dark
         color="#F27830"
@@ -53,18 +54,30 @@
   </ValidationObserver>
 </template>
 <script>
+  import Alert from '~/components/Site/SweetAlert';
+
   export default {
     data() {
       return {
         form: {
           email: '',
           password: ''
-        }
+        },
+        isLoading: false
       }
     },
     methods: {
       async logIn() {
-        await this.$auth.loginWith('laravelSanctum', { data: this.form });
+        const validate = await this.$refs.formLogin.validate();
+        if (validate) {
+          this.isLoading = true;
+          const { data } = await this.$auth.loginWith('laravelSanctum', { data: this.form });
+          Alert.showToast('success', data.descripcion);
+          setTimeout(() => {
+            this.isLoading = false;
+            location.href = '/inventarios/equipos';
+          }, 1000);
+        }
       }
     }
   }

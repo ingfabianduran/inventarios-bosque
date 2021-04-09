@@ -5,17 +5,11 @@ export default function ({ $axios }) {
     const code = parseInt(error.response && error.response.status);
     if (code === 422) {
       const errors = error.response.data;
-      Errors.showErrors422(errors);
+      Errors.showError(errors);
       return true;
-    } else if (code === 503) {
+    } else if (code === 503 || code === 404 || code === 400 || code === 401) {
       const errors = error.response.data;
-      Errors.showErrors503(errors);
-    } else if (code === 404) {
-      const errors = error.response.data;
-      Errors.showErrors404(errors);
-    } else if (code === 400) {
-      const errors = error.response.data;
-      Errors.showErrors404(errors);
+      Errors.showError(errors);
     }
   });
 }

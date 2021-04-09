@@ -4,7 +4,8 @@
     <v-list
       v-for="(link, i) in links"
       :key="i"
-      rounded>
+      rounded
+      :disabled="!validateRoles(link.roles)">
       <template v-if="link.subtitulos">
         <v-list-group
           :prepend-icon="link.icon"
@@ -18,7 +19,8 @@
           <v-list-item
             v-for="(subLink, j) in link.subtitulos"
             :key="j"
-            link>
+            link
+            :disabled="!validateRoles(subLink.roles)">
             <v-list-item-content>
               <nuxt-link :to="subLink.link" class="link">
                 <v-list-item-title class="text-link" v-text="subLink.titulo"></v-list-item-title>
@@ -30,7 +32,8 @@
       <template v-else>
         <nuxt-link :to="link.link" class="link">
           <v-list-item
-            link>
+            link
+            :disabled="!validateRoles(link.roles)">
               <v-list-item-icon>
                 <v-icon>{{ link.icon }}</v-icon>
               </v-list-item-icon>
@@ -46,7 +49,12 @@
     props: {
       categoria: String,
       links: Array
-    }
+    },
+    methods: {
+      validateRoles(roles) {
+        return roles.includes(this.$auth.user.rol);
+      }
+    },
   }
 </script>
 <style>

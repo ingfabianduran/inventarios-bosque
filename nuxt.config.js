@@ -73,7 +73,7 @@ export default {
   // Config server:
   server: {
     port: 3000,
-    host: '127.0.0.1', // Server U Bosque: 172.18.92.12
+    host: 'localhost', // Server U Bosque: 172.18.92.12
     timing: false
   },
 
@@ -83,11 +83,11 @@ export default {
     strategies: {
       'laravelSanctum': {
         provider: 'laravel/sanctum',
-        url: 'http://127.0.0.1',
-        cookie: {
-          name: 'X-XSRF-TOKEN',
-        },
-      },
-    }
+        url: 'http://localhost',
+        endpoints: {
+          user: { url: '/api/user', method: 'get' }
+        }
+      }
+    },
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <v-overlay 
+  <v-overlay
     :value="isShow"
     absolute
     :color="color"

@@ -21,10 +21,16 @@
         </v-tabs>
         <v-tabs-items v-model="tab">
           <v-tab-item>
-
+            <Tabla
+              :headers="headersRepMarcas"
+              :items="itemsRepMarcas"
+              :isRead="true" />
           </v-tab-item>
           <v-tab-item>
-
+            <Tabla
+              :headers="headersRepUsos"
+              :items="itemsRepUsos"
+              :isRead="true" />
           </v-tab-item>
           <v-tab-item>
             <Chart idChart="chartOne" :data="dataChart[0]" />
@@ -38,6 +44,7 @@
 </template>
 <script>
 import Chart from '~/components/Site/Chart';
+import Tabla from '~/components/Site/Table';
 
 export default {
   data() {
@@ -75,7 +82,21 @@ export default {
             }
           ]
         }
-      ]
+      ],
+      headersRepMarcas: [
+        { text: 'Marca', value: 'nombre', sortable: false },
+        { text: 'Area Académica y Administrativas', value: 'values', sortable: false },
+        { text: 'Servicio al Estudiante', value: 'values', sortable: false },
+      ],
+      headersRepUsos: [
+        { text: 'Tiempo de Uso', value: 'tiempos', sortable: false },
+        { text: 'Area Académica y Administrativas', value: 'porcentaje', sortable: false },
+        { text: 'Cantidad', value: 'cantidad', sortable: false },
+        { text: 'Servicio al Estudiante', value: 'porcentaje', sortable: false },
+        { text: 'Cantidad', value: 'cantidad', sortable: false },
+      ],
+      itemsRepMarcas: [],
+      itemsRepUsos: [],
     }
   },
   props: {
@@ -85,7 +106,8 @@ export default {
     }
   },
   components: {
-    Chart
+    Chart,
+    Tabla
   },
   methods: {
     close() {
