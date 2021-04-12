@@ -197,9 +197,13 @@
         }
 
         if (this.equipo.macs.length > 0) {
-          this.dataEquipo[3].data[0].value = (this.equipo.macs[0].mac ? this.equipo.macs[0].mac : 'No registra');
-          this.dataEquipo[3].data[1].value = (this.equipo.macs[1].mac ? this.equipo.macs[1].mac : 'No registra');
+          this.dataEquipo[3].data = [];
+          for (let i = 0; i < this.equipo.macs.length; i ++) {
+            this.dataEquipo[3].data.push({ titulo: this.equipo.macs[i].tipo, value: this.equipo.macs[i].mac });
+          }
         } else {
+          this.dataEquipo[3].data[0].titulo = 'Dirección MAC LAN:';
+          this.dataEquipo[3].data[1].titulo = 'Dirección MAC WIFI:';
           this.dataEquipo[3].data[0].value = 'No registra';
           this.dataEquipo[3].data[1].value = 'No registra';
         }

@@ -151,12 +151,12 @@
           serial: '',
           pantalla_id: ''
         },
-        items: []
+        items: [],
       }
     },
     props: {
-      data: {
-        type: Array,
+      id: {
+        type: String,
         required: true
       }
     },

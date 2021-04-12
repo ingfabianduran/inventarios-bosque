@@ -52,7 +52,8 @@
     },
     methods: {
       validateRoles(roles) {
-        return roles.includes(this.$auth.user.rol);
+        return roles.includes('COORDINADOR');
+        // return roles.includes(this.$auth.user.rol);
       }
     },
   }

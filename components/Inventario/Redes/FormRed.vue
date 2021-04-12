@@ -32,6 +32,7 @@
                 rules="required|max:20">
                 <v-text-field
                   v-model="form.mac"
+                  v-mask="' XX-XX-XX-XX-XX-XX'"
                   label="Mac"
                   placeholder="Mac del equipo"
                   outlined

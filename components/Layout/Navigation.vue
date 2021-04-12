@@ -12,8 +12,8 @@
           <img src="https://randomuser.me/api/portraits/men/81.jpg">
         </v-list-item-avatar>
         <v-list-item-content>
-          <v-list-item-title>{{ `${user.nombre} ${user.apellido}` }}</v-list-item-title>
-          <v-list-item-subtitle>{{ `${user.rol}` }}</v-list-item-subtitle>
+          <v-list-item-title>Fabian Esteban Duran</v-list-item-title>
+          <v-list-item-subtitle>COORDINADOR</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
     </template>
@@ -99,7 +99,7 @@
     },
     computed: {
       user() {
-        return this.$auth.user;
+        // return this.$auth.user;
       }
     },
   }

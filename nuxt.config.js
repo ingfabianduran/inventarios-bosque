@@ -73,7 +73,7 @@ export default {
   // Config server:
   server: {
     port: 3000,
-    host: 'localhost', // Server U Bosque: 172.18.92.12
+    host: '127.0.0.1', // Server U Bosque: 172.18.92.12
     timing: false
   },
 

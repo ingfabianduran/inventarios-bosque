@@ -85,18 +85,30 @@ export default {
       ],
       headersRepMarcas: [
         { text: 'Marca', value: 'nombre', sortable: false },
-        { text: 'Area Académica y Administrativas', value: 'values', sortable: false },
-        { text: 'Servicio al Estudiante', value: 'values', sortable: false },
+        { text: 'Area Académica y Administrativas', value: 'valuesAcaAdm', sortable: false },
+        { text: 'Servicio al Estudiante', value: 'valuesServEst', sortable: false },
       ],
       headersRepUsos: [
         { text: 'Tiempo de Uso', value: 'tiempos', sortable: false },
-        { text: 'Area Académica y Administrativas', value: 'porcentaje', sortable: false },
-        { text: 'Cantidad', value: 'cantidad', sortable: false },
-        { text: 'Servicio al Estudiante', value: 'porcentaje', sortable: false },
-        { text: 'Cantidad', value: 'cantidad', sortable: false },
+        { text: 'Area Académica y Administrativas', value: 'porcenteAcaAdm', sortable: false },
+        { text: 'Cantidad', value: 'cantidadAcaAdm', sortable: false },
+        { text: 'Servicio al Estudiante', value: 'porcentajeServEst', sortable: false },
+        { text: 'Cantidad', value: 'cantidadSerEst', sortable: false },
       ],
-      itemsRepMarcas: [],
-      itemsRepUsos: [],
+      itemsRepMarcas: [
+        { nombre: 'Lenovo', valuesAcaAdm: 758, valuesServEst: 1404 },
+        { nombre: 'Dell', valuesAcaAdm: 210, valuesServEst: 255 },
+        { nombre: 'Hp', valuesAcaAdm: 261, valuesServEst: 176 },
+        { nombre: 'Apple', valuesAcaAdm: 27, valuesServEst: 102 }
+      ],
+      itemsRepUsos: [
+        { tiempos: 'Equipos con menos de 1 año', porcenteAcaAdm: '2,7%', cantidadAcaAdm: 36, porcentajeServEst: '9,2%', cantidadSerEst: 181 },
+        { tiempos: 'Equipos entre 1 y 3 años', porcenteAcaAdm: '15,7%', cantidadAcaAdm: 207, porcentajeServEst: '13,7%', cantidadSerEst: 269 },
+        { tiempos: 'Equipos entre 3 y 5 años', porcenteAcaAdm: '8,9%', cantidadAcaAdm: 117, porcentajeServEst: '50,0%', cantidadSerEst: 979 },
+        { tiempos: 'Equipos entre 5 y 6 años', porcenteAcaAdm: '20,3%', cantidadAcaAdm: 268, porcentajeServEst: '4,7%', cantidadSerEst: 92 },
+        { tiempos: 'Equipos entre 6 y 7 años', porcenteAcaAdm: '20,6%', cantidadAcaAdm: 271, porcentajeServEst: '10,7%', cantidadSerEst: 210 },
+        { tiempos: 'Equipos con mas de 7 años', porcenteAcaAdm: '31,8%', cantidadAcaAdm: 419, porcentajeServEst: '11,5%', cantidadSerEst: 226 },
+      ],
     }
   },
   props: {
