@@ -27,7 +27,7 @@
               :isRead="true" />
           </v-tab-item>
           <v-tab-item>
-            <!--<Pantallas :id="1" />-->
+            <Pantallas :id="dialog.data.id" />
           </v-tab-item>
           <v-tab-item>
             <Texto :texto="(dialog.data.caracteristica.observaciones) ? dialog.data.caracteristica.observaciones : 'No registra'" />
@@ -36,10 +36,10 @@
             <Texto :texto="(dialog.data.caracteristica.perifericos) ? dialog.data.caracteristica.perifericos : 'No registra'" />
           </v-tab-item>
           <v-tab-item>
-            <!--<Sistemas :data="dialog.data.sistema_operativos" />-->
+            <Sistemas :id="dialog.data.id" />
           </v-tab-item>
           <v-tab-item>
-            <!--<Softwares :data="dialog.data.software" />-->
+            <Softwares :id="dialog.data.id" />
           </v-tab-item>
         </v-tabs-items>
       </v-card>
