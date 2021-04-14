@@ -1,9 +1,13 @@
 <template>
   <div>
     <Equipo
-      :dialog="dialog"
-      @closeModal="closeModal"
-      v-if="dialog.isView" />
+      :dialog="dialogEquipo"
+      @closeModal="closeModalEquipo"
+      v-if="dialogEquipo.isView" />
+    <Reporte
+      :dialog="dialogReporte"
+      @closeModal="closeModalReporte"
+      v-if="dialogReporte.isView" />
     <v-card>
       <v-card-title
         class="font-weight-bold">
@@ -70,6 +74,7 @@
 </template>
 <script>
   import Equipo from '~/components/Inventario/Equipos/TabsEquipo';
+  import Reporte from '~/components/Inventario/Equipos/TabsReportes';
   import Pdf from '~/components/Site/HojaVida';
 
   export default {
@@ -111,11 +116,15 @@
           { text: 'Agregar Equipo', opcion: 'agregarEquipo' },
           { text: 'Hoja de Vida', opcion: 'hojaVida' },
           { text: 'Mas Información', opcion: 'masInformacion' },
-          { text: 'Modificar Equipo', opcion: 'modificarEquipo' }
+          { text: 'Modificar Equipo', opcion: 'modificarEquipo' },
+          { text: 'Reportes de Inventario', opcion: 'reporteInventario' },
         ],
-        dialog: {
+        dialogEquipo: {
           isView: false,
           data: {}
+        },
+        dialogReporte: {
+          isView: false
         }
       }
     },
@@ -126,11 +135,15 @@
       }
     },
     components: {
-      Equipo
+      Equipo,
+      Reporte
     },
     methods: {
-      closeModal(value) {
-        this.dialog.isView = value;
+      closeModalEquipo(value) {
+        this.dialogEquipo.isView = value;
+      },
+      closeModalReporte(value) {
+        this.dialogReporte.isView = value;
       },
       eventMasOpciones(opcion) {
         if (opcion === 'agregarEquipo') {
@@ -138,10 +151,12 @@
         } else if (opcion === 'hojaVida') {
           Pdf.getHojaVida(this.equipo);
         } else if (opcion === 'masInformacion') {
-          this.dialog.data = this.equipo;
-          this.dialog.isView = true;
+          this.dialogEquipo.data = this.equipo;
+          this.dialogEquipo.isView = true;
         } else if (opcion === 'modificarEquipo') {
           this.$emit('updateEquipo');
+        } else if (opcion === 'reporteInventario') {
+          this.dialogReporte.isView = true;
         }
       }
     },
@@ -182,9 +197,13 @@
         }
 
         if (this.equipo.macs.length > 0) {
-          this.dataEquipo[3].data[0].value = (this.equipo.macs[0].mac ? this.equipo.macs[0].mac : 'No registra');
-          this.dataEquipo[3].data[1].value = (this.equipo.macs[1].mac ? this.equipo.macs[1].mac : 'No registra');
+          this.dataEquipo[3].data = [];
+          for (let i = 0; i < this.equipo.macs.length; i ++) {
+            this.dataEquipo[3].data.push({ titulo: this.equipo.macs[i].tipo, value: this.equipo.macs[i].mac });
+          }
         } else {
+          this.dataEquipo[3].data[0].titulo = 'Dirección MAC LAN:';
+          this.dataEquipo[3].data[1].titulo = 'Dirección MAC WIFI:';
           this.dataEquipo[3].data[0].value = 'No registra';
           this.dataEquipo[3].data[1].value = 'No registra';
         }

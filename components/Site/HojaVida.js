@@ -13,11 +13,6 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export default {
   getHojaVida(equipo) {
-    try {
-
-    } catch (error) {
-
-    }
     let pdf = {
       content: [
         {

@@ -34,9 +34,6 @@
 </template>
 <script>
   export default {
-    created() {
-      this.$store.commit('SET_LOADING', false);
-    },
     props: ['error'],
   }
 </script>

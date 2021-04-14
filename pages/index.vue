@@ -1,8 +1,8 @@
 <template>
   <v-card
     class="border-card">
-    <v-row 
-      no-gutters 
+    <v-row
+      no-gutters
       align="center">
       <v-col sm="12" md="5" lg="5" xl="5">
         <Carusel />

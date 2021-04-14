@@ -103,7 +103,7 @@
               <ValidationProvider
                 v-slot="{ errors }"
                 name="valor"
-                rules="required|integer">
+                rules="required">
                 <v-text-field
                   v-model="form.valor"
                   label="Valor"
@@ -179,6 +179,8 @@
   </v-card>
 </template>
 <script>
+  import moment from 'moment';
+
   export default {
     data() {
       return {
@@ -254,8 +256,8 @@
     },
     watch: {
       equipo() {
-        this.form.fecha_compra = this.equipo.fecha_compra;
-        this.form.vence_garantia = this.equipo.vence_garantia;
+        this.form.fecha_compra = moment(this.equipo.fecha_compra).format('DD-MM-YYYY');
+        this.form.vence_garantia = moment(this.equipo.vence_garantia).format('DD-MM-YYYY');
         this.form.tipo = this.equipo.tipo;
         this.form.serie = this.equipo.serie;
         this.form.valor = this.equipo.valor;

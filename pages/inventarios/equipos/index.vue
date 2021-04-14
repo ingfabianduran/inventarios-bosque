@@ -67,7 +67,7 @@
       Table,
       Pagination,
     },
-    async fetch() {
+    async fetch () {
       const { data } = await this.$axios.$get(`api/inventario/equipos/i/10?page=${this.page.current}`);
       this.equipos = data.data;
       this.page.last = data.last_page;

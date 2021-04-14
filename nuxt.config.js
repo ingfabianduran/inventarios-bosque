@@ -73,5 +73,26 @@ export default {
     timing: false
   },
 
-  loading: '~/components/Site/LoaderPage.vue'
+  loading: '~/components/Site/LoaderPage.vue',
+
+  auth: {
+    strategies: {
+      'laravelJWT': {
+        provider: 'laravel/jwt',
+        url: 'http://172.18.92.12',
+        endpoints: {
+          login: { url: '/api/login', method: 'post' },
+          logout: { url: '/api/logout', method: 'get' },
+          user: { url: '/api/user', method: 'get' }
+        },
+        token: {
+          property: 'data',
+          maxAge: 60 * 60
+        },
+        refreshToken: {
+          maxAge: 20160 * 60
+        },
+      }
+    }
+  }
 }

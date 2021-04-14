@@ -12,8 +12,8 @@
           <img src="https://randomuser.me/api/portraits/men/81.jpg">
         </v-list-item-avatar>
         <v-list-item-content>
-          <v-list-item-title>Fabian Duran Avellaneda</v-list-item-title>
-          <v-list-item-subtitle>Coordinador</v-list-item-subtitle>
+          <v-list-item-title>{{ user.nombre }} {{ user.apellido }}</v-list-item-title>
+          <v-list-item-subtitle>{{ user.rol }}</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
     </template>
@@ -34,7 +34,8 @@
         <v-btn
           block
           color="#F27830"
-          rounded>
+          rounded
+          @click="closeSesion()">
           <v-icon left>
             mdi-exit-to-app
           </v-icon>
@@ -46,36 +47,37 @@
 </template>
 <script>
   import ListNavigation from '~/components/Layout/ListNavigation';
+  import Alert from '~/components/Site/SweetAlert';
 
   export default {
     data() {
       return {
         asignaciones: [
-          { titulo: 'Infraestructura', icon: 'mdi-home-modern', subtitulos: [
-            { titulo: 'Edificios', link: '/asignaciones/edificios' },
-            { titulo: 'Dependencias', link: '/asignaciones/dependencias' },
-            { titulo: 'Espacios', link: '/asignaciones/espacios' },
+          { titulo: 'Infraestructura', icon: 'mdi-home-modern', roles:['COORDINADOR'], subtitulos: [
+            { titulo: 'Edificios', link: '/asignaciones/edificios', roles:['COORDINADOR'] },
+            { titulo: 'Dependencias', link: '/asignaciones/dependencias', roles:['COORDINADOR'] },
+            { titulo: 'Espacios', link: '/asignaciones/espacios', roles:['COORDINADOR'] },
           ] },
-          { titulo: 'Responsables', icon: 'mdi-account-group', link: '/asignaciones/responsables' },
-          { titulo: 'Asignaciones', icon: 'mdi-handshake', link: '/asignaciones/asignaciones' },
+          { titulo: 'Responsables', icon: 'mdi-account-group', link: '/asignaciones/responsables', roles:['COORDINADOR'] },
+          { titulo: 'Asignaciones', icon: 'mdi-handshake', link: '/asignaciones/asignaciones', roles:['COORDINADOR'] },
         ],
         mantenimientos: [
-          { titulo: 'Servicio Tecnico', icon: 'mdi-hammer-wrench', link: '#', subtitulos: [
-            { titulo: 'Categorias', link: '/mantenimientos/categorias' },
-            { titulo: 'Especialistas', link: '/mantenimientos/especialistas' },
-            { titulo: 'Mantenimientos', link: '/mantenimientos/mantenimientos' }
+          { titulo: 'Servicio Tecnico', icon: 'mdi-hammer-wrench', link: '#', roles:['COORDINADOR', 'SOPORTE'], subtitulos: [
+            { titulo: 'Categorias', link: '/mantenimientos/categorias', roles:['COORDINADOR'] },
+            { titulo: 'Especialistas', link: '/mantenimientos/especialistas', roles:['COORDINADOR'] },
+            { titulo: 'Mantenimientos', link: '/mantenimientos/mantenimientos', roles:['COORDINADOR', 'SOPORTE'] }
           ] },
         ],
         inventario: [
-          { titulo: 'Inventarios', icon: 'mdi-desktop-classic', link: '#', subtitulos: [
-            { titulo: 'Equipos', link: '/inventarios/equipos' },
-            { titulo: 'Modelos', link: '/inventarios/modelos' },
+          { titulo: 'Inventarios', icon: 'mdi-desktop-classic', link: '#', roles:['COORDINADOR', 'SOPORTE', 'MESA'], subtitulos: [
+            { titulo: 'Equipos', link: '/inventarios/equipos', roles:['COORDINADOR', 'SOPORTE', 'MESA'] },
+            { titulo: 'Modelos', link: '/inventarios/modelos', roles:['COORDINADOR'] },
           ] },
-          { titulo: 'Software', icon: 'mdi-blender-software', link: '#', subtitulos: [
-            { titulo: 'Sistemas Operativos', link: '/inventarios/sistemas' },
-            { titulo: 'Software', link: '/inventarios/softwares' },
+          { titulo: 'Software', icon: 'mdi-blender-software', link: '#', roles:['COORDINADOR'], subtitulos: [
+            { titulo: 'Sistemas Operativos', link: '/inventarios/sistemas', roles:['COORDINADOR'] },
+            { titulo: 'Software', link: '/inventarios/softwares', roles:['COORDINADOR'] },
           ] },
-          { titulo: 'Monitores', icon: 'mdi-monitor', link: '/inventarios/pantallas' },
+          { titulo: 'Monitores', icon: 'mdi-monitor', link: '/inventarios/pantallas', roles:['COORDINADOR'] },
         ]
       }
     },
@@ -84,6 +86,29 @@
     },
     components: {
       ListNavigation
-    }
+    },
+    methods: {
+      closeSesion() {
+        Alert.showConfirm('Cerrar Sesión', 'Esta seguro de salir de la aplicación', 'question', async(confirmed) => {
+          if (confirmed) {
+            try {
+              await this.$auth.logout();
+              Alert.showToast('success', 'Esta a punto de salir del Sistema');
+              setTimeout(() => {
+                this.$router.push('/');
+              }, 3000);
+            }
+            catch (error) {
+
+            }
+          }
+        });
+      }
+    },
+    computed: {
+      user() {
+        return this.$auth.user;
+      }
+    },
   }
 </script>
