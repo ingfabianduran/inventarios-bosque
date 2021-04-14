@@ -43,11 +43,23 @@
                   mdi-plus
                 </v-icon>
               </v-btn>
+              <v-btn
+                type="button"
+                elevation="2"
+                fab
+                dark
+                x-small
+                color="#7BC142"
+                @click="clearForm()">
+                <v-icon dark>
+                  mdi-window-close
+                </v-icon>
+              </v-btn>
             </v-col>
           </v-row>
         </v-form>
       </ValidationObserver>
-      <Softwares :headers="headers" :items="softwares" :url="url" titulo="Modificar Software" @updateListItems="getSoftwares" />
+      <Softwares :headers="headers" :items="softwares" titulo="Modificar Software" @itemSelect="updateSoftware" />
     </v-card-text>
   </v-card>
 </template>
@@ -70,7 +82,6 @@
           { text: 'Actions', value: 'actions', sortable: false }
         ],
         softwares: [],
-        url: `api/inventario/equiposoftware/${this.id}`,
         isLoading: false
       }
     },
@@ -87,7 +98,7 @@
     async fetch() {
       const { data } = await this.$axios.$get('api/inventario/softwares/i/0');
       this.items = data;
-      // await this.getSoftwares();
+      await this.getSoftwares();
     },
     methods: {
       async getSoftwares() {
@@ -110,13 +121,32 @@
                   this.isLoading = false;
                   Alert.showToast('success', descripcion);
                   this.clearForm();
-                  // await this.getSoftwares();
+                  await this.getSoftwares();
                 }, 1000);
               } catch (error) {
                 this.isLoading = false;
               }
             }
           });
+        }
+      },
+      async updateSoftware(software) {
+        try {
+          this.isLoading = true;
+          const listSoftware = [];
+          for (const i in this.softwares) {
+            if (this.softwares[i].pivot.software_id !== software.pivot.software_id) {
+              listSoftware.push({ software_id: this.softwares[i].pivot.software_id });
+            }
+          }
+          const { descripcion } = await this.$axios.$put(`api/inventario/equiposoftware/${this.id}`, listSoftware);
+          setTimeout(async () => {
+            this.isLoading = false;
+            Alert.showToast('success', descripcion);
+            await this.getSoftwares();
+          }, 1000);
+        } catch (error) {
+          this.isLoading = false;
         }
       },
       clearForm() {

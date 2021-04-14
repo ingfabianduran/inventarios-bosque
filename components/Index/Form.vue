@@ -4,6 +4,7 @@
     <v-form
       @submit.prevent="logIn"
       class="text-center">
+      <Loader :isShow="isLoading" color="#212121" size="90" />
       <p class="text-h2 mb-10">Login</p>
       <ValidationProvider
         v-slot="{ errors }"
@@ -24,6 +25,7 @@
         name="password"
         rules="required">
         <v-text-field
+          type="password"
           v-model="form.password"
           label="Contraseña"
           placeholder="Contraseña del Usuario"
@@ -34,7 +36,6 @@
         </v-text-field>
       </ValidationProvider>
       <v-btn
-        :loading="isLoading"
         type="submit"
         dark
         color="#F27830"
@@ -55,28 +56,36 @@
 </template>
 <script>
   import Alert from '~/components/Site/SweetAlert';
+  import Loader from '~/components/Site/Loader';
 
   export default {
     data() {
       return {
         form: {
-          email: '',
-          password: ''
+          email: 'jbrito@moral.com',
+          password: 'password'
         },
         isLoading: false
       }
     },
+    components: {
+      Loader
+    },
     methods: {
       async logIn() {
-        const validate = await this.$refs.formLogin.validate();
-        if (validate) {
-          this.isLoading = true;
-          const { data } = await this.$auth.loginWith('laravelSanctum', { data: this.form });
-          Alert.showToast('success', data.descripcion);
-          setTimeout(() => {
-            this.isLoading = false;
-            location.href = '/inventarios/equipos';
-          }, 1000);
+        try {
+          const validate = await this.$refs.formLogin.validate();
+          if (validate) {
+            this.isLoading = true;
+            const { data } = await this.$auth.loginWith('laravelJWT', { data: this.form });
+            Alert.showToast('success', data.descripcion);
+            setTimeout(() => {
+              this.isLoading = false;
+              this.$router.push('/inventarios/modelos');
+            }, 3000);
+          }
+        } catch (error) {
+          this.isLoading = false;
         }
       }
     }

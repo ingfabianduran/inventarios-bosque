@@ -12,8 +12,8 @@
           <img src="https://randomuser.me/api/portraits/men/81.jpg">
         </v-list-item-avatar>
         <v-list-item-content>
-          <v-list-item-title>Fabian Esteban Duran</v-list-item-title>
-          <v-list-item-subtitle>COORDINADOR</v-list-item-subtitle>
+          <v-list-item-title>{{ user.nombre }} {{ user.apellido }}</v-list-item-title>
+          <v-list-item-subtitle>{{ user.rol }}</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
     </template>
@@ -88,18 +88,26 @@
       ListNavigation
     },
     methods: {
-      async closeSesion() {
+      closeSesion() {
         Alert.showConfirm('Cerrar Sesión', 'Esta seguro de salir de la aplicación', 'question', async(confirmed) => {
           if (confirmed) {
-            await this.$auth.logout();
-            location.href = '/';
+            try {
+              await this.$auth.logout();
+              Alert.showToast('success', 'Esta a punto de salir del Sistema');
+              setTimeout(() => {
+                this.$router.push('/');
+              }, 3000);
+            }
+            catch (error) {
+
+            }
           }
         });
       }
     },
     computed: {
       user() {
-        // return this.$auth.user;
+        return this.$auth.user;
       }
     },
   }

@@ -76,7 +76,7 @@
           </v-row>
         </v-form>
       </ValidationObserver>
-      <Sistemas :headers="headers" :items="sistemas" :url="url" titulo="Modificar Sistemas Operativos" @updateListItems="getSistemas" />
+      <Sistemas :headers="headers" :items="sistemas" titulo="Modificar Sistemas Operativos" @itemSelect="updateSistema" />
     </v-card-text>
   </v-card>
 </template>
@@ -99,7 +99,6 @@
           { text: 'Actions', value: 'actions', sortable: false }
         ],
         sistemas: [],
-        url: `api/inventario/equiposistemaoperativos/${this.id}`,
         isLoading: false
       }
     },
@@ -146,6 +145,25 @@
               }
             }
           });
+        }
+      },
+      async updateSistema(sistema) {
+        try {
+          this.isLoading = true;
+          const listSistemas = [];
+          for (const i in this.sistemas) {
+            if (this.sistemas[i].pivot.sistema_operativo_id !== sistema.pivot.sistema_operativo_id) {
+              listSistemas.push({ sistema_operativo_id: this.sistemas[i].pivot.sistema_operativo_id, compilacion: '20H2' });
+            }
+          }
+          const { descripcion } = await this.$axios.$put(`api/inventario/equiposistemaoperativos/${this.id}`, listSistemas);
+          setTimeout(async () => {
+            this.isLoading = false;
+            Alert.showToast('success', descripcion);
+            await this.getSistemas();
+          }, 1000);
+        } catch (error) {
+          this.isLoading = false;
         }
       },
       clearForm() {

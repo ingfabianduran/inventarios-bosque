@@ -81,13 +81,22 @@ export default {
 
   auth: {
     strategies: {
-      'laravelSanctum': {
-        provider: 'laravel/sanctum',
-        url: 'http://localhost',
+      'laravelJWT': {
+        provider: 'laravel/jwt',
+        url: 'http://127.0.0.1',
         endpoints: {
+          login: { url: '/api/login', method: 'post' },
+          logout: { url: '/api/logout', method: 'get' },
           user: { url: '/api/user', method: 'get' }
-        }
+        },
+        token: {
+          property: 'data',
+          maxAge: 60 * 60
+        },
+        refreshToken: {
+          maxAge: 20160 * 60
+        },
       }
-    },
+    }
   }
 }

@@ -20,6 +20,7 @@
             v-for="(subLink, j) in link.subtitulos"
             :key="j"
             link
+            :inactive="true"
             :disabled="!validateRoles(subLink.roles)">
             <v-list-item-content>
               <nuxt-link :to="subLink.link" class="link">
@@ -37,7 +38,10 @@
               <v-list-item-icon>
                 <v-icon>{{ link.icon }}</v-icon>
               </v-list-item-icon>
-              <v-list-item-title v-text="link.titulo" class="text-link"></v-list-item-title>
+              <v-list-item-title
+                v-text="link.titulo"
+                class="text-link">
+              </v-list-item-title>
           </v-list-item>
         </nuxt-link>
       </template>
@@ -52,13 +56,12 @@
     },
     methods: {
       validateRoles(roles) {
-        return roles.includes('COORDINADOR');
-        // return roles.includes(this.$auth.user.rol);
+        return roles.includes(this.$auth.user.rol);
       }
     },
   }
 </script>
-<style>
+<style lang="css" scoped>
   .link {
     text-decoration: none;
   }

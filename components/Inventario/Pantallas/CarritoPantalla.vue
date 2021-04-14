@@ -77,7 +77,7 @@
           </v-row>
         </v-form>
       </ValidationObserver>
-      <Pantallas :headers="headers" :items="pantallas" :url="url" titulo="Modificar Pantallas" @updateListItems="getPantallas" />
+      <Pantallas :headers="headers" :items="pantallas" titulo="Modificar Pantallas" @itemSelect="updatePantalla" />
     </v-card-text>
   </v-card>
 </template>
@@ -103,7 +103,6 @@
           { text: 'Actions', value: 'actions', sortable: false }
         ],
         pantallas: [],
-        url: `api/inventario/equipopantallas/${this.id}`,
         isLoading: false
       }
     },
@@ -150,6 +149,25 @@
               }
             }
           });
+        }
+      },
+      async updatePantalla(pantalla) {
+        try {
+          this.isLoading = true;
+          const listPantalla = [];
+          for (const i in this.pantallas) {
+            if (this.pantallas[i].pivot.pantalla_id !== pantalla.pivot.pantalla_id) {
+              listPantalla.push({ pantalla_id: this.pantallas[i].pivot.pantalla_id, serial: this.pantallas[i].pivot.serial });
+            }
+          }
+          const { descripcion } = await this.$axios.$put(`api/inventario/equipopantallas/${this.id}`, listPantalla);
+          setTimeout(async () => {
+            this.isLoading = false;
+            Alert.showToast('success', descripcion);
+            await this.getPantallas();
+          }, 1000);
+        } catch (error) {
+          this.isLoading = false;
         }
       },
       clearForm() {
