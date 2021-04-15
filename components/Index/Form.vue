@@ -62,7 +62,7 @@
     data() {
       return {
         form: {
-          email: 'jbrito@moral.com',
+          email: 'ruben23@live.com',
           password: 'password'
         },
         isLoading: false
