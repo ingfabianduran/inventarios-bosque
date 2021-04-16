@@ -65,7 +65,7 @@
               <ValidationProvider
                 v-slot="{ errors }"
                 name="observaciones"
-                rules="min:3|max:1000">
+                rules="max:1000">
                 <v-textarea
                   v-model="form.observaciones"
                   outlined
@@ -113,7 +113,7 @@
           usuario_dominio: '',
           nombre_red: '',
           perifericos: '',
-          observaciones: ''
+          observaciones: null
         }
       }
     },
@@ -147,10 +147,12 @@
     },
     watch: {
       caracteristica() {
-        this.form.usuario_dominio = this.caracteristica.usuario_dominio;
-        this.form.nombre_red = this.caracteristica.nombre_red;
-        this.form.perifericos = this.caracteristica.perifericos;
-        this.form.observaciones = this.caracteristica.observaciones;
+        if (this.caracteristica !== null) {
+          this.form.usuario_dominio = this.caracteristica.usuario_dominio;
+          this.form.nombre_red = this.caracteristica.nombre_red;
+          this.form.perifericos = this.caracteristica.perifericos;
+          this.form.observaciones = this.caracteristica.observaciones;
+        }
       }
     }
   }

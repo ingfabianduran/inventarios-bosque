@@ -61,7 +61,7 @@
     },
   }
 </script>
-<style lang="css" scoped>
+<style>
   .link {
     text-decoration: none;
   }

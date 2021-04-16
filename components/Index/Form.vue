@@ -62,7 +62,7 @@
     data() {
       return {
         form: {
-          email: 'ruben23@live.com',
+          email: 'jbrito@moral.com',
           password: 'password'
         },
         isLoading: false
@@ -77,14 +77,15 @@
           const validate = await this.$refs.formLogin.validate();
           if (validate) {
             this.isLoading = true;
-            const { data } = await this.$auth.loginWith('laravelJWT', { data: this.form });
-            Alert.showToast('success', data.descripcion);
+            await this.$auth.loginWith('laravelJWT', { data: this.form });
+            Alert.showToast('success', 'Bienvenido al Sistema');
             setTimeout(() => {
               this.isLoading = false;
-              this.$router.push('/inventarios/modelos');
+              this.$router.push('/inventarios/equipos');
             }, 3000);
           }
         } catch (error) {
+          Alert.showToast('error', 'Usuario o contraseña incorrecta');
           this.isLoading = false;
         }
       }

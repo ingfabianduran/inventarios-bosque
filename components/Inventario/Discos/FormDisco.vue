@@ -14,7 +14,7 @@
                 name="capacidad"
                 rules="required|min:3|max:20">
                 <v-text-field
-                  v-model="form.tipo"
+                  v-model="form.capacidad"
                   label="Capacidad"
                   placeholder="Capacidad del disco"
                   outlined
@@ -67,7 +67,7 @@
             type="submit"
             dark
             color="#F27830">
-            Registrar
+            Siguiente
           </v-btn>
           <v-btn
             type="button"

@@ -67,7 +67,7 @@
             type="submit"
             dark
             color="#F27830">
-            Registrar
+            Siguiente
           </v-btn>
           <v-btn
             type="button"

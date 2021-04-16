@@ -114,7 +114,8 @@
           <v-btn
             type="submit"
             dark
-            color="#F27830">
+            color="#F27830"
+            :disabled="stateBtn">
             {{ this.textBtn }}
           </v-btn>
           <v-btn
@@ -168,6 +169,10 @@
         type: String,
         required: true
       },
+      stateBtn: {
+        type: Boolean,
+        default: false
+      }
     },
     components: {
       Loader

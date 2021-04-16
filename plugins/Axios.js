@@ -7,9 +7,11 @@ export default function ({ $axios }) {
       const errors = error.response.data;
       Errors.showError(errors);
       return true;
-    } else if (code === 503 || code === 404 || code === 400 || code === 401) {
+    } else if (code === 503 || code === 404 || code === 400) {
       const errors = error.response.data;
       Errors.showError(errors);
+    } else if (code === 401) {
+
     }
   });
 }

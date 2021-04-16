@@ -107,8 +107,10 @@
     },
     watch: {
       inventario() {
-        this.form.inventario = this.inventario.inventario;
-        this.form.n_interno = this.inventario.n_interno;
+        if (this.inventario !== null) {
+          this.form.inventario = this.inventario.inventario;
+          this.form.n_interno = this.inventario.n_interno;
+        }
       }
     }
   }
