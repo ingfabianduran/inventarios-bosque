@@ -85,8 +85,8 @@
         this.page.url = modelos.url;
       },
       clearForm() {
-        this.titulo = 'Nuevo Equipo';
-        this.url = 'api/inventario/equipos';
+        this.titulo = 'Nuevo Modelo';
+        this.url = 'api/inventario/modelos';
         this.modelo = {};
         this.$fetch();
       }

@@ -154,6 +154,6 @@
           this.form.observaciones = this.caracteristica.observaciones;
         }
       }
-    }
+    },
   }
 </script>

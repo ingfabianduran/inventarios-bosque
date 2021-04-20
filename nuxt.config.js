@@ -83,7 +83,8 @@ export default {
         endpoints: {
           login: { url: '/api/login', method: 'post' },
           logout: { url: '/api/logout', method: 'get' },
-          user: { url: '/api/user', method: 'get' }
+          user: { url: '/api/user', method: 'get' },
+          refresh: false
         },
         token: {
           property: 'data',

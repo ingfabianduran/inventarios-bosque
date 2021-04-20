@@ -19,7 +19,8 @@
                   placeholder="Capacidad del disco"
                   outlined
                   color="#7BC142"
-                  :error-messages="errors">
+                  :error-messages="errors"
+                  :disabled="rol === 'COORDINADOR' ? false : true">
                 </v-text-field>
               </ValidationProvider>
             </v-col>
@@ -36,7 +37,8 @@
                   outlined
                   :items="tipos"
                   color="#7BC142"
-                  :error-messages="errors">
+                  :error-messages="errors"
+                  :disabled="rol === 'COORDINADOR' ? false : true">
                 </v-select>
               </ValidationProvider>
             </v-col>
@@ -55,7 +57,8 @@
                   label="Descripción del disco"
                   auto-grow
                   color="#7BC142"
-                  :error-messages="errors">
+                  :error-messages="errors"
+                  :disabled="rol === 'COORDINADOR' ? false : true">
                 </v-textarea>
               </ValidationProvider>
             </v-col>
@@ -119,6 +122,11 @@
         this.form.capacidad = '';
         this.form.tipo = '';
         this.form.descripcion = '';
+      }
+    },
+    computed: {
+      rol() {
+        return this.$auth.user.rol;
       }
     }
   }

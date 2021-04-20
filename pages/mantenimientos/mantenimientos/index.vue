@@ -6,13 +6,28 @@
       <v-col
         cols="12"
         :md="(aranda.mantenimiento === 0 ? 12 : 8)">
-        <Mantenimiento :titulo="mantenimiento.titulo" :mantenimiento="mantenimiento.data" :url="mantenimiento.url" :textBtn="mantenimiento.textBtn" :stateBtn="mantenimiento.stateBtn" @clearForm="clearForm" />
+        <Mantenimiento
+          ref="mantenimiento"
+          :titulo="mantenimiento.titulo"
+          :mantenimiento="mantenimiento.data"
+          :url="mantenimiento.url"
+          :textBtn="mantenimiento.textBtn"
+          :stateBtn="mantenimiento.stateBtn"
+          @registrarAranda="registrarAranda"
+          @clearForm="clearForm" />
       </v-col>
       <v-col
         cols="12"
         md="4"
         v-show="aranda.mantenimiento !== 0">
-        <Aranda :titulo="aranda.titulo" :aranda="aranda.data" :url="aranda.url" :textBtn="aranda.textBtn" :stateBtn="aranda.stateBtn" :mantenimiento="aranda.mantenimiento" @clearForm="clearForm" />
+        <Aranda
+          :titulo="aranda.titulo"
+          :aranda="aranda.data"
+          :url="aranda.url"
+          :textBtn="aranda.textBtn"
+          :stateBtn="aranda.stateBtn"
+          :mantenimiento="aranda.mantenimiento"
+          @clearForm="clearForm" />
       </v-col>
     </v-row>
     <v-row>
@@ -125,12 +140,15 @@
         this.mantenimiento.data = {};
         this.mantenimiento.url = 'api/mantenimiento/mantenimientos';
         this.mantenimiento.textBtn = 'Registrar';
+        this.mantenimiento.stateBtn = false;
+        this.$refs.mantenimiento.clearForm();
 
         this.aranda.titulo = 'Registrar Caso Aranda';
         this.aranda.data = {};
         this.aranda.url = `api/mantenimiento/arandas`;
         this.aranda.textBtn = 'Registrar';
         this.aranda.mantenimiento = 0;
+        this.aranda.stateBtn = false;
 
         this.$fetch();
       },
@@ -140,6 +158,10 @@
         this.page.last = mantenimientos.data.last_page;
         this.page.url = mantenimientos.url;
       },
+      registrarAranda(mantenimiento) {
+        this.mantenimiento.data = mantenimiento;
+        this.aranda.mantenimiento = mantenimiento.id;
+      }
     }
   }
 </script>

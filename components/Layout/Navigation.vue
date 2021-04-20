@@ -9,7 +9,11 @@
     <template v-slot:prepend>
       <v-list-item two-line>
         <v-list-item-avatar>
-          <img src="https://randomuser.me/api/portraits/men/81.jpg">
+          <v-avatar
+            color="#F27830"
+            size="56">
+            <span>{{ avatar }}</span>
+          </v-avatar>
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title>{{ user.nombre }} {{ user.apellido }}</v-list-item-title>
@@ -108,6 +112,9 @@
     computed: {
       user() {
         return this.$auth.user;
+      },
+      avatar() {
+        return `${this.$auth.user.nombre[0]}${this.$auth.user.apellido[0]}`;
       }
     },
   }

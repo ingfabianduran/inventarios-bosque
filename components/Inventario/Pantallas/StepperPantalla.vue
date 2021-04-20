@@ -9,9 +9,11 @@
           :key="`${i}-step`"
           :complete="paso > step.step"
           :step="step.step"
-          color="#7BC142">
+          color="#7BC142"
+          editable>
           {{ step.titulo }}
           <small v-if="step.opcional">Opcional</small>
+          <small v-else>Obligatorio</small>
         </v-stepper-step>
         <v-divider
           v-if="i !== 1"
@@ -45,10 +47,12 @@
           { titulo: 'Marca', step: 1, opcional: true },
           { titulo: 'Pantalla', step: 2, opcional: false },
         ],
-        pantalla: {
-          marca: null,
-          pantalla: null
+        form: {
+          pulgadas: '',
+          tipo: '',
+          marca_id: ''
         },
+        marca: {},
         showMarcas: true,
         isLoading: false
       }
@@ -74,7 +78,7 @@
     },
     methods: {
       setMarca(marca) {
-        this.pantalla.marca = marca;
+        this.marca = marca;
         this.showMarcas = false;
         this.paso += 1;
       },
@@ -83,7 +87,7 @@
         this.paso += 1;
       },
       setPantalla(pantalla) {
-        this.pantalla.pantalla = pantalla;
+        this.form = pantalla;
         Alert.showConfirm(this.titulo, '¿Esta seguro de realizar la peticion?', 'question', async(confirm) => {
           if (confirm) {
             try {
@@ -101,22 +105,28 @@
           }
         });
       },
-      async storePantalla() {
-        if (this.pantalla.pantalla.marca_id === '') {
-          const marca = await this.$axios.$post('api/inventario/marcas', this.pantalla.marca);
-          this.pantalla.pantalla.marca_id = marca.data.id;
+      async setMarcaPantalla() {
+        if (Object.keys(this.marca).length !== 0) {
+          const marca = await this.$axios.$post('api/inventario/marcas', this.marca);
+          this.form.marca_id = marca.data.id;
         }
-        const { descripcion } = await this.$axios.$post(this.url, this.pantalla.pantalla);
+      },
+      async storePantalla() {
+        await this.setMarcaPantalla();
+        const { descripcion } = await this.$axios.$post(this.url, this.form);
         return descripcion;
       },
       async updatePantalla() {
-        const { descripcion } = await this.$axios.$put(this.url, this.pantalla.pantalla);
+        await this.setMarcaPantalla();
+        const { descripcion } = await this.$axios.$put(this.url, this.form);
         return descripcion;
       },
       clearForm() {
         this.paso = 1;
-        this.pantalla.marca = null;
-        this.pantalla.pantalla = null;
+        this.form.pulgadas = '';
+        this.form.tipo = '';
+        this.form.marca_id = '';
+        this.marca = {};
         this.showMarcas = false;
         this.$refs.marca.resetData();
         this.$refs.pantalla.resetData();
@@ -125,7 +135,9 @@
     watch: {
       data() {
         if (Object.keys(this.data).length > 0) {
-          this.pantalla.pantalla = this.data;
+          this.form.pulgadas = this.data.pulgadas;
+          this.form.tipo = this.data.tipo;
+          this.form.marca_id = this.data.marca_id;
           this.showMarcas = true;
           this.paso = 2;
         }

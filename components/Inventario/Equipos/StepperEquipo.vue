@@ -58,6 +58,7 @@
   import Red from '~/components/Inventario/Redes/FormRed';
   import Alert from '~/components/Site/SweetAlert';
   import Loader from '~/components/Site/Loader';
+  import moment from 'moment';
 
   export default {
     data() {
@@ -233,8 +234,8 @@
       data() {
         if (Object.keys(this.data).length > 0) {
           this.paso = 3;
-          this.form.fecha_compra = this.data.fecha_compra;
-          this.form.vence_garantia = this.data.vence_garantia;
+          this.form.fecha_compra = moment(this.data.fecha_compra).format('DD-MM-YYYY');
+          this.form.vence_garantia = moment(this.data.vence_garantia).format('DD-MM-YYYY');
           this.form.tipo = this.data.tipo;
           this.form.serie = this.data.serie;
           this.form.valor = this.data.valor;
@@ -244,7 +245,7 @@
           if (this.data.inventario !== null) {
             this.form.inventario = {
               n_interno: this.data.inventario.n_interno,
-              inventario: this.data.inventario
+              inventario: this.data.inventario.inventario
             };
           }
           if (this.data.caracteristica !== null) {
@@ -255,9 +256,11 @@
               observaciones: this.data.caracteristica.observaciones
             };
           }
-          this.form.mac = this.data.macs;
+          this.form.mac = this.data.macs.map((mac) => {
+            return { tipo: mac.tipo, mac: mac.mac };
+          });
         }
-      }
+      },
     }
   }
 </script>

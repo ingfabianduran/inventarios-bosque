@@ -19,7 +19,8 @@
                   placeholder="Numero de inventario del equipo"
                   outlined
                   color="#7BC142"
-                  :error-messages="errors">
+                  :error-messages="errors"
+                  :disabled="rol === 'COORDINADOR' ? false : true">
                 </v-text-field>
               </ValidationProvider>
             </v-col>
@@ -36,7 +37,8 @@
                   placeholder="Numero interno del equipo"
                   outlined
                   color="#7BC142"
-                  :error-messages="errors">
+                  :error-messages="errors"
+                  :disabled="rol === 'COORDINADOR' ? false : true">
                 </v-text-field>
               </ValidationProvider>
             </v-col>
@@ -111,6 +113,11 @@
           this.form.inventario = this.inventario.inventario;
           this.form.n_interno = this.inventario.n_interno;
         }
+      }
+    },
+    computed: {
+      rol() {
+        return this.$auth.user.rol;
       }
     }
   }
