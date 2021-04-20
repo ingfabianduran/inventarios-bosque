@@ -15,12 +15,14 @@
   export default {
     data() {
       return {
-        images: [
-          { src: '/images/foto_1.jpg' },
-          { src: '/images/foto_2.jpg' },
-        ]
+        images: []
       }
     },
+    created() {
+      for (let index = 1; index < 9; index ++) {
+        this.images.push({ src: `/images/foto_${index}.jpg` });
+      }
+    }
   }
 </script>
 <style>

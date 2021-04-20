@@ -93,12 +93,12 @@
     },
     methods: {
       closeSesion() {
-        Alert.showConfirm('Cerrar Sesión', 'Esta seguro de salir de la aplicación', 'question', async(confirmed) => {
+        Alert.showConfirm('Cerrar Sesión', 'Esta seguro de salir de la aplicación', 'question', (confirmed) => {
           if (confirmed) {
             try {
-              await this.$auth.logout();
               Alert.showToast('success', 'Esta a punto de salir del Sistema');
-              setTimeout(() => {
+              setTimeout(async () => {
+                await this.$auth.logout();
                 this.$router.push('/');
               }, 3000);
             }
@@ -114,7 +114,11 @@
         return this.$auth.user;
       },
       avatar() {
-        return `${this.$auth.user.nombre[0]}${this.$auth.user.apellido[0]}`;
+        try {
+          return `${this.$auth.user.nombre[0]}${this.$auth.user.apellido[0]}`;
+        } catch (error) {
+
+        }
       }
     },
   }
