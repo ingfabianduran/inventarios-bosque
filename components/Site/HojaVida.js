@@ -77,7 +77,7 @@ export default {
           }
         },
         {
-          margin: [0, 5, 0, 0],
+          margin: [0, 2, 0, 0],
           table: {
             widths: ['*', '*'],
             body: this.tablaDinamica(equipo.macs,
@@ -87,7 +87,7 @@ export default {
           }
         },
         {
-          margin: [0, 5, 0, 0],
+          margin: [0, 2, 0, 0],
           table: {
             widths: ['*', '*', '*'],
             body: this.tablaDinamica(equipo.pantallas,
@@ -97,7 +97,7 @@ export default {
           }
         },
         {
-          margin: [0, 5, 0, 0],
+          margin: [0, 2, 0, 0],
           table: {
             widths: ['*'],
             body: this.tablaDinamica(equipo.sistema_operativos,
@@ -107,7 +107,17 @@ export default {
           }
         },
         {
-          margin: [0, 5, 0, 0],
+          margin: [0, 2, 0, 0],
+          table: {
+            widths: ['*', '*'],
+            body: this.tablaDinamica(equipo.software,
+              [{ text: 'Software', style: 'subtitulos', col: 'nombre', alignment: 'center' }, { text: 'Licencia', style: 'subtitulos', col: 'tipo', alignment: 'center' }],
+              [{ colSpan: 2, text: '6. SOFTWARE', style: 'titulos' }, ''],
+            )
+          }
+        },
+        {
+          margin: [0, 2, 0, 0],
           table: {
             widths: ['*', '*', '*', '*'],
             body: this.tablaDinamica(equipo.mantenimientos,
@@ -117,7 +127,7 @@ export default {
           }
         },
         {
-          margin: [0, 5, 0, 0],
+          margin: [0, 2, 0, 0],
           table: {
             widths: ['*', '*', '*'],
             body: this.tablaDinamica(equipo.asignaciones,

@@ -68,8 +68,8 @@
     data() {
       return {
         form: {
-          email: 'sergio13@ceja.es',
-          password: 'password'
+          email: '',
+          password: ''
         },
         isLoading: false
       }
