@@ -38,6 +38,7 @@
   import Pagination from '~/components/Site/Pagination';
 
   export default {
+    middleware: ['auth', 'isCoordinador'],
     head() {
       return {
         title: 'Dependencias',

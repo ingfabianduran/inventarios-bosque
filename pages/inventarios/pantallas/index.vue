@@ -30,6 +30,7 @@
   import Pagination from '~/components/Site/Pagination';
 
   export default {
+    middleware: ['auth'],
     head() {
       return {
         title: 'Pantallas'

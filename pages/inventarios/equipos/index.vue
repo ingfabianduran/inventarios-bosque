@@ -31,6 +31,7 @@
   import Pagination from '~/components/Site/Pagination';
 
   export default {
+    middleware: ['auth'],
     head() {
       return {
         title: 'Equipos'
@@ -56,7 +57,7 @@
           url: 'api/inventario/equipos/buscar/'
         },
         isViewAddEquipo: true,
-        titulo: 'Agregar Equipo',
+        titulo: 'Nuevo Equipo',
         url: 'api/inventario/equipos',
         equipo: {},
       }
@@ -72,6 +73,10 @@
       this.equipos = data.data;
       this.page.last = data.last_page;
       this.page.url = 'api/inventario/equipos/i/10?page=';
+
+      if (this.$auth.user.rol === 'SOPORTE' || this.$auth.user.rol === 'MESA') {
+        this.isViewAddEquipo = false;
+      }
     },
     methods: {
       updateListEquipos(equipos) {

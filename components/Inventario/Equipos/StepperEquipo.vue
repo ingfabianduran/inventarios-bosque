@@ -8,9 +8,11 @@
           :key="`${i}-step`"
           :complete="paso > step.step"
           :step="step.step"
-          color="#7BC142">
+          color="#7BC142"
+          editable>
           {{ step.titulo }}
           <small v-if="step.opcional">Opcional</small>
+          <small v-else>Obligatorio</small>
         </v-stepper-step>
         <v-divider
           v-if="i !== 5"
@@ -56,6 +58,7 @@
   import Red from '~/components/Inventario/Redes/FormRed';
   import Alert from '~/components/Site/SweetAlert';
   import Loader from '~/components/Site/Loader';
+  import moment from 'moment';
 
   export default {
     data() {
@@ -157,6 +160,20 @@
       omitir() {
         if (this.paso !== 6) this.paso += 1;
       },
+      async setDiscoMemoria() {
+        if (Object.keys(this.disco).length !== 0 && Object.keys(this.memoria).length !== 0) {
+          const disco = await this.$axios.$post('api/inventario/discos', this.disco);
+          const memoria = await this.$axios.$post('api/inventario/memorias', this.memoria);
+          this.form.disco_id = disco.data.id;
+          this.form.memoria_id = memoria.data.id;
+        } else if (Object.keys(this.disco).length !== 0) {
+          const disco = await this.$axios.$post('api/inventario/discos', this.disco);
+          this.form.disco_id = disco.data.id;
+        } else if (Object.keys(this.memoria).length !== 0) {
+          const memoria = await this.$axios.$post('api/inventario/memorias', this.memoria);
+          this.form.memoria_id = memoria.data.id;
+        }
+      },
       setInfoEquipo() {
         Alert.showConfirm(this.titulo, '¿Esta seguro de realizar la petición?', 'question', async(confirmed) => {
           if (confirmed) {
@@ -175,22 +192,12 @@
         });
       },
       async storeEquipo() {
-        if (Object.keys(this.disco).length !== 0 && Object.keys(this.memoria).length !== 0) {
-          const disco = await this.$axios.$post('api/inventario/discos', this.disco);
-          const memoria = await this.$axios.$post('api/inventario/memorias', this.memoria);
-          this.form.disco_id = disco.data.id;
-          this.form.memoria_id = memoria.data.id;
-        } else if (Object.keys(this.disco).length !== 0) {
-          const disco = await this.$axios.$post('api/inventario/discos', this.disco);
-          this.form.disco_id = disco.data.id;
-        } else if (Object.keys(this.memoria).length !== 0) {
-          const memoria = await this.$axios.$post('api/inventario/memorias', this.memoria);
-          this.form.memoria_id = memoria.data.id;
-        }
+        await this.setDiscoMemoria();
         const { descripcion } = await this.$axios.$post(this.url, this.form);
         return descripcion;
       },
       async updateEquipo() {
+        await this.setDiscoMemoria();
         const { descripcion } = await this.$axios.$put(this.url, this.form);
         return descripcion;
       },
@@ -202,6 +209,10 @@
         this.$refs.caracteristica.resetData();
         this.$refs.red.resetData();
 
+        this.disco = {};
+        this.memoria = {};
+        this.showDiscos = true,
+        this.showMemorias = true,
         this.form.fecha_compra = '';
         this.form.vence_garantia = '';
         this.form.tipo = '';
@@ -223,27 +234,33 @@
       data() {
         if (Object.keys(this.data).length > 0) {
           this.paso = 3;
-          this.form.fecha_compra = this.data.fecha_compra;
-          this.form.vence_garantia = this.data.vence_garantia;
+          this.form.fecha_compra = moment(this.data.fecha_compra).format('DD-MM-YYYY');
+          this.form.vence_garantia = moment(this.data.vence_garantia).format('DD-MM-YYYY');
           this.form.tipo = this.data.tipo;
           this.form.serie = this.data.serie;
           this.form.valor = this.data.valor;
           this.form.modelo_id = this.data.modelo.id;
           this.form.disco_id = this.data.disco.id;
           this.form.memoria_id = this.data.memoria.id;
-          this.form.inventario = {
-            n_interno: this.data.inventario.n_interno,
-            inventario: this.data.inventario
-          };
-          this.form.caracteristica = {
-            usuario_dominio: this.data.caracteristica.usuario_dominio,
-            nombre_red: this.data.caracteristica.nombre_red,
-            perifericos: this.data.caracteristica.perifericos,
-            observaciones: this.data.caracteristica.observaciones
-          };
-          this.form.mac = this.data.macs;
+          if (this.data.inventario !== null) {
+            this.form.inventario = {
+              n_interno: this.data.inventario.n_interno,
+              inventario: this.data.inventario.inventario
+            };
+          }
+          if (this.data.caracteristica !== null) {
+            this.form.caracteristica = {
+              usuario_dominio: this.data.caracteristica.usuario_dominio,
+              nombre_red: this.data.caracteristica.nombre_red,
+              perifericos: this.data.caracteristica.perifericos,
+              observaciones: this.data.caracteristica.observaciones
+            };
+          }
+          this.form.mac = this.data.macs.map((mac) => {
+            return { tipo: mac.tipo, mac: mac.mac };
+          });
         }
-      }
+      },
     }
   }
 </script>

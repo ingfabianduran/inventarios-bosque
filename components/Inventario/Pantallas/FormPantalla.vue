@@ -12,7 +12,7 @@
               <ValidationProvider
                 v-slot="{ errors }"
                 name="pulgadas"
-                rules="required|integer">
+                rules="required">
                 <v-text-field
                   v-model="form.pulgadas"
                   label="Pulgadas"
@@ -83,7 +83,6 @@
   </v-card>
 </template>
 <script>
-  import Loader from '~/components/Site/Loader';
 
   export default {
     data() {

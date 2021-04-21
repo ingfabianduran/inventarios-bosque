@@ -114,7 +114,8 @@
           <v-btn
             type="submit"
             dark
-            color="#F27830">
+            color="#F27830"
+            :disabled="stateBtn">
             {{ this.textBtn }}
           </v-btn>
           <v-btn
@@ -168,6 +169,10 @@
         type: String,
         required: true
       },
+      stateBtn: {
+        type: Boolean,
+        default: false
+      }
     },
     components: {
       Loader
@@ -192,11 +197,12 @@
             if (confirmed) {
               try {
                 this.isLoading = true;
-                const { descripcion } = (this.titulo === 'Nuevo Mantenimiento') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
+                const { descripcion } = (this.titulo === 'Nuevo Mantenimiento' ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form));
                 setTimeout(() => {
                   Alert.showToast('success', descripcion);
                   this.isLoading = false;
                   this.clearForm();
+                  this.$emit('clearForm');
                 }, 500);
               } catch (error) {
                 this.isLoading = false;
@@ -212,7 +218,6 @@
         this.form.user_id = '';
         this.form.categoria_id = '';
         this.form.equipo_id = '';
-        this.$emit('clearForm');
       },
     },
     watch: {
@@ -222,8 +227,10 @@
           this.form.tarea_realizada = this.mantenimiento.tarea_realizada;
           this.form.user_id = this.mantenimiento.user_id;
           this.form.categoria_id = this.mantenimiento.categoria_id;
-          this.form.equipo_id = this.mantenimiento.equipo_id;
-          this.searchEquipo = this.mantenimiento.equipo.serie;
+          if (this.mantenimiento.equipo_id !== null) {
+            this.form.equipo_id = this.mantenimiento.equipo_id;
+            this.searchEquipo = this.mantenimiento.equipo.serie;
+          }
         }
       },
       async searchEquipo(value) {

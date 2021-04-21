@@ -19,7 +19,8 @@
                   placeholder="Tipo de memoria"
                   outlined
                   color="#7BC142"
-                  :error-messages="errors">
+                  :error-messages="errors"
+                  :disabled="rol === 'COORDINADOR' ? false : true">
                 </v-text-field>
               </ValidationProvider>
             </v-col>
@@ -36,7 +37,8 @@
                   placeholder="Capacidad de la memoria"
                   outlined
                   color="#7BC142"
-                  :error-messages="errors">
+                  :error-messages="errors"
+                  :disabled="rol === 'COORDINADOR' ? false : true">
                 </v-text-field>
               </ValidationProvider>
             </v-col>
@@ -55,7 +57,8 @@
                   label="Descripción de la memoria"
                   auto-grow
                   color="#7BC142"
-                  :error-messages="errors">
+                  :error-messages="errors"
+                  :disabled="rol === 'COORDINADOR' ? false : true">
                 </v-textarea>
               </ValidationProvider>
             </v-col>
@@ -67,7 +70,7 @@
             type="submit"
             dark
             color="#F27830">
-            Registrar
+            Siguiente
           </v-btn>
           <v-btn
             type="button"
@@ -118,6 +121,11 @@
         this.form.tipo = '';
         this.form.capacidad = '';
         this.form.descripcion = '';
+      }
+    },
+    computed: {
+      rol() {
+        return this.$auth.user.rol;
       }
     }
   }

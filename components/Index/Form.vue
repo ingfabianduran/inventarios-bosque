@@ -52,6 +52,12 @@
         Cancelar
       </v-btn>
     </v-form>
+    <v-alert
+      type="error"
+      class="mt-2"
+      v-if="message.length > 0">
+      {{ message }}
+    </v-alert>
   </ValidationObserver>
 </template>
 <script>
@@ -62,7 +68,7 @@
     data() {
       return {
         form: {
-          email: 'ruben23@live.com',
+          email: 'sergio13@ceja.es',
           password: 'password'
         },
         isLoading: false
@@ -77,16 +83,23 @@
           const validate = await this.$refs.formLogin.validate();
           if (validate) {
             this.isLoading = true;
-            const { data } = await this.$auth.loginWith('laravelJWT', { data: this.form });
-            Alert.showToast('success', data.descripcion);
+            await this.$auth.loginWith('laravelJWT', { data: this.form });
+            Alert.showToast('success', 'Bienvenido al Sistema');
+            this.$store.commit('set', '');
             setTimeout(() => {
               this.isLoading = false;
-              this.$router.push('/inventarios/modelos');
+              this.$router.push('/inventarios/equipos');
             }, 3000);
           }
         } catch (error) {
+          Alert.showToast('error', 'Usuario o contraseña incorrecta');
           this.isLoading = false;
         }
+      }
+    },
+    computed: {
+      message() {
+        return this.$store.state.message;
       }
     }
   }

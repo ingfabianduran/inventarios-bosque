@@ -45,7 +45,8 @@
         <v-menu
           bottom
           origin="center center"
-          transition="scale-transition">
+          transition="scale-transition"
+          v-if="showOpciones">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               color="#F27830"
@@ -61,10 +62,11 @@
               v-for="(opc, i) in opciones"
               :key="i"
               link
+              v-show="opc.show"
               @click="eventMasOpciones(opc.opcion)">
-              <v-list-item-title
-                v-text="opc.text">
-              </v-list-item-title>
+                <v-list-item-title
+                  v-text="opc.text">
+                </v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -80,13 +82,6 @@
   export default {
     data() {
       return {
-        menuOpciones: [
-          { text: 'Mantenimientos' },
-          { text: 'Monitores' },
-          { text: 'Observaciones' },
-          { text: 'Perifericos' },
-          { text: 'Software' },
-        ],
         dataEquipo: [
           { titulo: 'Hardware', col: 3, data: [
             { titulo: 'Marca:', value: 'No consultado' },
@@ -113,11 +108,11 @@
           ] },
         ],
         opciones: [
-          { text: 'Agregar Equipo', opcion: 'agregarEquipo' },
-          { text: 'Hoja de Vida', opcion: 'hojaVida' },
-          { text: 'Mas Información', opcion: 'masInformacion' },
-          { text: 'Modificar Equipo', opcion: 'modificarEquipo' },
-          { text: 'Reportes de Inventario', opcion: 'reporteInventario' },
+          { text: 'Agregar Equipo', opcion: 'agregarEquipo', show: (this.$auth.user.rol === 'COORDINADOR' ? true : false) },
+          { text: 'Hoja de Vida', opcion: 'hojaVida', show: false },
+          { text: 'Mas Información', opcion: 'masInformacion', show: false },
+          { text: 'Modificar Equipo', opcion: 'modificarEquipo', show: false },
+          { text: 'Reportes de Inventario', opcion: 'reporteInventario', show: (this.$auth.user.rol === 'COORDINADOR' ? true : false) },
         ],
         dialogEquipo: {
           isView: false,
@@ -125,7 +120,8 @@
         },
         dialogReporte: {
           isView: false
-        }
+        },
+        showOpciones: false,
       }
     },
     props: {
@@ -145,11 +141,12 @@
       closeModalReporte(value) {
         this.dialogReporte.isView = value;
       },
-      eventMasOpciones(opcion) {
+      async eventMasOpciones(opcion) {
         if (opcion === 'agregarEquipo') {
           this.$emit('addEquipo');
         } else if (opcion === 'hojaVida') {
-          Pdf.getHojaVida(this.equipo);
+          const { data } = await this.$axios.$get(`api/inventario/equipos/${this.equipo.id}`);
+          Pdf.getHojaVida(data);
         } else if (opcion === 'masInformacion') {
           this.dialogEquipo.data = this.equipo;
           this.dialogEquipo.isView = true;
@@ -178,7 +175,7 @@
           this.dataEquipo[1].data[2].value = 'No registra';
         }
 
-        if (Object.keys(this.equipo.caracteristica).length !== 0) {
+        if (this.equipo.caracteristica !== null) {
           this.dataEquipo[1].data[3].value = (this.equipo.caracteristica.nombre_red ? this.equipo.caracteristica.nombre_red : 'No registra');
           this.dataEquipo[1].data[4].value = (this.equipo.caracteristica.usuario_dominio ? this.equipo.caracteristica.usuario_dominio : 'No registra');
         } else {
@@ -186,7 +183,7 @@
            this.dataEquipo[1].data[4].value = 'No registra';
         }
 
-        if (Object.keys(this.equipo.inventario).length !== 0) {
+        if (this.equipo.inventario !== null) {
           this.dataEquipo[2].data[0].value = (this.equipo.inventario.n_interno ? this.equipo.inventario.n_interno : 'No registra');
           this.dataEquipo[2].data[1].value = (this.equipo.inventario.inventario ? this.equipo.inventario.inventario : 'No registra');
           this.dataEquipo[2].data[2].value = (this.equipo.serie ? this.equipo.serie : 'No registra');
@@ -207,6 +204,12 @@
           this.dataEquipo[3].data[0].value = 'No registra';
           this.dataEquipo[3].data[1].value = 'No registra';
         }
+
+        this.showOpciones = true;
+        this.opciones[1].show = (this.$auth.user.rol === 'COORDINADOR' ? true : false);
+        this.opciones[2].show = true;
+        this.opciones[3].show = true;
+        this.opciones[4].show = (this.$auth.user.rol === 'COORDINADOR' ? true : false)
       }
     }
   }

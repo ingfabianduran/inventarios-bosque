@@ -55,7 +55,8 @@
           <v-btn
             type="submit"
             dark
-            color="#F27830">
+            color="#F27830"
+            :disabled="stateBtn">
             {{ this.textBtn }}
           </v-btn>
           <v-btn
@@ -70,7 +71,7 @@
             dark
             color="#7BC142"
             @click="deleteCasoAranda()"
-            v-if="aranda.hasOwnProperty('id')">
+            v-if="aranda.hasOwnProperty('id') && this.$auth.user.rol === 'COORDINADOR'">
             Eliminar
           </v-btn>
         </v-card-actions>
@@ -110,6 +111,10 @@
       textBtn: {
         type: String,
         required: true
+      },
+      stateBtn: {
+        type: Boolean,
+        default: false
       },
       mantenimiento: {
         type: Number,

@@ -32,7 +32,8 @@
         </v-btn>
         <v-btn
           icon
-          @click="deleteModel(item.id)">
+          @click="deleteModel(item.id)"
+          v-if="user.rol === 'COORDINADOR'">
           <v-icon
             color="#F27830">
             mdi-delete
@@ -130,6 +131,11 @@
           };
           this.$emit('searchModel', pagination);
         }
+      }
+    },
+    computed: {
+      user() {
+        return this.$auth.user;
       }
     }
   }

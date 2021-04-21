@@ -21,7 +21,8 @@
                   :items="modelos"
                   outlined
                   color="#7BC142"
-                  :error-messages="errors">
+                  :error-messages="errors"
+                  :disabled="rol === 'COORDINADOR' ? false : true">
                 </v-autocomplete>
               </ValidationProvider>
             </v-col>
@@ -39,7 +40,8 @@
                   v-mask="'##-##-####'"
                   outlined
                   color="#7BC142"
-                  :error-messages="errors">
+                  :error-messages="errors"
+                  :disabled="rol === 'COORDINADOR' ? false : true">
                 </v-text-field>
               </ValidationProvider>
             </v-col>
@@ -57,7 +59,8 @@
                   v-mask="'##-##-####'"
                   outlined
                   color="#7BC142"
-                  :error-messages="errors">
+                  :error-messages="errors"
+                  :disabled="rol === 'COORDINADOR' ? false : true">
                 </v-text-field>
               </ValidationProvider>
             </v-col>
@@ -76,7 +79,8 @@
                   outlined
                   :items="tipos"
                   color="#7BC142"
-                  :error-messages="errors">
+                  :error-messages="errors"
+                  :disabled="rol === 'COORDINADOR' ? false : true">
                 </v-select>
               </ValidationProvider>
             </v-col>
@@ -93,7 +97,8 @@
                   placeholder="Serie del equipo"
                   outlined
                   color="#7BC142"
-                  :error-messages="errors">
+                  :error-messages="errors"
+                  :disabled="rol === 'COORDINADOR' ? false : true">
                 </v-text-field>
               </ValidationProvider>
             </v-col>
@@ -110,7 +115,8 @@
                   placeholder="Valor del equipo"
                   outlined
                   color="#7BC142"
-                  :error-messages="errors">
+                  :error-messages="errors"
+                  :disabled="rol === 'COORDINADOR' ? false : true">
                 </v-text-field>
               </ValidationProvider>
             </v-col>
@@ -132,7 +138,8 @@
                   :items="discos"
                   outlined
                   color="#7BC142"
-                  :error-messages="errors">
+                  :error-messages="errors"
+                  :disabled="rol === 'COORDINADOR' ? false : true">
                 </v-autocomplete>
               </ValidationProvider>
             </v-col>
@@ -152,7 +159,8 @@
                   :items="memorias"
                   outlined
                   color="#7BC142"
-                  :error-messages="errors">
+                  :error-messages="errors"
+                  :disabled="rol === 'COORDINADOR' ? false : true">
                 </v-autocomplete>
               </ValidationProvider>
             </v-col>
@@ -264,6 +272,11 @@
         this.form.modelo_id = this.equipo.modelo.id;
         this.form.disco_id = this.equipo.disco.id;
         this.form.memoria_id = this.equipo.memoria.id;
+      }
+    },
+    computed: {
+      rol() {
+        return this.$auth.user.rol;
       }
     }
   }

@@ -9,7 +9,8 @@
           :key="`${i}-step`"
           :complete="paso > step.step"
           :step="step.step"
-          color="#7BC142">
+          color="#7BC142"
+          editable>
           {{ step.titulo }}
           <small v-if="step.opcional">Opcional</small>
         </v-stepper-step>
@@ -51,11 +52,15 @@
           { titulo: 'Procesador', step: 2, opcional: true },
           { titulo: 'Modelo', step: 3, opcional: false }
         ],
-        modelo: {
-          marca: null,
-          procesador: null,
-          modelo: null
+        form: {
+          descripcion: '',
+          tipo: '',
+          modulos_memoria: '',
+          marca_id: '',
+          procesador_id: '',
         },
+        marca: {},
+        procesador: {},
         showMarcas: true,
         showProcesadores: true,
         isLoading: false
@@ -83,12 +88,12 @@
     },
     methods: {
       setProcesador(procesador) {
-        this.modelo.procesador = procesador;
+        this.procesador = procesador;
         this.showProcesadores = false;
         this.paso += 1;
       },
       setMarca(marca) {
-        this.modelo.marca = marca;
+        this.marca = marca;
         this.showMarcas = false;
         this.paso += 1;
       },
@@ -101,7 +106,7 @@
         this.paso += 1;
       },
       setModelo(modelo) {
-        this.modelo.modelo = modelo;
+        this.form = modelo;
         Alert.showConfirm(this.titulo, '¿Esta seguro de realizar la petición?', 'question', async(confirmed) => {
           if (confirmed) {
             try {
@@ -111,6 +116,7 @@
                 Alert.showToast('success', descripcion);
                 this.isLoading = false;
                 this.clearForm();
+                this.$emit('clearForm');
               }, 500);
             } catch (error) {
               this.isLoading = false;
@@ -118,31 +124,39 @@
           }
         });
       },
-      async storeModelo() {
-        if (this.modelo.modelo.marca_id === '' && this.modelo.modelo.procesador_id === '') {
-          const marca = await this.$axios.$post('api/inventario/marcas', this.modelo.marca);
-          const procesador = await this.$axios.$post('api/inventario/procesadores', this.modelo.procesador);
-          this.modelo.modelo.marca_id = marca.data.id;
-          this.modelo.modelo.procesador_id = procesador.data.id;
-        } else if (this.modelo.modelo.procesador_id === '') {
-          const procesador = await this.$axios.$post('api/inventario/procesadores', this.modelo.procesador);
-          this.modelo.modelo.procesador_id = procesador.data.id;
-        } else if (this.modelo.modelo.marca_id === '') {
-          const marca = await this.$axios.$post('api/inventario/marcas', this.modelo.marca);
-          this.modelo.modelo.marca_id = marca.data.id;
+      async setMarcaProcesador() {
+        if (Object.keys(this.marca).length !== 0 && Object.keys(this.procesador).length !== 0) {
+          const marca = await this.$axios.$post('api/inventario/marcas', this.marca);
+          const procesador = await this.$axios.$post('api/inventario/procesadores', this.procesador);
+          this.form.marca_id = marca.data.id;
+          this.form.procesador_id = procesador.data.id;
+        } else if (Object.keys(this.procesador).length !== 0) {
+          const procesador = await this.$axios.$post('api/inventario/procesadores', this.procesador);
+          this.form.procesador_id = procesador.data.id;
+        } else if (Object.keys(this.marca).length !== 0) {
+          const marca = await this.$axios.$post('api/inventario/marcas', this.marca);
+          this.form.marca_id = marca.data.id;
         }
-        const { descripcion } = await this.$axios.$post(this.url, this.modelo.modelo);
+      },
+      async storeModelo() {
+        await this.setMarcaProcesador();
+        const { descripcion } = await this.$axios.$post(this.url, this.form);
         return descripcion;
       },
       async updateModelo() {
-        const { descripcion } = await this.$axios.$put(this.url, this.modelo.modelo);
+        await this.setMarcaProcesador();
+        const { descripcion } = await this.$axios.$put(this.url, this.form);
         return descripcion;
       },
       clearForm() {
         this.paso = 1;
-        this.modelo.marca = null;
-        this.modelo.procesador = null;
-        this.modelo.modelo = null;
+        this.form.descripcion = '';
+        this.form.tipo = '';
+        this.form.modulos_memoria = '';
+        this.form.marca_id = '';
+        this.form.procesador_id = '';
+        this.procesador = {};
+        this.modelo = {};
         this.showMarcas = false;
         this.showProcesadores = false;
         this.$refs.marca.resetData();
@@ -153,7 +167,11 @@
     watch: {
       data() {
         if (Object.keys(this.data).length > 0) {
-          this.modelo.modelo = this.data;
+          this.form.descripcion = this.data.descripcion;
+          this.form.tipo = this.data.tipo;
+          this.form.modulos_memoria = this.data.modulos_memoria;
+          this.form.marca_id = this.data.marca_id;
+          this.form.procesador_id = this.data.procesador_id;
           this.showMarcas = true;
           this.showProcesadores = true;
           this.paso = 3;
