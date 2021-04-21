@@ -29,7 +29,7 @@
               <ValidationProvider
                 v-slot="{ errors }"
                 name="capacidad"
-                rules="required|min:2|max:10">
+                rules="required|integer">
                 <v-text-field
                   v-model="form.capacidad"
                   label="Capacidad"

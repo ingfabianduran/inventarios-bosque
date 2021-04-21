@@ -14,7 +14,7 @@
                 name="capacidad"
                 rules="required|min:3|max:20">
                 <v-text-field
-                  v-model="form.tipo"
+                  v-model="form.capacidad"
                   label="Capacidad"
                   placeholder="Capacidad del disco"
                   outlined
