@@ -3,6 +3,7 @@
     <ValidationObserver
       ref="formProcesador">
       <v-form
+        autocomplete="off"
         @submit.prevent="storeProcesador">
         <v-card-text>
           <v-row>

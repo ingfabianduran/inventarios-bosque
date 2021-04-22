@@ -5,6 +5,7 @@
       <ValidationObserver
         ref="formAddSistema">
         <v-form
+          autocomplete="off"
           @submit.prevent="storeSistema">
           <v-row>
             <v-col
@@ -23,7 +24,8 @@
                   dense
                   outlined
                   color="#7BC142"
-                  :error-messages="errors">
+                  :error-messages="errors"
+                  :disabled="rol === 'MESA' ? true : false">
                 </v-autocomplete>
               </ValidationProvider>
             </v-col>
@@ -41,7 +43,8 @@
                   outlined
                   dense
                   color="#7BC142"
-                  :error-messages="errors">
+                  :error-messages="errors"
+                  :disabled="rol === 'MESA' ? true : false">
                 </v-text-field>
               </ValidationProvider>
             </v-col>
@@ -55,7 +58,8 @@
                 fab
                 dark
                 x-small
-                color="#F27830">
+                color="#F27830"
+                :disabled="(rol === 'MESA' ? true : false)">
                 <v-icon dark>
                   mdi-plus
                 </v-icon>
@@ -67,6 +71,7 @@
                 dark
                 x-small
                 color="#7BC142"
+                :disabled="(rol === 'MESA' ? true : false)"
                 @click="clearForm()">
                 <v-icon dark>
                   mdi-window-close
@@ -170,6 +175,11 @@
         this.$refs.formAddSistema.reset();
         this.form.compilacion = '';
         this.form.sistema_operativo_id = '';
+      }
+    },
+    computed: {
+      rol() {
+        return this.$auth.user.rol;
       }
     }
   }

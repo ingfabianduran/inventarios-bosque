@@ -38,7 +38,6 @@
         <v-btn
           block
           color="#F27830"
-          rounded
           @click="closeSesion()">
           <v-icon left>
             mdi-exit-to-app
@@ -58,7 +57,7 @@
       return {
         asignaciones: [
           { titulo: 'Infraestructura', icon: 'mdi-home-modern', roles:['COORDINADOR'], subtitulos: [
-            { titulo: 'Edificios', link: '/asignaciones/edificios', roles:['COORDINADOR'] },
+            { titulo: 'Bloques', link: '/asignaciones/edificios', roles:['COORDINADOR'] },
             { titulo: 'Dependencias', link: '/asignaciones/dependencias', roles:['COORDINADOR'] },
             { titulo: 'Espacios', link: '/asignaciones/espacios', roles:['COORDINADOR'] },
           ] },
@@ -68,7 +67,7 @@
         mantenimientos: [
           { titulo: 'Servicio Tecnico', icon: 'mdi-hammer-wrench', link: '#', roles:['COORDINADOR', 'SOPORTE'], subtitulos: [
             { titulo: 'Categorias', link: '/mantenimientos/categorias', roles:['COORDINADOR'] },
-            { titulo: 'Especialistas', link: '/mantenimientos/especialistas', roles:['COORDINADOR'] },
+            { titulo: 'Usuarios', link: '/mantenimientos/especialistas', roles:['COORDINADOR'] },
             { titulo: 'Mantenimientos', link: '/mantenimientos/mantenimientos', roles:['COORDINADOR', 'SOPORTE'] }
           ] },
         ],
@@ -81,7 +80,7 @@
             { titulo: 'Sistemas Operativos', link: '/inventarios/sistemas', roles:['COORDINADOR'] },
             { titulo: 'Software', link: '/inventarios/softwares', roles:['COORDINADOR'] },
           ] },
-          { titulo: 'Monitores', icon: 'mdi-monitor', link: '/inventarios/pantallas', roles:['COORDINADOR'] },
+          { titulo: 'Pantallas', icon: 'mdi-monitor', link: '/inventarios/pantallas', roles:['COORDINADOR'] },
         ]
       }
     },
@@ -96,7 +95,7 @@
         Alert.showConfirm('Cerrar Sesión', 'Esta seguro de salir de la aplicación', 'question', (confirmed) => {
           if (confirmed) {
             try {
-              Alert.showToast('success', 'Esta a punto de salir del Sistema');
+              Alert.showToast('success', 'Esta a punto de salir del sistema...');
               setTimeout(async () => {
                 await this.$auth.logout();
                 this.$router.push('/');
@@ -115,7 +114,7 @@
       },
       avatar() {
         try {
-          return `${this.$auth.user.nombre[0]}${this.$auth.user.apellido[0]}`;
+          return `${this.$auth.user.nombre.charAt(0)}${this.$auth.user.apellido.charAt(0)}`;
         } catch (error) {
 
         }

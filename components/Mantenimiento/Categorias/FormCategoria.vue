@@ -5,6 +5,7 @@
     <ValidationObserver
       ref="formCategoria">
       <v-form
+        autocomplete="off"
         @submit.prevent="storeCategoria">
         <v-card-title
           class="font-weight-bold">

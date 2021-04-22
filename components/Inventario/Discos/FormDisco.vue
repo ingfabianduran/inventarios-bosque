@@ -3,6 +3,7 @@
     <ValidationObserver
       ref="formDisco">
       <v-form
+        autocomplete="off"
         @submit.prevent="storeDisco">
         <v-card-text>
           <v-row>

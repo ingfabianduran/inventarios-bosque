@@ -5,6 +5,7 @@
       <ValidationObserver
         ref="formAddSoftware">
         <v-form
+          autocomplete="off"
           @submit.prevent="storeSoftware">
           <v-row>
             <v-col

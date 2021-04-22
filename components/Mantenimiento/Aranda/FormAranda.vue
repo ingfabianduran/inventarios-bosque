@@ -5,6 +5,7 @@
     <ValidationObserver
       ref="formAranda">
       <v-form
+        autocomplete="off"
         @submit.prevent="storeAranda">
         <v-card-title
           class="font-weight-bold">

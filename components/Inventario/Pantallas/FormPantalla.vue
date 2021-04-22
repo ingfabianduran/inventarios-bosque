@@ -3,6 +3,7 @@
     <ValidationObserver
       ref="formPantalla">
       <v-form
+        autocomplete="off"
         @submit.prevent="storeMarca">
         <v-card-text>
           <v-row>

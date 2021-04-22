@@ -5,6 +5,7 @@
     <ValidationObserver
       ref="formAsignacion">
       <v-form
+        autocomplete="off"
         @submit.prevent="storeAsignacion">
         <v-card-title
           class="font-weight-bold">
@@ -18,7 +19,7 @@
               <ValidationProvider
                 v-slot="{ errors }"
                 name="tipo"
-                rules="required|oneOf:Aulas,Oficinas">
+                rules="required|oneOf:Academico,Administrativo,Servicio al Estudiante">
                 <v-autocomplete
                   v-model="form.tipo"
                   label="Tipo"
@@ -147,7 +148,7 @@
   export default {
     data() {
       return {
-        tipos: ['Aulas', 'Oficinas'],
+        tipos: ['Academico', 'Administrativo', 'Servicio al Estudiante'],
         edificios: [],
         espacios: [],
         responsables: [],

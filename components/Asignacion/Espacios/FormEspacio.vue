@@ -5,6 +5,7 @@
     <ValidationObserver
       ref="formEspacio">
       <v-form
+        autocomplete="off"
         @submit.prevent="storeEspacio">
         <v-card-title
           class="font-weight-bold">

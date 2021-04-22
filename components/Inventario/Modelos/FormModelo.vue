@@ -3,6 +3,7 @@
     <ValidationObserver
       ref="formModelo">
       <v-form
+        autocomplete="off"
         @submit.prevent="storeModelo">
         <v-card-text>
           <v-row>

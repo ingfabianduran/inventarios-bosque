@@ -4,7 +4,6 @@
     <v-list
       v-for="(link, i) in links"
       :key="i"
-      rounded
       :disabled="!validateRoles(link.roles)">
       <template v-if="link.subtitulos">
         <v-list-group

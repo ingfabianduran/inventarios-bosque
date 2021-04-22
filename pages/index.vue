@@ -1,13 +1,14 @@
 <template>
   <v-card
-    class="border-card">
+    class="border-card"
+    elevation="4">
     <v-row
       no-gutters
       align="center">
-      <v-col sm="12" md="5" lg="5" xl="5">
+      <v-col sm="12" md="7" lg="7" xl="7">
         <Carusel />
       </v-col>
-      <v-col sm="12" md="7" lg="7" xl="7" class="pa-10">
+      <v-col sm="12" md="5" lg="5" xl="5" class="pa-10">
         <Form />
       </v-col>
     </v-row>

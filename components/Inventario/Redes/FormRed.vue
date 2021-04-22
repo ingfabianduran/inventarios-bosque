@@ -3,6 +3,7 @@
     <ValidationObserver
       ref="formRed">
       <v-form
+        autocomplete="off"
         @submit.prevent="addMac">
         <v-card-text>
           <v-row>
@@ -140,6 +141,10 @@
             tipo: this.form.tipo,
             mac: this.form.mac
           });
+
+          this.form.tipo = '';
+          this.form.mac = '';
+          this.$refs.formRed.reset();
         }
       },
       deleteMac(indice) {

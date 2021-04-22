@@ -25,7 +25,7 @@
         setTimeout(() => {
           this.loading = false
           this.overlay = false
-        }, 900);
+        }, 2000);
       },
     },
   }

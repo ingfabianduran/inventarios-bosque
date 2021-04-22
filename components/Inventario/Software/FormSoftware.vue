@@ -35,7 +35,7 @@
               <ValidationProvider
                 v-slot="{ errors }"
                 name="tipo"
-                rules="required|oneOf:Gratuito,Licenciado">
+                rules="required|oneOf:Free,Licenciado">
                 <v-select
                   v-model="form.tipo"
                   :items="tipos"
@@ -75,7 +75,7 @@
   export default {
     data() {
       return {
-        tipos: ['Gratuito', 'Licenciado'],
+        tipos: ['Free', 'Licenciado'],
         form: {
           nombre: '',
           tipo: ''

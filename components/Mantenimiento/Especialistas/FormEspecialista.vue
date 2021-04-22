@@ -5,6 +5,7 @@
     <ValidationObserver
       ref="formEspecialista">
       <v-form
+        autocomplete="off"
         @submit.prevent="storeEspecialista">
         <v-card-title class="font-weight-bold">
           {{ this.titulo }}

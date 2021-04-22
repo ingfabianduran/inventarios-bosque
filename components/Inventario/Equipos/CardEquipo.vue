@@ -121,13 +121,13 @@
         dialogReporte: {
           isView: false
         },
-        showOpciones: false,
+        showOpciones: (this.$auth.user.rol === 'SOPORTE' ? false : true),
       }
     },
     props: {
       equipo: {
         type: Object,
-        required: true
+        required: false
       }
     },
     components: {

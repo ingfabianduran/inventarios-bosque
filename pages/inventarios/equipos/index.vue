@@ -56,7 +56,7 @@
           label: 'Inventario, serial o numero interno',
           url: 'api/inventario/equipos/buscar/'
         },
-        isViewAddEquipo: true,
+        isViewAddEquipo: false,
         titulo: 'Nuevo Equipo',
         url: 'api/inventario/equipos',
         equipo: {},
@@ -98,10 +98,12 @@
         this.titulo = 'Modificar Equipo';
         this.url = `api/inventario/equipos/${this.equipo.id}`;
       },
-      clearForm() {
+      async clearForm(equipo) {
+        const { data } = await this.$axios.$get(`api/inventario/equipos/${equipo.id}`);
+        this.equipo = data;
         this.titulo = 'Nuevo Equipo';
         this.url = 'api/inventario/equipos';
-        this.data = {};
+        this.isViewAddEquipo = false;
         this.$fetch();
       }
     }

@@ -3,19 +3,19 @@
     ref="formLogin">
     <v-form
       @submit.prevent="logIn"
+      autocomplete="off"
       class="text-center">
-      <Loader :isShow="isLoading" color="#212121" size="90" />
-      <p class="text-h2 mb-10">Login</p>
+      <p class="text-h3 font-weight-bold mb-10">Inventario Tecnología</p>
       <ValidationProvider
         v-slot="{ errors }"
         name="usuario"
         rules="required|email">
         <v-text-field
           v-model="form.email"
-          label="Usuario"
-          placeholder="Nombre de Usuario"
+          label="Nombre del Usuario"
           prepend-inner-icon="mdi-account"
-          outlined
+          filled
+          rounded
           color="#7BC142"
           :error-messages="errors">
         </v-text-field>
@@ -27,10 +27,10 @@
         <v-text-field
           type="password"
           v-model="form.password"
-          label="Contraseña"
-          placeholder="Contraseña del Usuario"
+          label="Contraseña del Usuario"
           prepend-inner-icon="mdi-lock"
-          outlined
+          filled
+          rounded
           color="#7BC142"
           :error-messages="errors">
         </v-text-field>
@@ -40,29 +40,28 @@
         dark
         color="#F27830"
         x-large
-        rounded>
+        class="mr-2"
+        :loading="isLoading">
         Ingresar
       </v-btn>
       <v-btn
         type="button"
         dark
         color="#7BC142"
-        x-large
-        rounded>
+        x-large>
         Cancelar
       </v-btn>
     </v-form>
     <v-alert
       type="error"
       class="mt-2"
-      v-if="message.length > 0">
+      v-if="message !== ''">
       {{ message }}
     </v-alert>
   </ValidationObserver>
 </template>
 <script>
   import Alert from '~/components/Site/SweetAlert';
-  import Loader from '~/components/Site/Loader';
 
   export default {
     data() {
@@ -74,26 +73,23 @@
         isLoading: false
       }
     },
-    components: {
-      Loader
-    },
     methods: {
       async logIn() {
-        try {
-          const validate = await this.$refs.formLogin.validate();
-          if (validate) {
+        const validate = await this.$refs.formLogin.validate();
+        if (validate) {
+          try {
             this.isLoading = true;
             await this.$auth.loginWith('laravelJWT', { data: this.form });
-            Alert.showToast('success', 'Bienvenido al Sistema');
+            Alert.showToast('success', 'Bienvenido al Sistema, un momento por favor...');
             this.$store.commit('set', '');
             setTimeout(() => {
               this.isLoading = false;
               this.$router.push('/inventarios/equipos');
             }, 3000);
+          } catch (error) {
+            this.$store.commit('set', 'Usuario o contraseña incorrecta');
+            this.isLoading = false;
           }
-        } catch (error) {
-          Alert.showToast('error', 'Usuario o contraseña incorrecta');
-          this.isLoading = false;
         }
       }
     },

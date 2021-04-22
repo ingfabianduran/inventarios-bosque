@@ -179,11 +179,12 @@
           if (confirmed) {
             try {
               this.isLoading = true;
-              const descripcion = (this.titulo === 'Nuevo Equipo') ? await this.storeEquipo() : await this.updateEquipo();
+              const equipo = (this.titulo === 'Nuevo Equipo') ? await this.storeEquipo() : await this.updateEquipo();
               setTimeout(() => {
-                Alert.showToast('success', descripcion);
+                Alert.showToast('success', equipo.descripcion);
                 this.isLoading = false;
                 this.cancelarRegistro();
+                this.$emit('clearForm', equipo.data);
               }, 500);
             } catch (error) {
               this.isLoading = false;
@@ -193,13 +194,13 @@
       },
       async storeEquipo() {
         await this.setDiscoMemoria();
-        const { descripcion } = await this.$axios.$post(this.url, this.form);
-        return descripcion;
+        const equipo = await this.$axios.$post(this.url, this.form);
+        return equipo;
       },
       async updateEquipo() {
         await this.setDiscoMemoria();
-        const { descripcion } = await this.$axios.$put(this.url, this.form);
-        return descripcion;
+        const equipo = await this.$axios.$put(this.url, this.form);
+        return equipo;
       },
       cancelarRegistro() {
         this.$refs.disco.resetData();
@@ -227,7 +228,6 @@
         this.form.mac = [];
 
         this.paso = 1;
-        this.$emit('clearForm');
       }
     },
     watch: {

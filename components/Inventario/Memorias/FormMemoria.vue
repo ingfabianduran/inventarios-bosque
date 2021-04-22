@@ -3,6 +3,7 @@
     <ValidationObserver
       ref="formMemoria">
       <v-form
+        autocomplete="off"
         @submit.prevent="storeMemoria">
         <v-card-text>
           <v-row>

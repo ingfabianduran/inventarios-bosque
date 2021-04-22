@@ -5,6 +5,7 @@
     <ValidationObserver
       ref="formDependencia">
       <v-form
+        autocomplete="off"
         @submit.prevent="storeDependencia">
         <v-card-title class="font-weight-bold">
           {{ this.titulo }}

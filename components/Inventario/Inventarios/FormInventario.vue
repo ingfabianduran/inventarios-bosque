@@ -3,6 +3,7 @@
     <ValidationObserver
       ref="formInventario">
       <v-form
+        autocomplete="off"
         @submit.prevent="storeInventario">
         <v-card-text>
           <v-row>
