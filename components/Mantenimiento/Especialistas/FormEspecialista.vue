@@ -251,7 +251,7 @@
         this.form.rol = this.especialista.rol;
       },
       'form.cedula': function(value) {
-        if (value !== '') {
+        if (value !== undefined) {
           this.form.cedula = parseInt(this.form.cedula);
         }
       },

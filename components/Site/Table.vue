@@ -2,7 +2,7 @@
   <v-card
     outlined>
     <v-card-title
-      class="font-weight-bold"
+      class="font-weight-bold text-h4"
       v-if="!isRead">
       {{ title }}
       <v-spacer></v-spacer>
@@ -23,19 +23,21 @@
       :loading="isLoading">
       <template v-slot:[`item.actions`]="{ item }" v-if="!isRead">
         <v-btn
-          icon
+          dark
+          small
+          color="#7BC142"
           @click="getModel(item.id)">
-          <v-icon
-            color="#7BC142">
+          <v-icon>
             mdi-pencil
           </v-icon>
         </v-btn>
         <v-btn
-          icon
+          dark
+          small
+          color="#F27830"
           @click="deleteModel(item.id)"
           v-if="user.rol === 'COORDINADOR'">
-          <v-icon
-            color="#F27830">
+          <v-icon>
             mdi-delete
           </v-icon>
         </v-btn>

@@ -1,11 +1,12 @@
 <template>
   <v-card
-    outlined
-    >
-    <v-card-title
-      class="font-weight-bold">
+    outlined>
+    <v-toolbar
+      color="#404827"
+      class="font-weight-bold text-h5"
+      dark>
       Busqueda
-    </v-card-title>
+    </v-toolbar>
     <v-card-text>
       <v-text-field
         v-model="busqueda"

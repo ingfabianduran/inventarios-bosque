@@ -22,17 +22,19 @@
             cols="12"
             :md="equipo.col">
             <v-card
-              tile>
-              <v-card-title
-                class="subheading font-weight-bold head-card-style">
+              outlined>
+              <v-toolbar
+                color="#7BC142"
+                class="font-weight-bold text-h5"
+                dark>
                 {{ equipo.titulo }}
-              </v-card-title>
+              </v-toolbar>
               <v-list
                 dense>
                 <v-list-item
                   v-for="(data, j) in equipo.data"
                   :key="j">
-                  <v-list-item-content>{{ data.titulo }}</v-list-item-content>
+                  <v-list-item-content class="font-weight-bold">{{ data.titulo }}</v-list-item-content>
                   <v-list-item-content>{{ data.value }}</v-list-item-content>
                 </v-list-item>
               </v-list>
@@ -44,8 +46,9 @@
         <v-spacer></v-spacer>
         <v-menu
           bottom
-          origin="center center"
+          origin="left"
           transition="scale-transition"
+          open-on-hover
           v-if="showOpciones && !whenDeleteEquipo">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -103,8 +106,8 @@
             { titulo: 'Serial:', value: 'No consultado' },
           ] },
           { titulo: 'Redes', col: 3, data: [
-            { titulo: 'Dirección MAC LAN:', value: 'No consultado' },
-            { titulo: 'Dirección MAC WIFI:', value: 'No consultado' },
+            { titulo: 'LAN:', value: 'No consultado' },
+            { titulo: 'WAN:', value: 'No consultado' },
           ] },
         ],
         opciones: [
@@ -121,7 +124,7 @@
         dialogReporte: {
           isView: false
         },
-        showOpciones: (this.$auth.user.rol === 'SOPORTE' ? false : true),
+        showOpciones: (this.$auth.user.rol === 'COORDINADOR' ? true : false),
       }
     },
     props: {

@@ -6,7 +6,8 @@
         ref="formAddPantalla">
         <v-form
           autocomplete="off"
-          @submit.prevent="storePantalla">
+          @submit.prevent="storePantalla"
+          v-if="rol !== 'MESA'">
           <v-row>
             <v-col
               cols="12"
@@ -59,8 +60,7 @@
                 fab
                 dark
                 x-small
-                color="#F27830"
-                :disabled="(rol === 'MESA' ? true : false)">
+                color="#F27830">
                 <v-icon dark>
                   mdi-plus
                 </v-icon>
@@ -72,7 +72,6 @@
                 dark
                 x-small
                 color="#7BC142"
-                :disabled="(rol === 'MESA' ? true : false)"
                 @click="clearForm()">
                 <v-icon dark>
                   mdi-window-close
@@ -122,8 +121,10 @@
       Pantallas
     },
     async fetch() {
-      let { data } = await this.$axios.$get('api/inventario/pantallas/i/0');
-      this.items = data;
+       if (this.$auth.user.rol !== 'MESA') {
+        let { data } = await this.$axios.$get('api/inventario/pantallas/i/0');
+        this.items = data;
+       }
       await this.getPantallas();
     },
     methods: {

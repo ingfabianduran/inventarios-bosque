@@ -6,7 +6,8 @@
         ref="formAddSistema">
         <v-form
           autocomplete="off"
-          @submit.prevent="storeSistema">
+          @submit.prevent="storeSistema"
+          v-if="rol !== 'MESA'">
           <v-row>
             <v-col
               cols="12"
@@ -24,8 +25,7 @@
                   dense
                   outlined
                   color="#7BC142"
-                  :error-messages="errors"
-                  :disabled="rol === 'MESA' ? true : false">
+                  :error-messages="errors">
                 </v-autocomplete>
               </ValidationProvider>
             </v-col>
@@ -43,8 +43,7 @@
                   outlined
                   dense
                   color="#7BC142"
-                  :error-messages="errors"
-                  :disabled="rol === 'MESA' ? true : false">
+                  :error-messages="errors">
                 </v-text-field>
               </ValidationProvider>
             </v-col>
@@ -118,8 +117,10 @@
       Loader
     },
     async fetch() {
-      const { data } = await this.$axios.$get('api/inventario/sistemaoperativos/i/0');
-      this.items = data;
+      if (this.$auth.user.rol !== 'MESA') {
+        const { data } = await this.$axios.$get('api/inventario/sistemaoperativos/i/0');
+        this.items = data;
+      }
       await this.getSistemas();
     },
     methods: {
