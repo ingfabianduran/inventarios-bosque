@@ -3,7 +3,7 @@
     v-model="navigation.isView"
     app
     dark
-    color="#3C4024"
+    color="#404827"
     width="280"
     class="mx-auto">
     <template v-slot:prepend>

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import { ValidationObserver, ValidationProvider, extend } from 'vee-validate';
-import { required, email, min, max, integer, min_value, max_value, oneOf, confirmed } from 'vee-validate/dist/rules';
+import { required, email, min, max, integer, min_value, max_value, oneOf, confirmed, alpha } from 'vee-validate/dist/rules';
 
 extend('required', {
     ...required,
@@ -45,6 +45,11 @@ extend('oneOf', {
 extend('confirmed', {
     ...confirmed,
     message: 'Confirmar el valor del campo {_field_}'
+});
+
+extend('alpha', {
+  ...alpha,
+  message: 'El valor del campo {_field_} no debe contener caracteres especiales'
 });
 
 Vue.component('ValidationProvider', ValidationProvider);

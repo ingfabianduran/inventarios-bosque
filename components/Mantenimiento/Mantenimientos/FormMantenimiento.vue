@@ -14,7 +14,7 @@
           <v-row>
             <v-col
               cols="12"
-              md="6">
+              md="4">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="tipo"
@@ -31,28 +31,7 @@
             </v-col>
             <v-col
               cols="12"
-              md="6">
-              <ValidationProvider
-                v-slot="{ errors }"
-                name="especialista"
-                rules="required|integer">
-                <v-autocomplete
-                  v-model="form.user_id"
-                  label="Especialista"
-                  :items="especialistas"
-                  item-text="nombre"
-                  item-value="id"
-                  outlined
-                  color="#7BC142"
-                  :error-messages="errors">
-                </v-autocomplete>
-              </ValidationProvider>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col
-              cols="12"
-              md="6">
+              md="4">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="categoria"
@@ -71,7 +50,7 @@
             </v-col>
             <v-col
               cols="12"
-              md="6">
+              md="4">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="equipo"
@@ -139,13 +118,12 @@
     data() {
       return {
         tipos: ['Correctivo', 'Preventivo'],
-        especialistas: [],
         categorias: [],
         equipos: [],
         form: {
           tipo: '',
           tarea_realizada: '',
-          user_id: '',
+          user_id: this.$auth.user.id,
           categoria_id: '',
           equipo_id: ''
         },
@@ -179,14 +157,9 @@
       Loader
     },
     async fetch() {
-      await this.getEspecialistas();
       await this.getCategorias();
     },
     methods: {
-      async getEspecialistas() {
-        const { data } = await this.$axios.$get('api/mantenimiento/users/i/0');
-        this.especialistas = data;
-      },
       async getCategorias() {
         const { data } = await this.$axios.$get('api/mantenimiento/categorias/i/0');
         this.categorias = data;

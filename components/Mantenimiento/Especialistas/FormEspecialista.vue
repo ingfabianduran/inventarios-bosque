@@ -35,7 +35,7 @@
               <ValidationProvider
                 v-slot="{ errors }"
                 name="email"
-                rules="required|min:3|max:50">
+                rules="required|min:3|max:50|alpha">
                 <v-text-field
                   v-model="form.email"
                   label="Email"
@@ -214,6 +214,7 @@
             if (confirmed) {
               try {
                 this.isLoading = true;
+                this.form.email += '@unbosque.edu.co';
                 const { descripcion } = (this.titulo === 'Nuevo Especialista') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
                 setTimeout(() => {
                   Alert.showToast('success', descripcion);
@@ -254,6 +255,16 @@
           this.form.cedula = parseInt(this.form.cedula);
         }
       },
+      'form.email': function(value) {
+        if (value !== undefined) {
+          for (let i = 0; i < value.length; i ++) {
+            if (value[i] === '@') {
+              this.form.email = value.slice(0, i);
+              break;
+            }
+          }
+        }
+      }
     }
   }
 </script>

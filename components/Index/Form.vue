@@ -9,13 +9,14 @@
       <ValidationProvider
         v-slot="{ errors }"
         name="usuario"
-        rules="required|email">
+        rules="required|alpha">
         <v-text-field
           v-model="form.email"
-          label="Nombre del Usuario"
+          label="Nombre de usuario"
           prepend-inner-icon="mdi-account"
-          filled
+          outlined
           rounded
+          suffix="@unbosque.edu.co"
           color="#7BC142"
           :error-messages="errors">
         </v-text-field>
@@ -27,9 +28,9 @@
         <v-text-field
           type="password"
           v-model="form.password"
-          label="Contraseña del Usuario"
+          label="Contraseña del usuario"
           prepend-inner-icon="mdi-lock"
-          filled
+          outlined
           rounded
           color="#7BC142"
           :error-messages="errors">
@@ -79,7 +80,7 @@
         if (validate) {
           try {
             this.isLoading = true;
-            await this.$auth.loginWith('laravelJWT', { data: this.form });
+            await this.$auth.loginWith('laravelJWT', { data: { email: `${this.form.email}@unbosque.edu.co`, password: this.form.password } });
             Alert.showToast('success', 'Bienvenido al Sistema, un momento por favor...');
             this.$store.commit('set', '');
             setTimeout(() => {
@@ -97,6 +98,6 @@
       message() {
         return this.$store.state.message;
       }
-    }
+    },
   }
 </script>

@@ -2,8 +2,8 @@
   <div>
     <v-row>
       <v-col>
-        <Equipo v-show="isViewAddEquipo" :titulo="titulo" :url="url" :data="equipo" @clearForm="clearForm" />
-        <Card v-show="!isViewAddEquipo" :equipo="equipo" @addEquipo="isViewAddEquipo = true" @updateEquipo="updateEquipo" />
+        <Equipo v-show="isViewAddEquipo" :titulo="titulo" :url="url" :data="equipo" @showCardEquipo="showCardEquipo" @clearForm="clearForm" />
+        <Card v-show="!isViewAddEquipo" :equipo="equipo" @addEquipo="isViewAddEquipo = true" @updateEquipo="updateEquipo" :whenDeleteEquipo="whenDeleteEquipo" />
       </v-col>
     </v-row>
     <v-row>
@@ -15,7 +15,7 @@
           url="api/inventario/equipos/"
           :search="search"
           @getModel="getEquipo"
-          @updateModels="$fetch"
+          @updateModels="deleteEquipo"
           @searchModel="searchListEquipos"
           @resetBusqueda="$fetch" />
       </v-col>
@@ -60,6 +60,7 @@
         titulo: 'Nuevo Equipo',
         url: 'api/inventario/equipos',
         equipo: {},
+        whenDeleteEquipo: false
       }
     },
     components: {
@@ -86,6 +87,7 @@
       getEquipo(equipo) {
         this.equipo = equipo;
         this.isViewAddEquipo = false;
+        this.whenDeleteEquipo = false;
       },
       searchListEquipos(equipos) {
         this.equipos = equipos.data.data;
@@ -105,6 +107,13 @@
         this.url = 'api/inventario/equipos';
         this.isViewAddEquipo = false;
         this.$fetch();
+      },
+      showCardEquipo() {
+        this.isViewAddEquipo = false;
+      },
+      deleteEquipo() {
+        this.$fetch();
+        this.whenDeleteEquipo = true;
       }
     }
   }

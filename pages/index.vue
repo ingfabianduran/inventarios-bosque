@@ -5,10 +5,10 @@
     <v-row
       no-gutters
       align="center">
-      <v-col sm="12" md="7" lg="7" xl="7">
+      <v-col sm="12" md="7" lg="6" xl="7">
         <Carusel />
       </v-col>
-      <v-col sm="12" md="5" lg="5" xl="5" class="pa-10">
+      <v-col sm="12" md="5" lg="6" xl="5" class="pa-10">
         <Form />
       </v-col>
     </v-row>

@@ -23,27 +23,27 @@
     <v-stepper-items>
       <v-stepper-content
         step="1">
-        <Disco ref="disco" @getDisco="setDisco" @omitirDisco="omitirDisco" @clearForm="cancelarRegistro" />
+        <Disco ref="disco" @getDisco="setDisco" @omitirDisco="omitirDisco" @clearForm="showCardEquipo" />
       </v-stepper-content>
       <v-stepper-content
         step="2">
-        <Memoria ref="memoria" @getMemoria="setMemoria" @omitirMemoria="omitirMemoria" @clearForm="cancelarRegistro" />
+        <Memoria ref="memoria" @getMemoria="setMemoria" @omitirMemoria="omitirMemoria" @clearForm="showCardEquipo" />
       </v-stepper-content>
       <v-stepper-content
         step="3">
-        <Equipo :equipo="data" ref="equipo" :showDiscos="showDiscos" :showMemorias="showMemorias" @getEquipo="setEquipo" @clearForm="cancelarRegistro" />
+        <Equipo :equipo="data" ref="equipo" :showDiscos="showDiscos" :showMemorias="showMemorias" @getEquipo="setEquipo" @clearForm="showCardEquipo" />
       </v-stepper-content>
       <v-stepper-content
         step="4">
-        <Inventario :inventario="data.inventario" ref="inventario" @getInventario="setInventario" @omitir="omitir" @clearForm="cancelarRegistro" />
+        <Inventario :inventario="data.inventario" ref="inventario" @getInventario="setInventario" @omitir="omitir" @clearForm="showCardEquipo" />
       </v-stepper-content>
       <v-stepper-content
         step="5">
-        <Caracteristica :caracteristica="data.caracteristica" ref="caracteristica" @getCaracteristica="setCaracteristica" @omitir="omitir" @clearForm="cancelarRegistro" />
+        <Caracteristica :caracteristica="data.caracteristica" ref="caracteristica" @getCaracteristica="setCaracteristica" @omitir="omitir" @clearForm="showCardEquipo" />
       </v-stepper-content>
       <v-stepper-content
         step="6">
-        <Red :redes="data.macs" ref="red" @getMacs="setMacs" @clearForm="cancelarRegistro" />
+        <Red :redes="data.macs" ref="red" @getMacs="setMacs" @clearForm="showCardEquipo" />
         <Loader :isShow="isLoading" color="#212121" size="80" />
       </v-stepper-content>
     </v-stepper-items>
@@ -228,6 +228,10 @@
         this.form.mac = [];
 
         this.paso = 1;
+      },
+      showCardEquipo() {
+        this.cancelarRegistro();
+        this.$emit('showCardEquipo');
       }
     },
     watch: {

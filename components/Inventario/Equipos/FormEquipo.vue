@@ -39,6 +39,7 @@
                   label="Compra"
                   placeholder="Fecha de la compra del equipo"
                   v-mask="'##-##-####'"
+                  prepend-inner-icon="mdi-calendar-month"
                   outlined
                   color="#7BC142"
                   :error-messages="errors"
@@ -58,6 +59,7 @@
                   label="Garatia"
                   placeholder="Fecha de la garantia del equipo"
                   v-mask="'##-##-####'"
+                  prepend-inner-icon="mdi-calendar-month"
                   outlined
                   color="#7BC142"
                   :error-messages="errors"
@@ -114,6 +116,7 @@
                   v-model="form.valor"
                   label="Valor"
                   placeholder="Valor del equipo"
+                  prepend-inner-icon="mdi-currency-usd"
                   outlined
                   color="#7BC142"
                   :error-messages="errors"

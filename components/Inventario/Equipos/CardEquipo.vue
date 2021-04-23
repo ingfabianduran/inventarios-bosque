@@ -46,7 +46,7 @@
           bottom
           origin="center center"
           transition="scale-transition"
-          v-if="showOpciones">
+          v-if="showOpciones && !whenDeleteEquipo">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               color="#F27830"
@@ -128,6 +128,10 @@
       equipo: {
         type: Object,
         required: false
+      },
+      whenDeleteEquipo: {
+        type: Boolean,
+        default: false
       }
     },
     components: {
