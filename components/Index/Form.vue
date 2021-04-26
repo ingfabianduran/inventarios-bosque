@@ -9,7 +9,7 @@
       <ValidationProvider
         v-slot="{ errors }"
         name="usuario"
-        rules="required|alpha">
+        rules="required">
         <v-text-field
           v-model="form.email"
           label="Nombre de usuario"
@@ -80,7 +80,7 @@
         if (validate) {
           try {
             this.isLoading = true;
-            await this.$auth.loginWith('laravelJWT', { data: { email: `${this.form.email}@unbosque.edu.co`, password: this.form.password } });
+            await this.$auth.loginWith('laravelJWT', { data: { email: `${this.form.email}`, password: this.form.password } });
             Alert.showToast('success', 'Bienvenido al Sistema, un momento por favor...');
             this.$store.commit('set', '');
             setTimeout(() => {

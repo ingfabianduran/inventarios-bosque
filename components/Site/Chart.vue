@@ -19,8 +19,12 @@ import Chart from 'chart.js';
         type: String,
         required: true
       },
-      data: {
-        type: Object,
+      labels: {
+        type: Array,
+        required: true
+      },
+      datasets: {
+        type: Array,
         required: true
       }
     },
@@ -56,6 +60,15 @@ import Chart from 'chart.js';
           }
         }
       });
+    },
+    watch: {
+      labels() {
+        this.chart.data.labels = this.labels;
+        for (let i = 0; i < this.datasets.length; i ++) {
+          this.chart.data.datasets[i] = this.datasets[i];
+        }
+        this.chart.update();
+      }
     }
   }
 </script>
