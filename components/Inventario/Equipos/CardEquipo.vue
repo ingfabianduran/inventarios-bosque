@@ -4,13 +4,9 @@
       :dialog="dialogEquipo"
       @closeModal="closeModalEquipo"
       v-if="dialogEquipo.isView" />
-    <Reporte
-      :dialog="dialogReporte"
-      @closeModal="closeModalReporte"
-      v-if="dialogReporte.isView" />
     <v-card>
       <v-card-title
-        class="font-weight-bold">
+        class="font-weight-bold text-h4">
         {{ `Equipo ${this.dataEquipo[2].data[2].value}` }}
       </v-card-title>
       <v-card-subtitle>{{ this.dataEquipo[1].data[4].value }}</v-card-subtitle>
@@ -25,9 +21,11 @@
               outlined>
               <v-toolbar
                 color="#7BC142"
-                class="font-weight-bold text-h5"
                 dark>
-                {{ equipo.titulo }}
+                <v-toolbar-title
+                  class="font-weight-bold text-h5">
+                  {{ equipo.titulo }}
+                </v-toolbar-title>
               </v-toolbar>
               <v-list
                 dense>
@@ -48,7 +46,6 @@
           bottom
           origin="left"
           transition="scale-transition"
-          open-on-hover
           v-if="showOpciones && !whenDeleteEquipo">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -79,7 +76,6 @@
 </template>
 <script>
   import Equipo from '~/components/Inventario/Equipos/TabsEquipo';
-  import Reporte from '~/components/Inventario/Equipos/TabsReportes';
   import Pdf from '~/components/Site/HojaVida';
 
   export default {
@@ -121,9 +117,6 @@
           isView: false,
           data: {}
         },
-        dialogReporte: {
-          isView: false
-        },
         showOpciones: (this.$auth.user.rol === 'COORDINADOR' ? true : false),
       }
     },
@@ -138,8 +131,7 @@
       }
     },
     components: {
-      Equipo,
-      Reporte
+      Equipo
     },
     methods: {
       closeModalEquipo(value) {
@@ -160,7 +152,7 @@
         } else if (opcion === 'modificarEquipo') {
           this.$emit('updateEquipo');
         } else if (opcion === 'reporteInventario') {
-          this.dialogReporte.isView = true;
+          this.$router.push('/inventarios/equipos/reportes');
         }
       }
     },

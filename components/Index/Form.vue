@@ -80,7 +80,7 @@
         if (validate) {
           try {
             this.isLoading = true;
-            await this.$auth.loginWith('laravelJWT', { data: { email: `${this.form.email}`, password: this.form.password } });
+            await this.$auth.loginWith('laravelJWT', { data: { email: `${this.setEmail(this.form.email).toLowerCase()}@unbosque.edu.co`, password: this.form.password } });
             Alert.showToast('success', 'Bienvenido al Sistema, un momento por favor...');
             this.$store.commit('set', '');
             setTimeout(() => {
@@ -92,6 +92,15 @@
             this.isLoading = false;
           }
         }
+      },
+      setEmail(formEmail) {
+        for (let i = 0; i < formEmail.length; i ++) {
+          if (formEmail[i] === '@') {
+            formEmail = formEmail.slice(0, i);
+            break;
+          }
+        }
+        return formEmail;
       }
     },
     computed: {

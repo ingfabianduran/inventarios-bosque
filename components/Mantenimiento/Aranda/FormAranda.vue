@@ -8,7 +8,7 @@
         autocomplete="off"
         @submit.prevent="storeAranda">
         <v-card-title
-          class="font-weight-bold">
+          class="font-weight-bold text-h5">
           {{ this.titulo }}
         </v-card-title>
         <v-card-text>

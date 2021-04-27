@@ -7,7 +7,7 @@
       <v-form
         autocomplete="off"
         @submit.prevent="storeEspecialista">
-        <v-card-title class="font-weight-bold">
+        <v-card-title class="font-weight-bold text-h4">
           {{ this.titulo }}
         </v-card-title>
         <v-card-text>
@@ -35,7 +35,7 @@
               <ValidationProvider
                 v-slot="{ errors }"
                 name="email"
-                rules="required|min:3|max:50|alpha">
+                rules="required|min:3|max:50">
                 <v-text-field
                   v-model="form.email"
                   label="Email"
@@ -214,6 +214,7 @@
             if (confirmed) {
               try {
                 this.isLoading = true;
+                this.form.email = this.setEmail(this.form.email);
                 this.form.email += '@unbosque.edu.co';
                 const { descripcion } = (this.titulo === 'Nuevo Especialista') ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form);
                 setTimeout(() => {
@@ -227,6 +228,15 @@
             }
           });
         }
+      },
+      setEmail(formEmail) {
+        for (let i = 0; i < formEmail.length; i ++) {
+          if (formEmail[i] === '@') {
+            formEmail = formEmail.slice(0, i);
+            break;
+          }
+        }
+        return formEmail;
       },
       clearForm() {
         this.$refs.formEspecialista.reset();

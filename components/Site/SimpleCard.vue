@@ -3,10 +3,12 @@
     outlined>
     <v-toolbar
       color="#404827"
-      class="font-weight-bold text-h5"
       dark
       short>
-      {{ model.nombre }}
+      <v-toolbar-title
+        class="font-weight-bold text-h5">
+        {{ model.nombre }}
+      </v-toolbar-title>
     </v-toolbar>
     <v-card-actions>
       <v-spacer></v-spacer>

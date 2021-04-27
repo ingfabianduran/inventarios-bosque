@@ -1,7 +1,17 @@
 <template>
   <v-card
-    flat>
-    <canvas :id="idChart"></canvas>
+    outlined>
+    <v-toolbar
+      color="#404827"
+      dark>
+      <v-toolbar-title
+        class="font-weight-bold text-h4">
+        {{ this.title }}
+      </v-toolbar-title>
+    </v-toolbar>
+    <v-card-text>
+      <canvas :id="idChart"></canvas>
+    </v-card-text>
   </v-card>
 </template>
 <script>
@@ -26,13 +36,17 @@ import Chart from 'chart.js';
       datasets: {
         type: Array,
         required: true
+      },
+      title: {
+        type: String,
+        required: true
       }
     },
     mounted() {
       this.ctx = document.getElementById(this.idChart).getContext('2d');
       this.chart = new Chart(this.ctx, {
         type: 'bar',
-        data: this.data,
+        data: [],
         options: {
           legend: {
             display: true,

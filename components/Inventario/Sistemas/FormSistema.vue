@@ -7,7 +7,7 @@
       <v-form
         @submit.prevent="storeSistema">
         <v-card-title
-          class="font-weight-bold">
+          class="font-weight-bold text-h4">
           {{ this.titulo }}
         </v-card-title>
         <v-card-text>

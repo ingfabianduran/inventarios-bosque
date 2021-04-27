@@ -7,7 +7,7 @@
       <v-form
         autocomplete="off"
         @submit.prevent="storeMantenimiento">
-        <v-card-title class="font-weight-bold">
+        <v-card-title class="font-weight-bold text-h4">
           {{ this.titulo }}
         </v-card-title>
         <v-card-text>

@@ -3,7 +3,7 @@
     outlined>
     <v-toolbar
       color="#404827"
-      class="font-weight-bold text-h5"
+      class="font-weight-bold text-h4"
       dark>
       Busqueda
     </v-toolbar>
