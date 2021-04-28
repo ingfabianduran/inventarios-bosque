@@ -137,7 +137,7 @@
                 <v-autocomplete
                   v-model="form.disco_id"
                   label="Disco Duro"
-                  :item-text="item => item.tipo +' - '+ item.capacidad"
+                  :item-text="item => `${item.tipo} ${item.capacidad}`"
                   item-value="id"
                   :items="discos"
                   outlined
@@ -158,7 +158,7 @@
                 <v-autocomplete
                   v-model="form.memoria_id"
                   label="Memoria Ram"
-                  :item-text="item => item.tipo +' - '+ item.capacidad"
+                  :item-text="item => `${item.tipo} ${item.capacidad}`"
                   item-value="id"
                   :items="memorias"
                   outlined
@@ -273,9 +273,18 @@
         this.form.tipo = this.equipo.tipo;
         this.form.serie = this.equipo.serie;
         this.form.valor = this.equipo.valor;
-        this.form.modelo_id = this.equipo.modelo.id;
-        this.form.disco_id = this.equipo.disco.id;
-        this.form.memoria_id = this.equipo.memoria.id;
+
+        if (this.equipo.modelo !== null) {
+          this.form.modelo_id = this.equipo.modelo.id;
+        }
+
+        if (this.equipo.disco !== null) {
+          this.form.disco_id = this.equipo.disco.id;
+        }
+
+        if (this.equipo.memoria !== null) {
+          this.form.memoria_id = this.equipo.memoria.id;
+        }
       }
     },
     computed: {

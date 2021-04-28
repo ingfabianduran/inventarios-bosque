@@ -133,7 +133,7 @@
           marca_id: '',
           procesador_id: '',
         },
-        tipos: ['All in One', 'Desktop', 'Portatil', 'Portatil Mini', 'Tablet', 'Tiny,WorkStation'],
+        tipos: ['All in One', 'Desktop', 'Portatil', 'Portatil Mini', 'Tablet', 'Tiny', 'WorkStation'],
         marcas: [],
         procesadores: []
       }
@@ -189,8 +189,14 @@
         this.form.descripcion = this.modelo.descripcion;
         this.form.tipo = this.modelo.tipo;
         this.form.modulos_memoria = this.modelo.modulos_memoria;
-        this.form.marca_id = this.modelo.marca_id;
-        this.form.procesador_id = this.modelo.procesador_id;
+
+        if (this.modelo.marca !== null) {
+          this.form.marca_id = this.modelo.marca_id;
+        }
+
+        if (this.modelo.procesador !== null) {
+          this.form.procesador_id = this.modelo.procesador_id;
+        }
       }
     }
   }

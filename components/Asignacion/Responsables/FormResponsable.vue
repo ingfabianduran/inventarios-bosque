@@ -208,7 +208,9 @@
         this.form.cargo = this.responsable.cargo;
         this.form.tipo = this.responsable.tipo;
         this.form.extension = this.responsable.extension;
-        this.form.dependencia_id = this.responsable.dependencia_id
+        if (this.responsable.dependencia !== null) {
+          this.form.dependencia_id = this.responsable.dependencia.id;
+        }
       }
     }
   }

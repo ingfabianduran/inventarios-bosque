@@ -19,7 +19,7 @@
               <ValidationProvider
                 v-slot="{ errors }"
                 name="tipo"
-                rules="required|oneOf:Academico,Administrativo,Servicio al Estudiante">
+                rules="required|oneOf:Aulas,Oficinas,Servicio al Estudiante">
                 <v-autocomplete
                   v-model="form.tipo"
                   label="Tipo"
@@ -148,7 +148,7 @@
   export default {
     data() {
       return {
-        tipos: ['Academico', 'Administrativo', 'Servicio al Estudiante'],
+        tipos: ['Aulas', 'Oficinas', 'Servicio al Estudiante'],
         edificios: [],
         espacios: [],
         responsables: [],
@@ -233,14 +233,21 @@
     },
     watch: {
       asignacion() {
-        this.form.tipo = this.asignacion.tipo;
-        this.form.estado = (this.asignacion.estado === 1) ? true : false;
-        this.form.responsable_id = this.asignacion.responsable_id;
-        this.form.espacio_id = this.asignacion.espacio_id;
-        this.form.equipo_id = this.asignacion.equipo_id;
         if (Object.keys(this.asignacion).length > 0) {
-          this.edificio = this.asignacion.espacio.edificio_id;
-          this.searchResponsable = this.asignacion.responsable.nombre;
+          this.form.tipo = this.asignacion.tipo;
+          this.form.estado = (this.asignacion.estado === 1) ? true : false;
+
+          if (this.asignacion.espacio !== null) {
+            this.form.espacio_id = this.asignacion.espacio.id;
+            this.edificio = this.asignacion.espacio.edificio_id;
+          }
+
+          if (this.asignacion.responsable !== null) {
+            this.form.responsable_id = this.asignacion.responsable.id;
+            this.searchResponsable = this.asignacion.responsable.nombre;
+          }
+
+          this.form.equipo_id = this.asignacion.equipo_id;
           this.searchEquipo = this.asignacion.equipo.serie;
         }
       },

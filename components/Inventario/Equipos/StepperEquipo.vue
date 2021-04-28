@@ -243,15 +243,26 @@
           this.form.tipo = this.data.tipo;
           this.form.serie = this.data.serie;
           this.form.valor = this.data.valor;
-          this.form.modelo_id = this.data.modelo.id;
-          this.form.disco_id = this.data.disco.id;
-          this.form.memoria_id = this.data.memoria.id;
+
+          if (this.data.modelo !== null) {
+            this.form.modelo_id = this.data.modelo.id;
+          }
+
+          if (this.data.disco !== null) {
+            this.form.disco_id = this.data.disco.id;
+          }
+
+          if (this.data.memoria !== null) {
+            this.form.memoria_id = this.data.memoria.id;
+          }
+
           if (this.data.inventario !== null) {
             this.form.inventario = {
               n_interno: this.data.inventario.n_interno,
               inventario: this.data.inventario.inventario
             };
           }
+
           if (this.data.caracteristica !== null) {
             this.form.caracteristica = {
               usuario_dominio: this.data.caracteristica.usuario_dominio,

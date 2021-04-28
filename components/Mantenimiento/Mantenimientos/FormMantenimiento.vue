@@ -14,7 +14,7 @@
           <v-row>
             <v-col
               cols="12"
-              md="4">
+              md="6">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="tipo"
@@ -31,7 +31,7 @@
             </v-col>
             <v-col
               cols="12"
-              md="4">
+              md="6">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="categoria"
@@ -48,9 +48,11 @@
                 </v-autocomplete>
               </ValidationProvider>
             </v-col>
+          </v-row>
+          <v-row>
             <v-col
               cols="12"
-              md="4">
+              :md="(rol === 'COORDINADOR' ? 6 : 12)">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="equipo"
@@ -62,6 +64,26 @@
                   item-text="serie"
                   item-value="id"
                   :items="equipos"
+                  outlined
+                  color="#7BC142"
+                  :error-messages="errors">
+                </v-autocomplete>
+              </ValidationProvider>
+            </v-col>
+            <v-col
+              cols="12"
+              md="6"
+              v-if="rol === 'COORDINADOR'">
+              <ValidationProvider
+                v-slot="{ errors }"
+                name="tecnico"
+                rules="required|integer">
+                <v-autocomplete
+                  v-model="form.user_id"
+                  label="Tecnico"
+                  :items="tecnicos"
+                  :item-text="item => `${item.nombre} ${item.apellido}`"
+                  item-value="id"
                   outlined
                   color="#7BC142"
                   :error-messages="errors">
@@ -120,10 +142,11 @@
         tipos: ['Correctivo', 'Preventivo'],
         categorias: [],
         equipos: [],
+        tecnicos: [],
         form: {
           tipo: '',
           tarea_realizada: '',
-          user_id: this.$auth.user.id,
+          user_id: '',
           categoria_id: '',
           equipo_id: ''
         },
@@ -158,11 +181,20 @@
     },
     async fetch() {
       await this.getCategorias();
+      if (this.$auth.user.rol === 'COORDINADOR') {
+        await this.getTecnicos();
+      } else {
+        this.form.user_id = this.$auth.user.id;
+      }
     },
     methods: {
       async getCategorias() {
         const { data } = await this.$axios.$get('api/mantenimiento/categorias/i/0');
         this.categorias = data;
+      },
+      async getTecnicos() {
+        const { data } = await this.$axios.$get('api/mantenimiento/users/i/0');
+        this.tecnicos = data;
       },
       async storeMantenimiento() {
         const validate = await this.$refs.formMantenimiento.validate();
@@ -189,7 +221,9 @@
         this.$refs.formMantenimiento.reset();
         this.form.tipo = '';
         this.form.tarea_realizada = '';
-        this.form.user_id = '';
+        if (this.$auth.user.rol === 'COORDINADOR') {
+          this.form.user_id = '';
+        }
         this.form.categoria_id = '';
         this.form.equipo_id = '';
       },
@@ -200,9 +234,11 @@
           this.form.tipo = this.mantenimiento.tipo;
           this.form.tarea_realizada = this.mantenimiento.tarea_realizada;
           this.form.user_id = this.mantenimiento.user_id;
-          this.form.categoria_id = this.mantenimiento.categoria_id;
-          if (this.mantenimiento.equipo_id !== null) {
-            this.form.equipo_id = this.mantenimiento.equipo_id;
+          if (this.mantenimiento.categoria !== null) {
+            this.form.categoria_id = this.mantenimiento.categoria.id;
+          }
+          if (this.mantenimiento.equipo !== null) {
+            this.form.equipo_id = this.mantenimiento.equipo.id;
             this.searchEquipo = this.mantenimiento.equipo.serie;
           }
         }
@@ -214,5 +250,10 @@
         }
       }
     },
+    computed: {
+      rol() {
+        return this.$auth.user.rol;
+      }
+    }
   }
 </script>

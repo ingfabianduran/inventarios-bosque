@@ -42,18 +42,18 @@ export default {
             body: [
               [{ colSpan: 6, text: '1. DATOS DEL EQUIPO', style: 'titulos' }, '', '', '', '', ''],
               [
-                { text: 'Marca', style: 'subtitulos' }, { text: equipo.modelo.marca.nombre },
-                { text: 'Modelo', style: 'subtitulos' }, { text: equipo.modelo.descripcion },
+                { text: 'Marca', style: 'subtitulos' }, { text: (equipo.modelo !== null ? equipo.modelo.marca.nombre : 'No registra')  },
+                { text: 'Modelo', style: 'subtitulos' }, { text: (equipo.modelo !== null ? equipo.modelo.descripcion : 'No registra')  },
                 { text: 'Valor', style: 'subtitulos' }, { text: `$ ${numbro(equipo.valor).format({ thousandSeparated: true, mantissa: 0 })}` }
               ],
               [{ colSpan: 6, text: '2. CONFIGURACIÓN DE HARDWARE', style: 'titulos' }, '', '', '', '', ''],
               [
                 { colSpan: 3, text: 'Procesador', style: 'subtitulos' }, '', '',
-                { colSpan: 3, text: `${equipo.modelo.procesador.nombre} ${equipo.modelo.procesador.frecuencia}` }, '', '',
+                { colSpan: 3, text: (equipo.modelo !== null ? `${equipo.modelo.procesador.nombre} ${equipo.modelo.procesador.frecuencia}` : 'No registra') }, '', '',
               ],
               [
                 { colSpan: 3, text: 'Memoria RAM', style: 'subtitulos' }, '', '',
-                { colSpan: 3, text: `${equipo.memoria.capacidad} ${equipo.memoria.tipo}` }, '', '',
+                { colSpan: 3, text: (equipo.memoria !== null ? `${equipo.memoria.capacidad} ${equipo.memoria.tipo}` : 'No registra') }, '', '',
               ],
               [
                 { colSpan: 3, rowSpan: 2, text: 'Disco Duro', style: 'subtitulos' }, '', '',
@@ -62,7 +62,7 @@ export default {
                 { text: 'Tecnologia', style: 'subtitulos', alignment: 'center' },
               ],
               [
-                '', '', '', { text: equipo.disco.descripcion, alignment: 'center' }, { text: equipo.disco.capacidad, alignment: 'center' }, { text: equipo.disco.tipo, alignment: 'center' }
+                '', '', '', { text: (equipo.disco !== null ? equipo.disco.descripcion : 'No registra'), alignment: 'center' }, { text: (equipo.disco !== null ? equipo.disco.capacidad : 'No registra'), alignment: 'center' }, { text: (equipo.disco !== null ? equipo.disco.tipo : 'No registra'), alignment: 'center' }
               ],
               [
                 { text: 'Perifericos', style: 'subtitulos' },

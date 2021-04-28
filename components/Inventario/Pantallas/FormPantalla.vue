@@ -136,7 +136,10 @@
       pantalla() {
         this.form.pulgadas = this.pantalla.pulgadas;
         this.form.tipo = this.pantalla.tipo;
-        this.form.marca_id = this.pantalla.marca_id;
+
+        if (this.pantalla.marca !== null) {
+          this.form.marca_id = this.pantalla.marca.id;
+        }
       }
     }
   }

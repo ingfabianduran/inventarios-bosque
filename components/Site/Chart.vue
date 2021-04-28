@@ -16,6 +16,7 @@
 </template>
 <script>
 import Chart from 'chart.js';
+import ChartDataLabels  from 'chartjs-plugin-datalabels';
 
   export default {
     data() {
@@ -45,9 +46,25 @@ import Chart from 'chart.js';
     mounted() {
       this.ctx = document.getElementById(this.idChart).getContext('2d');
       this.chart = new Chart(this.ctx, {
+        plugins: [ChartDataLabels],
         type: 'bar',
         data: [],
         options: {
+          plugins: {
+            datalabels: {
+              color: '#FFFFFF',
+              font: {
+                family: "'Open Sans Condensed', 'sans-serif'",
+                size: 16,
+                weight: 'bold'
+              },
+              formatter: function(value, context) {
+                if (value === 0) {
+                  return '';
+                }
+              }
+            }
+          },
           legend: {
             display: true,
             labels: {
@@ -56,8 +73,7 @@ import Chart from 'chart.js';
             }
           },
           tooltips: {
-            titleFontFamily: "'Open Sans Condensed', 'sans-serif'",
-            bodyFontFamily: "'Open Sans Condensed', 'sans-serif'",
+            enabled: false,
           },
           scales: {
             yAxes: [{

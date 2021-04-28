@@ -158,11 +158,23 @@
     },
     watch: {
       equipo() {
-        this.dataEquipo[0].data[0].value = this.equipo.modelo.marca.nombre;
-        this.dataEquipo[0].data[1].value = this.equipo.modelo.descripcion;
-        this.dataEquipo[0].data[2].value = this.equipo.modelo.procesador.nombre;
-        this.dataEquipo[0].data[3].value = this.equipo.memoria.capacidad;
-        this.dataEquipo[0].data[4].value = this.equipo.disco.capacidad;
+        if (this.equipo.modelo !== null) {
+          this.dataEquipo[0].data[0].value = this.equipo.modelo.marca.nombre;
+          this.dataEquipo[0].data[1].value = this.equipo.modelo.descripcion;
+          this.dataEquipo[0].data[2].value = this.equipo.modelo.procesador.nombre;
+        }
+
+        if (this.equipo.memoria !== null) {
+          this.dataEquipo[0].data[3].value = this.equipo.memoria.capacidad;
+        } else {
+          this.dataEquipo[0].data[3].value = 'No registra';
+        }
+
+        if (this.equipo.disco !== null) {
+          this.dataEquipo[0].data[4].value = this.equipo.disco.capacidad;
+        } else {
+          this.dataEquipo[0].data[4].value = 'No registra';
+        }
 
         if (this.equipo.asignaciones.length > 0) {
           this.dataEquipo[1].data[0].value = (this.equipo.asignaciones[0].responsable.dependencia.nombre ? this.equipo.asignaciones[0].responsable.dependencia.nombre : 'No registrar');
