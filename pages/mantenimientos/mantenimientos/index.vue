@@ -14,7 +14,7 @@
           :textBtn="mantenimiento.textBtn"
           :stateBtn="mantenimiento.stateBtn"
           @registrarAranda="registrarAranda"
-          @clearForm="clearForm" />
+          @clearForm="clearFormMantenimiento" />
       </v-col>
       <v-col
         cols="12"
@@ -28,7 +28,7 @@
           :textBtn="aranda.textBtn"
           :stateBtn="aranda.stateBtn"
           :mantenimiento="aranda.mantenimiento"
-          @clearForm="clearForm" />
+          @clearForm="clearFormAranda" />
       </v-col>
     </v-row>
     <v-row>
@@ -137,22 +137,22 @@
           this.aranda.mantenimiento = mantenimiento.id;
         }
       },
-      clearForm() {
+      clearFormMantenimiento() {
+        this.mantenimiento.titulo = 'Nuevo Mantenimiento';
+        this.mantenimiento.data = {};
+        this.mantenimiento.url = 'api/mantenimiento/mantenimientos';
+        this.mantenimiento.textBtn = 'Registrar';
+        this.mantenimiento.stateBtn = false;
+        this.aranda.mantenimiento = 0;
+        this.$fetch();
+      },
+      clearFormAranda() {
         this.aranda.titulo = 'Registrar Caso Aranda';
         this.aranda.data = {};
         this.aranda.url = `api/mantenimiento/arandas`;
         this.aranda.textBtn = 'Registrar';
         this.aranda.mantenimiento = 0;
         this.aranda.stateBtn = false;
-
-        this.mantenimiento.titulo = 'Nuevo Mantenimiento';
-        this.mantenimiento.data = {};
-        this.mantenimiento.url = 'api/mantenimiento/mantenimientos';
-        this.mantenimiento.textBtn = 'Registrar';
-        this.mantenimiento.stateBtn = false;
-        this.$refs.mantenimiento.clearForm();
-
-        this.$fetch();
       },
       searchListMantenimientos(mantenimientos) {
         this.mantenimientos = mantenimientos.data.data;

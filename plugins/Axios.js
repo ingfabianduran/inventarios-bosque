@@ -18,6 +18,9 @@ export default function ({ $axios, redirect, store }, inject) {
       const message = error.response.data.descripcion;
       store.commit('set', message);
       redirect('/');
+    } else if (code === 500) {
+      const message = { codigo: 500, message: 'Opss!!! algo no esta bien por aca' };
+      Errors.showError(message);
     }
   });
 }

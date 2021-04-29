@@ -183,8 +183,6 @@
       await this.getCategorias();
       if (this.$auth.user.rol === 'COORDINADOR') {
         await this.getTecnicos();
-      } else {
-        this.form.user_id = this.$auth.user.id;
       }
     },
     methods: {
@@ -202,6 +200,7 @@
           Alert.showConfirm(this.titulo, `¿Esta seguro de realizar la petición?`, 'question', async(confirmed) => {
             if (confirmed) {
               try {
+                this.form.user_id = this.$auth.user.id;
                 this.isLoading = true;
                 const { descripcion } = (this.titulo === 'Nuevo Mantenimiento' ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form));
                 setTimeout(() => {

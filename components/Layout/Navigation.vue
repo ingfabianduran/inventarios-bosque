@@ -65,10 +65,10 @@
           { titulo: 'Asignaciones', icon: 'mdi-handshake', link: '/asignaciones/asignaciones', roles:['COORDINADOR'] },
         ],
         mantenimientos: [
-          { titulo: 'Servicio Tecnico', icon: 'mdi-hammer-wrench', link: '#', roles:['COORDINADOR', 'SOPORTE'], subtitulos: [
+          { titulo: 'Servicio Tecnico', icon: 'mdi-hammer-wrench', link: '#', roles:['COORDINADOR', 'SOPORTE', 'MESA'], subtitulos: [
             { titulo: 'Categorias', link: '/mantenimientos/categorias', roles:['COORDINADOR'] },
             { titulo: 'Usuarios', link: '/mantenimientos/especialistas', roles:['COORDINADOR'] },
-            { titulo: 'Mantenimientos', link: '/mantenimientos/mantenimientos', roles:['COORDINADOR', 'SOPORTE'] }
+            { titulo: 'Mantenimientos', link: '/mantenimientos/mantenimientos', roles:['COORDINADOR', 'SOPORTE', 'MESA'] }
           ] },
         ],
         inventario: [

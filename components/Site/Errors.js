@@ -10,6 +10,8 @@ export default {
       Alert.showToast('error', `Codigo: ${errors.codigo}. ${errors.error}`)
     } else if (errors.hasOwnProperty('descripcion')) {
       Alert.showToast('error', `Codigo: ${errors.codigo}. ${errors.descripcion}`);
+    } else if (errors.hasOwnProperty('message')) {
+      Alert.showToast('error', `Codigo: ${errors.codigo}. ${errors.message}`);
     }
   }
 }
