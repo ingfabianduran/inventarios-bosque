@@ -204,12 +204,14 @@
     },
     watch: {
       responsable() {
-        this.form.nombre = this.responsable.nombre;
-        this.form.cargo = this.responsable.cargo;
-        this.form.tipo = this.responsable.tipo;
-        this.form.extension = this.responsable.extension;
-        if (this.responsable.dependencia !== null) {
-          this.form.dependencia_id = this.responsable.dependencia.id;
+        if (Object.keys(this.responsable).length > 0) {
+          this.form.nombre = this.responsable.nombre;
+          this.form.cargo = this.responsable.cargo;
+          this.form.tipo = this.responsable.tipo;
+          this.form.extension = this.responsable.extension;
+          if (this.responsable.dependencia !== null) {
+            this.form.dependencia_id = this.responsable.dependencia.id;
+          }
         }
       }
     }

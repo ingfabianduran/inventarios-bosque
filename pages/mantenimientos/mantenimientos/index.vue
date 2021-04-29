@@ -21,6 +21,7 @@
         md="4"
         v-show="aranda.mantenimiento !== 0">
         <Aranda
+          ref="aranda"
           :titulo="aranda.titulo"
           :aranda="aranda.data"
           :url="aranda.url"
@@ -93,7 +94,8 @@
           textBtn: 'Registrar',
           stateBtn: false,
           mantenimiento: 0
-        }
+        },
+        showAranda: false
       }
     },
     components: {
@@ -135,20 +137,20 @@
           this.aranda.mantenimiento = mantenimiento.id;
         }
       },
-      async clearForm() {
-        this.mantenimiento.titulo = 'Nuevo Mantenimiento';
-        this.mantenimiento.data = {};
-        this.mantenimiento.url = 'api/mantenimiento/mantenimientos';
-        this.mantenimiento.textBtn = 'Registrar';
-        this.mantenimiento.stateBtn = false;
-        this.$refs.mantenimiento.clearForm();
-
+      clearForm() {
         this.aranda.titulo = 'Registrar Caso Aranda';
         this.aranda.data = {};
         this.aranda.url = `api/mantenimiento/arandas`;
         this.aranda.textBtn = 'Registrar';
         this.aranda.mantenimiento = 0;
         this.aranda.stateBtn = false;
+
+        this.mantenimiento.titulo = 'Nuevo Mantenimiento';
+        this.mantenimiento.data = {};
+        this.mantenimiento.url = 'api/mantenimiento/mantenimientos';
+        this.mantenimiento.textBtn = 'Registrar';
+        this.mantenimiento.stateBtn = false;
+        this.$refs.mantenimiento.clearForm();
 
         this.$fetch();
       },

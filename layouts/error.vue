@@ -7,7 +7,7 @@
         </div>
         <h2>We are sorry, Page not found!</h2>
         <p>The page you are looking for might have been removed had its name changed or is temporarily unavailable.</p>
-        <a href="#">Back To Homepage</a>
+        <a href="/inventarios/equipos">Back To Homepage</a>
 		  </div>
     </div>
     <div v-else-if="error.statusCode === 500">
@@ -17,7 +17,7 @@
         </div>
         <h2>Internal server error</h2>
         <p>Please contact your administrator</p>
-        <a href="#">Back To Homepage</a>
+        <a href="/inventarios/equipos">Back To Homepage</a>
 		  </div>
     </div>
     <div v-else-if="error.statusCode === 503">
@@ -27,7 +27,7 @@
         </div>
         <h2>The server is currently unavailable</h2>
         <p>Because it is overloaded or down for maintenance</p>
-        <a href="#">Back To Homepage</a>
+        <a href="/inventarios/equipos">Back To Homepage</a>
 		  </div>
     </div>
 	</div>
@@ -39,8 +39,8 @@
 </script>
 <style>
   * {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
   }
 
   body {
@@ -57,8 +57,8 @@
     left: 50%;
     top: 50%;
     -webkit-transform: translate(-50%, -50%);
-        -ms-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
   }
 
   .notfound {
@@ -76,8 +76,8 @@
     top: 0;
     left: 50%;
     -webkit-transform: translateX(-50%);
-        -ms-transform: translateX(-50%);
-            transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
     z-index: -1;
   }
 
@@ -91,8 +91,8 @@
     left: 50%;
     top: 50%;
     -webkit-transform: translate(-50%, -50%);
-        -ms-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
   }
 
   .notfound h2 {

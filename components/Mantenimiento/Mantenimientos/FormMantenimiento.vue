@@ -208,7 +208,6 @@
                   Alert.showToast('success', descripcion);
                   this.isLoading = false;
                   this.clearForm();
-                  this.$emit('clearForm');
                 }, 500);
               } catch (error) {
                 this.isLoading = false;
@@ -226,6 +225,7 @@
         }
         this.form.categoria_id = '';
         this.form.equipo_id = '';
+        this.$emit('clearForm');
       },
     },
     watch: {
