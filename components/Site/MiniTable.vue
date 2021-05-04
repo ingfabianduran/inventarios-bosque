@@ -3,7 +3,8 @@
     hide-default-footer
     dense
     :headers="headers"
-    :items="items">
+    :items="items"
+    :disable-pagination="isPagination">
     <template v-slot:[`item.actions`]="{ item }">
       <v-btn
         icon
@@ -13,6 +14,17 @@
           mdi-delete
         </v-icon>
       </v-btn>
+    </template>
+    <template slot="body.append">
+      <tr
+        class="footer-table">
+        <td
+          v-for="(i, index) in total"
+          :key="index"
+          class="footer-table-td font-weight-bold text-h4 py-2">
+          {{ i }}
+        </td>
+      </tr>
     </template>
   </v-data-table>
 </template>
@@ -33,6 +45,14 @@
         type: String,
         required: false
       },
+      isPagination: {
+        type: Boolean,
+        default: false
+      },
+      total: {
+        type: Array,
+        required: true
+      }
     },
     methods: {
       deleteItem(item) {
@@ -45,3 +65,10 @@
     }
   }
 </script>
+<style scoped>
+  .footer-table {
+    background-color: #404827;
+    color: #fff;
+    pointer-events: none !important;
+  }
+</style>

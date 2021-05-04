@@ -79,6 +79,10 @@
       isRead: {
         type: Boolean,
         default: false
+      },
+      isPagination: {
+        type: Boolean,
+        default: true
       }
     },
     methods: {

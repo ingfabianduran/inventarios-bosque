@@ -23,7 +23,8 @@
           <v-card-text>
             <Tabla
               :headers="headersRepUsos"
-              :items="itemsRepUsos" />
+              :items="itemsRepUsos"
+              :total="totalRepUsos" />
           </v-card-text>
         </v-card>
       </v-col>
@@ -32,12 +33,12 @@
       <v-col
         cols="12"
         md="6">
-        <Chart idChart="chartOne" :labels="dataChart[0].labels" :datasets="dataChart[0].datasets" title="Distribución de Equipos por Usuario" />
+        <Chart idChart="chartOne" :labels="dataChart[0].labels" :datasets="dataChart[0].datasets" title="Distribución de Equipos por Tipo" />
       </v-col>
       <v-col
         cols="12"
         md="6">
-        <Chart idChart="chartTwo" :labels="dataChart[1].labels" :datasets="dataChart[1].datasets" title="Distribución de Equipos por Tipo" />
+        <Chart idChart="chartTwo" :labels="dataChart[1].labels" :datasets="dataChart[1].datasets" title="Distribución de Equipos por Usuario" />
       </v-col>
     </v-row>
     <v-row>
@@ -57,7 +58,9 @@
           <v-card-text>
             <Tabla
               :headers="headersRepMarcas"
-              :items="itemsRepMarcas" />
+              :items="itemsRepMarcas"
+              :isPagination="true"
+              :total="totalRepMarcas" />
           </v-card-text>
         </v-card>
       </v-col>
@@ -84,6 +87,7 @@
           { text: 'Marca', value: 'nombre', sortable: false },
           { text: 'Area Académica y Administrativas', value: 'academico_administrativo', sortable: false },
           { text: 'Servicio al Estudiante', value: 'servicio_estudiante', sortable: false },
+          { text: 'Sin Asignar', value: 'sin_asignar', sortable: false },
           { text: 'Total', value: 'total', sortable: false }
         ],
         headersRepUsos: [
@@ -94,6 +98,7 @@
           { text: 'Cantidad', value: 'cantidadSerEst', sortable: false },
         ],
         itemsRepMarcas: [],
+        totalRepMarcas: [],
         itemsRepUsos: [
           { tiempos: 'Equipos con menos de 1 año', porcenteAcaAdm: '2,7%', cantidadAcaAdm: 36, porcentajeServEst: '9,2%', cantidadSerEst: 181 },
           { tiempos: 'Equipos entre 1 y 3 años', porcenteAcaAdm: '15,7%', cantidadAcaAdm: 207, porcentajeServEst: '13,7%', cantidadSerEst: 269 },
@@ -102,6 +107,7 @@
           { tiempos: 'Equipos entre 6 y 7 años', porcenteAcaAdm: '20,6%', cantidadAcaAdm: 271, porcentajeServEst: '10,7%', cantidadSerEst: 210 },
           { tiempos: 'Equipos con mas de 7 años', porcenteAcaAdm: '31,8%', cantidadAcaAdm: 419, porcentajeServEst: '11,5%', cantidadSerEst: 226 },
         ],
+        totalRepUsos: [],
         dataChart: [
           {
             labels: [],
@@ -191,6 +197,8 @@
       },
       async countWithMarca(dates) {
         const { data } = await this.$axios.$post('api/reporte/marcasequipo', dates);
+        const totalData = data.pop();
+        this.totalRepMarcas = Object.values(totalData);
         this.itemsRepMarcas = data;
       },
       close() {

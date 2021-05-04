@@ -41,6 +41,10 @@ import ChartDataLabels  from 'chartjs-plugin-datalabels';
       title: {
         type: String,
         required: true
+      },
+      total: {
+        type: Number,
+        required: false
       }
     },
     mounted() {
@@ -74,6 +78,13 @@ import ChartDataLabels  from 'chartjs-plugin-datalabels';
           },
           tooltips: {
             enabled: false,
+          },
+          hover: false,
+          title: {
+            display: true,
+            fontSize: 20,
+            fontFamily: "'Open Sans Condensed', 'sans-serif'",
+            text: 'Total: 162'
           },
           scales: {
             yAxes: [{
