@@ -56,21 +56,32 @@ import ChartDataLabels  from 'chartjs-plugin-datalabels';
         options: {
           plugins: {
             datalabels: {
-              color: '#FFFFFF',
+              color: '#000000',
               font: {
                 family: "'Open Sans Condensed', 'sans-serif'",
                 size: 16,
                 weight: 'bold'
               },
+              anchor: 'end',
+              align: 'top',
               formatter: function(value, context) {
                 if (value === 0) {
                   return '';
                 }
               }
+            },
+          },
+          layout: {
+            padding: {
+                left: 0,
+                right: 0,
+                top: 30,
+                bottom: 0
             }
           },
           legend: {
             display: true,
+            position: 'bottom',
             labels: {
               fontFamily: "'Open Sans Condensed', 'sans-serif'",
               fontSize: 14
@@ -80,12 +91,6 @@ import ChartDataLabels  from 'chartjs-plugin-datalabels';
             enabled: false,
           },
           hover: false,
-          title: {
-            display: true,
-            fontSize: 20,
-            fontFamily: "'Open Sans Condensed', 'sans-serif'",
-            text: 'Total: 162'
-          },
           scales: {
             yAxes: [{
               ticks: {

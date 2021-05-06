@@ -73,6 +73,7 @@
   import Form from '~/components/Inventario/Equipos/FormReport';
   import Loader from '~/components/Site/Loader';
   import moment from 'moment';
+  import numbro from 'numbro';
 
   export default {
     middleware: ['auth', 'isCoordinador'],
@@ -84,30 +85,31 @@
     data() {
       return {
         headersRepMarcas: [
-          { text: 'Marca', value: 'nombre', sortable: false },
-          { text: 'Area Académica y Administrativas', value: 'academico_administrativo', sortable: false },
-          { text: 'Servicio al Estudiante', value: 'servicio_estudiante', sortable: false },
-          { text: 'Sin Asignar', value: 'sin_asignar', sortable: false },
-          { text: 'Total', value: 'total', sortable: false }
-        ],
-        headersRepUsos: [
-          { text: 'Tiempo de Uso', value: 'tiempos', sortable: false },
-          { text: 'Area Académica y Administrativas', value: 'porcenteAcaAdm', sortable: false },
-          { text: 'Cantidad', value: 'cantidadAcaAdm', sortable: false },
-          { text: 'Servicio al Estudiante', value: 'porcentajeServEst', sortable: false },
-          { text: 'Cantidad', value: 'cantidadSerEst', sortable: false },
+          { text: 'Marca', value: 'nombre', sortable: false, align: 'center' },
+          { text: 'Area Académica y Administrativas', value: 'academico_administrativo', sortable: false, align: 'center' },
+          { text: 'Servicio al Estudiante', value: 'servicio_estudiante', sortable: false, align: 'center' },
+          { text: 'Sin Asignar', value: 'sin_asignar', sortable: false, align: 'center' },
+          { text: 'Total', value: 'total', sortable: false, align: 'center' }
         ],
         itemsRepMarcas: [],
         totalRepMarcas: [],
-        itemsRepUsos: [
-          { tiempos: 'Equipos con menos de 1 año', porcenteAcaAdm: '2,7%', cantidadAcaAdm: 36, porcentajeServEst: '9,2%', cantidadSerEst: 181 },
-          { tiempos: 'Equipos entre 1 y 3 años', porcenteAcaAdm: '15,7%', cantidadAcaAdm: 207, porcentajeServEst: '13,7%', cantidadSerEst: 269 },
-          { tiempos: 'Equipos entre 3 y 5 años', porcenteAcaAdm: '8,9%', cantidadAcaAdm: 117, porcentajeServEst: '50,0%', cantidadSerEst: 979 },
-          { tiempos: 'Equipos entre 5 y 6 años', porcenteAcaAdm: '20,3%', cantidadAcaAdm: 268, porcentajeServEst: '4,7%', cantidadSerEst: 92 },
-          { tiempos: 'Equipos entre 6 y 7 años', porcenteAcaAdm: '20,6%', cantidadAcaAdm: 271, porcentajeServEst: '10,7%', cantidadSerEst: 210 },
-          { tiempos: 'Equipos con mas de 7 años', porcenteAcaAdm: '31,8%', cantidadAcaAdm: 419, porcentajeServEst: '11,5%', cantidadSerEst: 226 },
+        headersRepUsos: [
+          { text: 'Tiempo de Uso', value: 'tiempos', sortable: false, align: 'center' },
+          { text: 'Area Académica y Administrativas', value: 'porcentAcaAdm', sortable: false, align: 'center' },
+          { text: 'Cantidad', value: 'cantidadAcaAdm', sortable: false, align: 'center' },
+          { text: 'Servicio al Estudiante', value: 'porcentServEst', sortable: false, align: 'center' },
+          { text: 'Cantidad', value: 'cantidadSerEst', sortable: false, align: 'center' },
+          { text: 'Sin Asignar', value: 'porcentSinAsig', sortable: false, align: 'center' },
+          { text: 'Cantidad', value: 'cantidadSinAsig', sortable: false, align: 'center' },
         ],
-        totalRepUsos: [],
+        itemsRepUsos: [
+          { tiempos: 'Equipos con menos de 1 año', porcentAcaAdm: '0 %', cantidadAcaAdm: 0, porcentServEst: '0 %', cantidadSerEst: 0,  porcentSinAsig: '0 %', cantidadSinAsig: 0 },
+          { tiempos: 'Equipos entre 1 y 2 años', porcentAcaAdm: '0 %', cantidadAcaAdm: 0, porcentServEst: '0 %', cantidadSerEst: 0, porcentSinAsig: '0 %', cantidadSinAsig: 0 },
+          { tiempos: 'Equipos entre 3 y 4 años', porcentAcaAdm: '0 %', cantidadAcaAdm: 0, porcentServEst: '0 %', cantidadSerEst: 0, porcentSinAsig: '0 %', cantidadSinAsig: 0 },
+          { tiempos: 'Equipos entre 5 y 6 años', porcentAcaAdm: '0 %', cantidadAcaAdm: 0, porcentServEst: '0 %', cantidadSerEst: 0, porcentSinAsig: '0 %', cantidadSinAsig: 0 },
+          { tiempos: 'Equipos con mas de 7 años', porcentAcaAdm: '0 %', cantidadAcaAdm: 0, porcentServEst: '0 %', cantidadSerEst: 0, porcentSinAsig: '0 %', cantidadSinAsig: 0 },
+        ],
+        totalRepUsos: ['Total', 0, 0, 0, 0, 0, 0],
         dataChart: [
           {
             labels: [],
@@ -121,6 +123,11 @@
                 label: 'Servicio al Estudiante',
                 data: [],
                 backgroundColor: 'rgba(123, 193, 66, 0.6)'
+              },
+              {
+                label: 'Sin Asignar',
+                data: [],
+                backgroundColor: 'rgba(0, 135, 118, 0.6)'
               },
               {
                 label: 'Total',
@@ -156,6 +163,7 @@
       await this.chartTipoUsuario(dates);
       await this.chartTipoEquipo(dates);
       await this.countWithMarca(dates);
+      await this.countWithTiempoUso(dates);
     },
     methods: {
       async chartTipoUsuario(dates) {
@@ -179,6 +187,9 @@
           return item.servicio_estudiante;
         });
         this.dataChart[0].datasets[2].data = data.map((item) => {
+          return item.sin_asignar;
+        });
+        this.dataChart[0].datasets[3].data = data.map((item) => {
           return item.total;
         });
       },
@@ -188,6 +199,7 @@
           await this.chartTipoUsuario(values);
           await this.chartTipoEquipo(values);
           await this.countWithMarca(values);
+          await this.countWithTiempoUso(values);
           setTimeout(() => {
             this.$nuxt.$loading.finish();
           }, 500);
@@ -197,9 +209,73 @@
       },
       async countWithMarca(dates) {
         const { data } = await this.$axios.$post('api/reporte/marcasequipo', dates);
-        const totalData = data.pop();
-        this.totalRepMarcas = Object.values(totalData);
-        this.itemsRepMarcas = data;
+        if (data.length > 0) {
+          const totalData = data.pop();
+          this.totalRepMarcas = Object.values(totalData);
+          this.itemsRepMarcas = data;
+        } else {
+          this.itemsRepMarcas = [];
+          this.totalRepMarcas = [];
+        }
+      },
+      async countWithTiempoUso(dates) {
+        const { data } = await this.$axios.$post('api/reporte/tiempouso', dates);
+        let totalPorcentaje = 0;
+        this.resetValuesTiempoUso();
+
+        for (let i = 0; i < data.academico_admin.length; i ++) {
+          for (let j = 0; j < this.itemsRepUsos.length; j ++) {
+            if (data.academico_admin[i].tiempo_uso === this.itemsRepUsos[j].tiempos) {
+              this.itemsRepUsos[j].cantidadAcaAdm = data.academico_admin[i].cantidad;
+              this.itemsRepUsos[j].porcentAcaAdm = numbro(this.calcularPorcentaje(data.total.academico_admin, data.academico_admin[i].cantidad)).format({ output: 'percent', mantissa: 0, spaceSeparated: true });
+              totalPorcentaje += this.calcularPorcentaje(data.total.academico_admin, data.academico_admin[i].cantidad);
+            }
+          }
+        }
+
+        this.totalRepUsos[1] = numbro(totalPorcentaje).format({ output: 'percent', mantissa: 0, spaceSeparated: true });
+        this.totalRepUsos[2] = data.total.academico_admin;
+        totalPorcentaje = 0;
+
+        for (let i = 0; i < data.servicio_estudiante.length; i ++) {
+          for (let j = 0; j < this.itemsRepUsos.length; j ++) {
+            if (data.servicio_estudiante[i].tiempo_uso === this.itemsRepUsos[j].tiempos) {
+              this.itemsRepUsos[j].cantidadSerEst = data.servicio_estudiante[i].cantidad;
+              this.itemsRepUsos[j].porcentServEst = numbro(this.calcularPorcentaje(data.total.servicio_estudiante, data.servicio_estudiante[i].cantidad)).format({ output: 'percent', mantissa: 0, spaceSeparated: true });
+              totalPorcentaje += this.calcularPorcentaje(data.total.servicio_estudiante, data.servicio_estudiante[i].cantidad);
+            }
+          }
+        }
+
+        this.totalRepUsos[3] = numbro(totalPorcentaje).format({ output: 'percent', mantissa: 0, spaceSeparated: true });
+        this.totalRepUsos[4] = data.total.servicio_estudiante;
+        totalPorcentaje = 0;
+
+        for (let i = 0; i < data.no_asignados.length; i ++) {
+          for (let j = 0; j < this.itemsRepUsos.length; j ++) {
+            if (data.no_asignados[i].tiempo_uso === this.itemsRepUsos[j].tiempos) {
+              this.itemsRepUsos[j].cantidadSinAsig = data.no_asignados[i].cantidad;
+              this.itemsRepUsos[j].porcentSinAsig = numbro(this.calcularPorcentaje(data.total.no_asignados, data.no_asignados[i].cantidad)).format({ output: 'percent', mantissa: 0, spaceSeparated: true });
+              totalPorcentaje += this.calcularPorcentaje(data.total.no_asignados, data.no_asignados[i].cantidad);
+            }
+          }
+        }
+
+        this.totalRepUsos[5] = numbro(totalPorcentaje).format({ output: 'percent', mantissa: 0, spaceSeparated: true });
+        this.totalRepUsos[6] = data.total.no_asignados;
+        totalPorcentaje = 0;
+      },
+      calcularPorcentaje(total, cantidad) {
+        return (cantidad / total);
+      },
+      resetValuesTiempoUso() {
+        this.itemsRepUsos = [
+          { tiempos: 'Equipos con menos de 1 año', porcentAcaAdm: '0 %', cantidadAcaAdm: 0, porcentServEst: '0 %', cantidadSerEst: 0,  porcentSinAsig: '0 %', cantidadSinAsig: 0 },
+          { tiempos: 'Equipos entre 1 y 2 años', porcentAcaAdm: '0 %', cantidadAcaAdm: 0, porcentServEst: '0 %', cantidadSerEst: 0, porcentSinAsig: '0 %', cantidadSinAsig: 0 },
+          { tiempos: 'Equipos entre 3 y 4 años', porcentAcaAdm: '0 %', cantidadAcaAdm: 0, porcentServEst: '0 %', cantidadSerEst: 0, porcentSinAsig: '0 %', cantidadSinAsig: 0 },
+          { tiempos: 'Equipos entre 5 y 6 años', porcentAcaAdm: '0 %', cantidadAcaAdm: 0, porcentServEst: '0 %', cantidadSerEst: 0, porcentSinAsig: '0 %', cantidadSinAsig: 0 },
+          { tiempos: 'Equipos con mas de 7 años', porcentAcaAdm: '0 %', cantidadAcaAdm: 0, porcentServEst: '0 %', cantidadSerEst: 0, porcentSinAsig: '0 %', cantidadSinAsig: 0 },
+        ];
       },
       close() {
         this.$emit('closeModal', false);

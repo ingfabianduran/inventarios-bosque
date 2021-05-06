@@ -17,7 +17,7 @@
     </template>
     <template slot="body.append">
       <tr
-        class="footer-table">
+        class="text-center footer-table">
         <td
           v-for="(i, index) in total"
           :key="index"
