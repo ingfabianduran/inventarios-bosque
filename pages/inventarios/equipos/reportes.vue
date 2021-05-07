@@ -4,12 +4,12 @@
       align="center">
       <v-col
         cols="12"
-        md="5">
+        md="4">
         <Form @dataReports="updateDataReports" />
       </v-col>
       <v-col
         cols="12"
-        md="7">
+        md="8">
         <v-card
           outlined>
           <v-toolbar
@@ -229,6 +229,7 @@
               this.itemsRepUsos[j].cantidadAcaAdm = data.academico_admin[i].cantidad;
               this.itemsRepUsos[j].porcentAcaAdm = numbro(this.calcularPorcentaje(data.total.academico_admin, data.academico_admin[i].cantidad)).format({ output: 'percent', mantissa: 0, spaceSeparated: true });
               totalPorcentaje += this.calcularPorcentaje(data.total.academico_admin, data.academico_admin[i].cantidad);
+              break;
             }
           }
         }
@@ -243,6 +244,7 @@
               this.itemsRepUsos[j].cantidadSerEst = data.servicio_estudiante[i].cantidad;
               this.itemsRepUsos[j].porcentServEst = numbro(this.calcularPorcentaje(data.total.servicio_estudiante, data.servicio_estudiante[i].cantidad)).format({ output: 'percent', mantissa: 0, spaceSeparated: true });
               totalPorcentaje += this.calcularPorcentaje(data.total.servicio_estudiante, data.servicio_estudiante[i].cantidad);
+              break;
             }
           }
         }
@@ -257,6 +259,7 @@
               this.itemsRepUsos[j].cantidadSinAsig = data.no_asignados[i].cantidad;
               this.itemsRepUsos[j].porcentSinAsig = numbro(this.calcularPorcentaje(data.total.no_asignados, data.no_asignados[i].cantidad)).format({ output: 'percent', mantissa: 0, spaceSeparated: true });
               totalPorcentaje += this.calcularPorcentaje(data.total.no_asignados, data.no_asignados[i].cantidad);
+              break;
             }
           }
         }
