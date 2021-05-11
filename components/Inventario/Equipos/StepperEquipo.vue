@@ -89,7 +89,8 @@
         memoria: {},
         showDiscos: true,
         showMemorias: true,
-        isLoading: false
+        isLoading: false,
+        isMasive: false, 
       }
     },
     props: {
@@ -127,15 +128,24 @@
         this.paso += 1;
       },
       setEquipo(equipo) {
-        this.form.fecha_compra = equipo.fecha_compra;
-        this.form.vence_garantia = equipo.vence_garantia;
-        this.form.tipo = equipo.tipo;
-        this.form.serie = equipo.serie;
-        this.form.valor = equipo.valor;
-        this.form.modelo_id = equipo.modelo_id;
-        this.form.disco_id = equipo.disco_id;
-        this.form.memoria_id = equipo.memoria_id;
-        this.paso += 1;
+        this.form.fecha_compra = equipo.form.fecha_compra;
+        this.form.vence_garantia = equipo.form.vence_garantia;
+        this.form.tipo = equipo.form.tipo;
+        this.form.serie = equipo.form.serie;
+        this.form.valor = equipo.form.valor;
+        this.form.modelo_id = equipo.form.modelo_id;
+        this.form.disco_id = equipo.form.disco_id;
+        this.form.memoria_id = equipo.form.memoria_id;
+        if (equipo.isMasiva) {
+          Alert.showConfirm('Registro Masivo', '¿Esta seguro de realizar el registro masivo de equipos?', 'question', async(confirmed) => {
+            if (confirmed) {
+              Alert.showToast('success', 'Los equipos se estan registrando en el sistema...');
+              this.cancelarRegistro();
+            }
+          });
+        } else {
+          this.paso += 1;
+        }
       },
       setInventario(inventario) {
         this.form.inventario = inventario;

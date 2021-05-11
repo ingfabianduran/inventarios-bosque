@@ -59,7 +59,7 @@ import ChartDataLabels  from 'chartjs-plugin-datalabels';
               color: '#000000',
               font: {
                 family: "'Open Sans Condensed', 'sans-serif'",
-                size: 16,
+                size: 12,
                 weight: 'bold'
               },
               anchor: 'end',

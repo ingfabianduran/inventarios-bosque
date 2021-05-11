@@ -7,10 +7,13 @@
   },
   "templates": {
     "cleverLinks": false,
-    "monospaceLinks": false
+    "monospaceLinks": false,
+    "name": "Documentación InvBosque",
+    "footerText": "Universidad El Bosque"
   },
   "opts": {
     "recurse": true,
-    "destination": "./doc"
+    "destination": "./doc",
+    "template": "node_modules/tui-jsdoc-template"
   }
 }

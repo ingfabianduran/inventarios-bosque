@@ -93,6 +93,14 @@
   </v-card>
 </template>
 <script>
+  /**
+   * @vue-data {Object} form - Datos del formulario.
+   * @vue-event {} storeMemoria - Valida y envia la informacion del formulario al componente padre.
+   * @vue-event {} omitir - Emite el evento omitir al componente padre.
+   * @vue-event {} clearForm - Limpia los datos del formulario y emite el evento clearForm al componente padre.
+   * @vue-event {} resetData - Limpia los datos del formulario.
+   * @vue-computed {String} rol - Obtiene el rol del usuario activo en la sesion.
+  */
   export default {
     data() {
       return {

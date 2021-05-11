@@ -130,10 +130,10 @@
   /**
    * @vue-data {Array} roles - Almacena los roles que puede tener un responsable.
    * @vue-data {Array} dependencias - Almacena todas las dependencia que puede tener un responsable.
-   * @vue-data {boolean} isLoading - Valida el estado de carga del formulario.
+   * @vue-data {Boolean} isLoading - Valida el estado de carga del formulario.
    * @vue-data {Object} form - Datos del formulario.
    * @vue-prop {String} titulo - Titulo especificado en el v-card-title del componente.
-   * @vue-prop {Object} edificio - Captura los datos y los ingresa en el formulario.
+   * @vue-prop {Object} [edificio={}] - Captura los datos y los ingresa en el formulario.
    * @vue-prop {String} url - Cadena para ejecutar la peticion POST y PUT.
    * @vue-prop {String} textBtn - Cadena para el texto del formulario.
    * @vue-event {} storeResponsable - Registra o actualiza un responsable.

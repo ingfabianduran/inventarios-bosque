@@ -135,7 +135,25 @@
 <script>
   import Loader from '~/components/Site/Loader';
   import Alert from '~/components/Site/SweetAlert';
-
+  /**
+   * @vue-data {Array} tipos - Tipos que puede tener un mantenimiento.
+   * @vue-data {Array} categorias - Muestra las categorias registradas en el sistema.
+   * @vue-data {Array} equipos - Busca los equipos registrados en el sistema.
+   * @vue-data {Object} tecnicos - Muestra los tecnicos registrados en el sistema.
+   * @vue-data {Object} form - Datos del formulario.
+   * @vue-data {Boolean} isLoading - Valida el estado de carga del formulario.
+   * @vue-data {String} searchEquipo - Captura la cadena que permite encontrar un equipo registrado en el sistema.
+   * @vue-prop {String} titulo - Titulo especificado en el v-card-title del componente.
+   * @vue-prop {Object} [mantenimiento={}] - Captura los datos y los ingresa en el formulario.
+   * @vue-prop {String} url - Cadena para ejecutar la peticion POST y PUT.
+   * @vue-prop {String} textBtn - Cadena para el texto del formulario.
+   * @vue-prop {Boolean} [stateBtn=false] - Cadena para el texto del formulario.
+   * @vue-event {} getCategorias - Trae las categorias registradas en el sistema.
+   * @vue-event {} getTecnicos - Trae los tecnicos registrados en el sistema.
+   * @vue-event {} storeMantenimiento - Registra o actualiza un mantenimiento.
+   * @vue-event {} clearForm - Limpia los datos del formulario.
+   * @vue-computed {String} rol - Obtiene el rol del usuario activo en la sesion.
+  */
   export default {
     data() {
       return {
@@ -227,6 +245,11 @@
         this.$emit('clearForm');
       },
     },
+    /**
+      * Watch Events:
+      * @property {Function} mantenimiento - Setea los valores del formulario.
+      * @property {Function} searchEquipo - Realiza la busqueda del equipo, mientras es digitado sobre el input.
+    */
     watch: {
       mantenimiento() {
         if (Object.keys(this.mantenimiento).length > 0) {

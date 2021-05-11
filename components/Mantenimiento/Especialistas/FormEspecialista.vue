@@ -167,7 +167,18 @@
 <script>
   import Alert from '~/components/Site/SweetAlert';
   import Loader from '~/components/Site/Loader';
-
+  /**
+   * @vue-data {Boolean} showPassword - Pone o no visible la contraseña sobre los input de tipo password.
+   * @vue-data {Array} roles - Muestra los roles que puede tener un especialista.
+   * @vue-data {Object} form - Datos del formulario.
+   * @vue-data {Boolean} isLoading - Valida el estado de carga del formulario.
+   * @vue-prop {String} titulo - Titulo especificado en el v-card-title del componente.
+   * @vue-prop {Object} [especialista={}] - Captura los datos y los ingresa en el formulario.
+   * @vue-prop {String} url - Cadena para ejecutar la peticion POST y PUT.
+   * @vue-prop {String} textBtn - Cadena para el texto del formulario.
+   * @vue-event {} storeEspecialista - Registra o actualiza un especialista.
+   * @vue-event {} clearForm - Limpia los datos del formulario.
+  */
   export default {
     data() {
       return {
@@ -250,6 +261,12 @@
         this.$emit('clearForm');
       }
     },
+    /**
+      * Watch Events:
+      * @property {Function} especialista - Setea los valores del formulario.
+      * @property {Function} form.cedula - Convierte la cadena String registrada a un Number.
+      * @property {Function} form.email - Formatea el usuario digitado para que solo tome el nombre sin el contenido a partir del @.
+    */
     watch: {
       especialista() {
         this.form.cedula = this.especialista.cedula;

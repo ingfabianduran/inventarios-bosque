@@ -83,7 +83,20 @@
 <script>
   import Loader from '~/components/Site/Loader';
   import Alert from '~/components/Site/SweetAlert';
-
+  /**
+   * @vue-data {Object} form - Datos del formulario.
+   * @vue-data {Array} tipos - Tipo que puede tener un caso Aranda.
+   * @vue-data {Boolean} isLoading - Valida el estado de carga del formulario.
+   * @vue-prop {String} titulo - Titulo especificado en el v-card-title del componente.
+   * @vue-prop {Object} [aranda={}] - Captura los datos y los ingresa en el formulario.
+   * @vue-prop {String} url - Cadena para ejecutar la peticion POST y PUT.
+   * @vue-prop {String} textBtn - Cadena para el texto del formulario.
+   * @vue-prop {Boolean} [stateBtn=false] - Habilita o deshabilita el submit, dependiendo la peticion a realizar.
+   * @vue-prop {Number} mantenimiento - Almacena el id del mantenimiento asociado al caso Aranda a registrar.
+   * @vue-event {} storeAranda - Registra o actualiza un caso Aranda.
+   * @vue-event {} deleteCasoAranda - Elimina un caso Aranda.
+   * @vue-event {} clearForm - Limpia los datos del formulario.
+  */
   export default {
     data() {
       return {
@@ -171,6 +184,10 @@
         this.$emit('clearForm');
       }
     },
+    /**
+      * Watch Events:
+      * @property {Function} aranda - Setea los valores del formulario.
+    */
     watch: {
       aranda() {
         if (this.aranda !== null) {

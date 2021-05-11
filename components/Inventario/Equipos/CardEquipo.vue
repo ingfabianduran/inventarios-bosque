@@ -107,7 +107,7 @@
           ] },
         ],
         opciones: [
-          { text: 'Agregar Equipo', opcion: 'agregarEquipo', show: (this.$auth.user.rol === 'COORDINADOR' ? true : false) },
+          { text: 'Agregar Equipos', opcion: 'agregarEquipos', show: (this.$auth.user.rol === 'COORDINADOR' ? true : false) },
           { text: 'Hoja de Vida', opcion: 'hojaVida', show: false },
           { text: 'Mas Información', opcion: 'masInformacion', show: false },
           { text: 'Modificar Equipo', opcion: 'modificarEquipo', show: false },
@@ -141,7 +141,7 @@
         this.dialogReporte.isView = value;
       },
       async eventMasOpciones(opcion) {
-        if (opcion === 'agregarEquipo') {
+        if (opcion === 'agregarEquipos') {
           this.$emit('addEquipo');
         } else if (opcion === 'hojaVida') {
           const { data } = await this.$axios.$get(`api/inventario/equipos/${this.equipo.id}`);
@@ -158,6 +158,8 @@
     },
     watch: {
       equipo() {
+        this.dataEquipo[2].data[2].value = this.equipo.serie;
+        
         if (this.equipo.modelo !== null) {
           this.dataEquipo[0].data[0].value = this.equipo.modelo.marca.nombre;
           this.dataEquipo[0].data[1].value = this.equipo.modelo.descripcion;
@@ -197,11 +199,9 @@
         if (this.equipo.inventario !== null) {
           this.dataEquipo[2].data[0].value = (this.equipo.inventario.n_interno ? this.equipo.inventario.n_interno : 'No registra');
           this.dataEquipo[2].data[1].value = (this.equipo.inventario.inventario ? this.equipo.inventario.inventario : 'No registra');
-          this.dataEquipo[2].data[2].value = (this.equipo.serie ? this.equipo.serie : 'No registra');
         } else {
           this.dataEquipo[2].data[0].value = 'No registra';
           this.dataEquipo[2].data[1].value = 'No registra';
-          this.dataEquipo[2].data[2].value = 'No registra';
         }
 
         if (this.equipo.macs.length > 0) {

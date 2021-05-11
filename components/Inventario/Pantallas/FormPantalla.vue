@@ -4,7 +4,7 @@
       ref="formPantalla">
       <v-form
         autocomplete="off"
-        @submit.prevent="storeMarca">
+        @submit.prevent="storePantalla">
         <v-card-text>
           <v-row>
             <v-col
@@ -84,7 +84,17 @@
   </v-card>
 </template>
 <script>
-
+  /**
+   * @vue-data {Object} form - Datos del formulario.
+   * @vue-data {Array} tipos - Tipos que puede tener una pantalla.
+   * @vue-data {Array} marcas - Muestra las marcas registradas en el sistema.
+   * @vue-prop {Boolean} [marca=true] - Valida si se muestran o no las marcas registradas.
+   * @vue-prop {Object} [pantalla={}] - Captura los datos y los ingresa en el formulario.
+   * @vue-event {} getMarcas - Trae todas las marcas registradas en el sistema.
+   * @vue-event {} storePantalla - Valida y envia la informacion del formulario al componente padre.
+   * @vue-event {} clearForm - Limpia los datos del formulario y emite el evento clearForm al componente padre.
+   * @vue-event {} resetData - Limpia los datos del formulario.
+  */
   export default {
     data() {
       return {
@@ -115,7 +125,7 @@
         const { data } = await this.$axios.$get('api/inventario/marcas/i/0');
         this.marcas = data;
       },
-      async storeMarca() {
+      async storePantalla() {
         const validate = await this.$refs.formPantalla.validate();
         if (validate) {
           this.$emit('getPantalla', this.form);
@@ -132,6 +142,10 @@
         this.form.marca_id = '';
       }
     },
+    /**
+      * Watch Events:
+      * @property {Function} pantalla - Setea los valores del formulario.
+    */
     watch: {
       pantalla() {
         this.form.pulgadas = this.pantalla.pulgadas;

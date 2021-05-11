@@ -116,6 +116,18 @@
   </v-card>
 </template>
 <script>
+  /**
+   * @vue-data {Object} form - Datos del formulario.
+   * @vue-data {Array} tipos - Tipos que puede tener una dirección mac.
+   * @vue-data {Array} macs - Listado que almacena las mac registradas.
+   * @vue-prop {Array} [redes=[]] - Listado de macs registradas sobre un equipo. 
+   * @vue-event {} addMac - Agrega una mac a la lista macs.
+   * @vue-event {} deleteMac - Elimina la mac seleccionada en la lista. 
+   * @vue-event {} sendMacs - Envia la lista macs al componente padre.
+   * @vue-event {} omitir - Emite el evento omitir al componente padre.
+   * @vue-event {} clearForm - Limpia los datos del formulario y emite el evento clearForm al componente padre.
+   * @vue-event {} resetData - Limpia los datos del formulario.
+  */
   export default {
     data() {
       return {
@@ -167,6 +179,10 @@
         this.macs = [];
       }
     },
+    /**
+      * Watch Events:
+      * @property {Function} redes - Setea los valores en la lista macs.
+    */
     watch: {
       redes() {
         this.macs = this.redes;
