@@ -7,7 +7,8 @@
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
-    "test": "jest"
+    "test": "jest",
+    "docs": "jsdoc -c jsdoc.json"
   },
   "dependencies": {
     "@nuxtjs/auth-next": "5.0.0-1618898588.9655d0e",
@@ -30,6 +31,9 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^26.6.3",
     "jest": "^26.6.3",
-    "vue-jest": "^3.0.4"
+    "jsdoc": "^3.6.6",
+    "jsdoc-vuejs": "^3.0.9",
+    "vue-jest": "^3.0.4",
+    "vue-template-compiler": "^2.6.12"
   }
 }

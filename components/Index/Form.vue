@@ -63,7 +63,12 @@
 </template>
 <script>
   import Alert from '~/components/Site/SweetAlert';
-
+  /**
+   * @vue-data {Object} form - Correo y contraseña del usuario.
+   * @vue-event {} logIn - Valida el usuario y la contraseña registrados.
+   * @vue-event {} setEmail - Formatea el usuario registrado para que solo tome el nombre sin el contenido a partir del @.
+   * @vue-computed {String} message - Obtiene el mensaje de estado de sesion.
+  */
   export default {
     data() {
       return {

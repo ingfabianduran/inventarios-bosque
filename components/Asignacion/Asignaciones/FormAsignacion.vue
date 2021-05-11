@@ -144,7 +144,24 @@
 <script>
   import Alert from '~/components/Site/SweetAlert';
   import Loader from '~/components/Site/Loader';
-
+  /**
+   * @vue-data {Array} tipos - Almacena todos los tipos de espacio que puede tener una asignación.
+   * @vue-data {Array} edificios - Muestra los edificios registrados en el sistema.
+   * @vue-data {Array} espacios - Muestra los espacios asociados al edificio seleccionado.
+   * @vue-data {Array} responsables - Busca los responsables registrados en el sistema.
+   * @vue-data {Array} equipos - Busca los equipos registrados en el sistema.
+   * @vue-data {Object} form - Datos del formulario.
+   * @vue-data {String} edificio - Cadena que permite encontrar un edificio.
+   * @vue-data {String} searchResponsable - Cadena que permite encontrar un responsable.
+   * @vue-data {String} searchEquipo - Cadena que permite encontrar un equipo.
+   * @vue-data {boolean} isLoading - Valida el estado de carga del formulario.
+   * @vue-prop {String} titulo - Titulo especificado en el v-card-title del componente.
+   * @vue-prop {Object} asignacion - Captura los datos y los ingresa en el formulario.
+   * @vue-prop {String} url - Cadena para ejecutar la peticion POST y PUT.
+   * @vue-prop {String} textBtn - Cadena para el texto del formulario.
+   * @vue-event {} storeAsignacion - Registra o actualiza una asignación.
+   * @vue-event {} clearForm - Limpia los datos del formulario.
+  */
   export default {
     data() {
       return {
@@ -231,6 +248,13 @@
         this.$emit('clearForm');
       }
     },
+    /**
+      * Watch Events:
+      * @property {Function} asignacion - Setea los valores del formulario.
+      * @property {Function} searchResponsable - Permite buscar un responsable y mostrarlo en la lista.
+      * @property {Function} searchEquipo - Permite buscar un equipo y mostrarlo en la lista.
+      * @property {Function} edificio - Cuando el valor del edificio cambia, este trae todos los espacios asociados al edificio seleccionado.
+    */
     watch: {
       asignacion() {
         if (Object.keys(this.asignacion).length > 0) {

@@ -12,6 +12,10 @@
   </v-carousel>
 </template>
 <script>
+  /**
+   * @vue-data {Array} images - Lista la cual almacena la ruta de acceso a la fotos del login.
+   */
+
   export default {
     data() {
       return {
