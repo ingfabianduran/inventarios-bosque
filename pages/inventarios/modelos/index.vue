@@ -22,12 +22,27 @@
   </div>
 </template>
 <script>
+  /**
+    * @module pages/inventarios/modelos/index
+  */
   import Modelo from '~/components/Inventario/Modelos/StepperModelo';
   import Table from '~/components/Site/Table';
   import Pagination from '~/components/Site/Pagination';
-
+  /**
+   * @vue-data {Object} modelo - Datos para gestionar la api del modelo.
+   * @vue-data {Array} headers - Configura lo que va a mostrar la tabla.
+   * @vue-data {Array} modelos - Lista de modelos mostrada en la tabla.
+   * @vue-data {Object} page - Configura la paginacion de la tabla.
+   * @vue-data {Object} search - Configura la busqueda sobre el modelo.
+   * @vue-data {String} titulo - Titulo del formulario modelo.
+   * @vue-data {String} url - Url del formulario que ejecuta una petición.
+   * @vue-event {Array} updateListModelos - Actualiza la informacion sobre la tabla.
+   * @vue-event {Object} getModelo - Trae el modelo seleccionado desde la tabla.
+   * @vue-event {} clearForm - Reinicia los valores sobre el modelo.
+   * @vue-event {Array} searchListModelos - Cambia los valores en la tabla cuando se esta realizando una busqueda.
+  */
   export default {
-    middleware: ['auth'],
+    middleware: ['auth', 'isCoordinador'],
     head() {
       return {
         title: 'Modelos'

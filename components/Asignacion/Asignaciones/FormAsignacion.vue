@@ -19,7 +19,7 @@
               <ValidationProvider
                 v-slot="{ errors }"
                 name="tipo"
-                rules="required|oneOf:Aulas,Oficinas,Servicio al Estudiante">
+                rules="required|oneOf:Academico,Administrativo,Servicio al estudiante">
                 <v-autocomplete
                   v-model="form.tipo"
                   label="Tipo"
@@ -165,7 +165,7 @@
   export default {
     data() {
       return {
-        tipos: ['Aulas', 'Oficinas', 'Servicio al Estudiante'],
+        tipos: ['Academico', 'Administrativo', 'Servicio al estudiante'],
         edificios: [],
         espacios: [],
         responsables: [],

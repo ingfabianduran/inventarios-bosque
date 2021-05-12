@@ -25,12 +25,27 @@
   </div>
 </template>
 <script>
+  /**
+    * @module pages/inventarios/pantallas/index
+  */
   import Pantalla from '~/components/Inventario/Pantallas/StepperPantalla';
   import Table from '~/components/Site/Table';
   import Pagination from '~/components/Site/Pagination';
-
+  /**
+   * @vue-data {Object} pantalla - Datos para gestionar la api del modelo.
+   * @vue-data {Array} headers - Configura lo que va a mostrar la tabla.
+   * @vue-data {Array} pantallas - Lista de pantallas mostrada en la tabla.
+   * @vue-data {Object} page - Configura la paginacion de la tabla.
+   * @vue-data {Object} search - Configura la busqueda sobre el modelo.
+   * @vue-data {String} titulo - Titulo del formulario pantalla.
+   * @vue-data {String} url - Url del formulario que ejecuta una petición.
+   * @vue-event {Array} updateListPantallas - Actualiza la informacion sobre la tabla.
+   * @vue-event {Object} getPantalla - Trae el modelo seleccionado desde la tabla.
+   * @vue-event {} clearForm - Reinicia los valores sobre el modelo.
+   * @vue-event {Array} searchListPantallas - Cambia los valores en la tabla cuando se esta realizando una busqueda.
+  */
   export default {
-    middleware: ['auth'],
+    middleware: ['auth', 'isCoordinador'],
     head() {
       return {
         title: 'Pantallas'

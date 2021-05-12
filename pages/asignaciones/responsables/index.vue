@@ -23,10 +23,23 @@
   </div>
 </template>
 <script>
+  /**
+    * @module pages/asignaciones/responsables/index
+  */
   import Form from '~/components/Asignacion/Responsables/FormResponsable';
   import Table from '~/components/Site/Table';
   import Pagination from '~/components/Site/Pagination';
-
+  /**
+   * @vue-data {Object} responsable - Datos para gestionar la api del modelo.
+   * @vue-data {Array} headers - Configura lo que va a mostrar la tabla.
+   * @vue-data {Array} responsables - Lista de responsables mostrada en la tabla.
+   * @vue-data {Object} page - Configura la paginacion de la tabla.
+   * @vue-data {Object} search - Configura la busqueda sobre el modelo.
+   * @vue-event {Array} updateListResponsables - Actualiza la informacion sobre la tabla.
+   * @vue-event {Object} getResponsable - Trae el modelo seleccionado desde la tabla.
+   * @vue-event {} clearForm - Reinicia los valores sobre el modelo.
+   * @vue-event {Array} searchListResponsables - Cambia los valores en la tabla cuando se esta realizando una busqueda.
+  */
   export default {
     middleware: ['auth', 'isCoordinador'],
     head() {

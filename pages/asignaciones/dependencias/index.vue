@@ -32,11 +32,22 @@
   </div>
 </template>
 <script>
+  /**
+    * @module pages/asignaciones/dependencias/index
+  */
   import Form from '~/components/Asignacion/Dependencias/FormDependencia';
   import Busqueda from '~/components/Site/CardSearch';
   import Dependencia from '~/components/Site/SimpleCard'
   import Pagination from '~/components/Site/Pagination';
-
+  /**
+   * @vue-data {Object} dependencia - Datos para gestionar la api del modelo.
+   * @vue-data {Array} dependencias - Lista de dependencias mostrada en la vista.
+   * @vue-data {Object} page - Configura la paginacion de la vista.
+   * @vue-event {Array} updateListDependencias - Actualiza la informacion sobre la vista.
+   * @vue-event {Object} getDependencia - Trae el modelo seleccionado desde la vista.
+   * @vue-event {} clearForm - Reinicia los valores sobre el modelo.
+   * @vue-event {Array} searchListDependencias - Cambia los valores en la vista cuando se esta realizando una busqueda.
+  */
   export default {
     middleware: ['auth', 'isCoordinador'],
     head() {
@@ -52,9 +63,7 @@
           url: 'api/asignacion/dependencias',
           textBtn: 'Registrar'
         },
-        dependencias: [
-          { id: 1, nombre: 'Dependencia 1' }
-        ],
+        dependencias: [],
         page: {
           current: 1,
           last: 0,

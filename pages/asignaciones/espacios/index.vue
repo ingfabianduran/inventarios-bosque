@@ -33,11 +33,22 @@
   </div>
 </template>
 <script>
+  /**
+    * @module pages/asignaciones/espacios/index
+  */
   import Form from '~/components/Asignacion/Espacios/FormEspacio';
   import Busqueda from '~/components/Site/CardSearch';
   import Espacio from '~/components/Site/SimpleCard';
   import Pagination from '~/components/Site/Pagination';
-
+  /**
+   * @vue-data {Object} espacio - Datos para gestionar la api del modelo.
+   * @vue-data {Array} espacios - Lista de espacios mostrada en la vista.
+   * @vue-data {Object} page - Configura la paginacion de la vista.
+   * @vue-event {Array} updateListEspacios - Actualiza la informacion sobre la vista.
+   * @vue-event {Object} getEspacio - Trae el modelo seleccionado desde la vista.
+   * @vue-event {} clearForm - Reinicia los valores sobre el modelo.
+   * @vue-event {Array} searchListEspacios - Cambia los valores en la vista cuando se esta realizando una busqueda.
+  */
   export default {
     middleware: ['auth', 'isCoordinador'],
     head() {

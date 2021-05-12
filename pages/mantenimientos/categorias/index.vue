@@ -30,11 +30,22 @@
   </div>
 </template>
 <script>
+  /**
+    * @module pages/mantenimientos/categorias/index
+  */
   import Form from '~/components/Mantenimiento/Categorias/FormCategoria';
   import Busqueda from '~/components/Site/CardSearch';
   import Categoria from '~/components/Site/SimpleCard';
   import Pagination from '~/components/Site/Pagination';
-
+  /**
+   * @vue-data {Object} categoria - Datos para gestionar la api del modelo.
+   * @vue-data {Array} categorias - Lista de categorias mostrada en la vista.
+   * @vue-data {Object} page - Configura la paginacion de la vista.
+   * @vue-event {Array} updateListCategorias - Actualiza la informacion sobre la vista.
+   * @vue-event {Object} getCategoria - Trae el modelo seleccionado desde la vista.
+   * @vue-event {} clearForm - Reinicia los valores sobre el modelo.
+   * @vue-event {Array} searchListCategorias - Cambia los valores en la vista cuando se esta realizando una busqueda.
+  */
   export default {
     middleware: ['auth', 'isCoordinador'],
     head() {

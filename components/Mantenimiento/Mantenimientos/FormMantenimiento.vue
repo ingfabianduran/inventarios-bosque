@@ -218,7 +218,7 @@
           Alert.showConfirm(this.titulo, `¿Esta seguro de realizar la petición?`, 'question', async(confirmed) => {
             if (confirmed) {
               try {
-                this.form.user_id = this.$auth.user.id;
+                this.form.user_id = (this.$auth.user.rol === 'COORDINADOR' ? this.form.user_id : this.$auth.user.id);
                 this.isLoading = true;
                 const { descripcion } = (this.titulo === 'Nuevo Mantenimiento' ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form));
                 setTimeout(() => {
