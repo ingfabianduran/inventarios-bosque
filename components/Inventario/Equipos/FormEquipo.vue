@@ -122,6 +122,7 @@
                   name="file"
                   rules="required">
                   <v-file-input
+                    accept=".xlsx"
                     v-model="form.file"
                     placeholder="Series"
                     outlined

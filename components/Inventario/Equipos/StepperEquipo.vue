@@ -90,7 +90,7 @@
         showDiscos: true,
         showMemorias: true,
         isLoading: false,
-        isMasive: false, 
+        isMasive: false,
       }
     },
     props: {
@@ -139,8 +139,16 @@
         if (equipo.isMasiva) {
           Alert.showConfirm('Registro Masivo', '¿Esta seguro de realizar el registro masivo de equipos?', 'question', async(confirmed) => {
             if (confirmed) {
-              Alert.showToast('success', 'Los equipos se estan registrando en el sistema...');
-              this.cancelarRegistro();
+              await this.setDiscoMemoria();
+              let formData = new FormData();
+              formData.append('seriales', equipo.form.file);
+              formData.append('json', this.form);
+
+              const res = await this.$axios.$post('api/inventario/masivos', formData, {
+                headers: {
+                  'Content-Type': 'multipart/form-data'
+                }
+              });
             }
           });
         } else {
