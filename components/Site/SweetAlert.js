@@ -1,6 +1,16 @@
+/**
+  * @module components/Site/SweetAlert
+*/
 import Swal from 'sweetalert2';
-
+/**
+ * @property {Function} showToast - Muestra un mensaje sobre una notificación.
+ * @property {Function} showConfirm - Muestra un alerta de confirmación.
+*/
 export default {
+  /**
+    * @param {String} icon - Tipo de notificación.
+    * @param {String} text - Texto en la notificación.
+  */
   showToast(icon, text) {
     const Toast = Swal.mixin({
       toast: true,
@@ -19,6 +29,12 @@ export default {
       title: text
     });
   },
+  /**
+    * @param {String} title - Titulo del alerta.
+    * @param {String} message - Texto del alerta.
+    * @param {String} icon - Icono del alerta.
+    * @param {Function} callback - Funcion que retorna la respuesta seleccionada.
+  */
   showConfirm(title, message, icon, callback) {
     Swal.fire({
       title: title,

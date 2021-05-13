@@ -10,6 +10,14 @@
   </div>
 </template>
 <script>
+  /**
+    * @module components/Site/Pagination
+  */
+  /**
+   * @vue-data {Number} current - Pagina actual.
+   * @vue-prop {Object} page - Obtiene toda la información referente a la paginacion.
+   * @vue-event {} getData - Obtiene la información de la api y la envia al componente padre.
+  */
   export default {
     data() {
       return {
@@ -22,16 +30,12 @@
     },
     methods: {
       async getData() {
-        try {
-          const { data } = await this.$axios.$get(`${this.page.url}${this.current}`);
-          const pagination = {
-            data: data.data,
-            current: this.current
-          };
-          this.$emit('getData', pagination);
-        } catch (error) {
-
-        }
+        const { data } = await this.$axios.$get(`${this.page.url}${this.current}`);
+        const pagination = {
+          data: data.data,
+          current: this.current
+        };
+        this.$emit('getData', pagination);
       }
     }
   }

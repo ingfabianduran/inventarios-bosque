@@ -31,6 +31,15 @@
   </v-card>
 </template>
 <script>
+  /**
+   * @module components/Site/CardSearch
+  */
+  /**
+    * @vue-data {String} busqueda - Cadena de texto que realiza la busqueda sobre la prop url.
+    * @vue-prop {String} nameBusqueda - Texto ubicado en el label del v-text-field.
+    * @vue-prop {String} url - Url que realiza una busqueda sobre la api.
+    * @vue-event {} resetBusqueda - Setea la variable busqueda y emite un evento al componente padre.
+  */
   export default {
     data() {
       return {
@@ -53,6 +62,10 @@
         this.$emit('resetBusqueda');
       }
     },
+    /**
+      * Watch Events:
+      * @property {Function} busqueda - Realiza la busqueda sobre la url y envia la información al componente padre.
+    */
     watch: {
       async busqueda(value) {
         if (value !== null && value.length > 0) {

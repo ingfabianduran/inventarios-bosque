@@ -11,6 +11,12 @@
   </v-card>
 </template>
 <script>
+  /**
+    * @module components/Site/CardAreaText
+  */
+  /**
+    * @vue-prop {String} texto - Cadena de texto mostrada en el v-textarea.
+  */
   export default {
     props: {
       texto: {

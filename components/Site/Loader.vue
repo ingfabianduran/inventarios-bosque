@@ -13,6 +13,16 @@
   </v-overlay>
 </template>
 <script>
+  /**
+    * @module components/Site/Loader
+  */
+  /**
+    * @vue-prop {Boolean} isShow - Valida si se muestra o no el componente.
+    * @vue-prop {String} color - Color del componente v-overlay.
+    * @vue-prop {String} [opacity='0.46'] - Opacidad del componente v-overlay.
+    * @vue-prop {String} size - Tamaño del componente v-progress-circular.
+    * @vue-prop {String} [with='4'] - Ancho ddel componente v-progress-circular.
+  */
   export default {
     props: {
       isShow: {

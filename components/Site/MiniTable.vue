@@ -29,8 +29,18 @@
   </v-data-table>
 </template>
 <script>
+  /**
+    * @module components/Site/MiniTable
+  */
   import Alert from '~/components/Site/SweetAlert';
-
+  /**
+   * @vue-prop {Array} headers - Listado de columnas de la tabla.
+   * @vue-prop {Array} items - Listado de items pertenecientes a la tabla.
+   * @vue-prop {String} titulo - Titulo que se va a mostrar en el componente Alert.
+   * @vue-prop {Boolean} [isPagination=false] - Valida si se muestra o no la paginacion.
+   * @vue-prop {Array} total - Lista de los totales de la tabla.
+   * @vue-event {Object} deleteItem - Selecciona el elemento y lo envia al componente padre.
+  */
   export default {
     props: {
       headers: {

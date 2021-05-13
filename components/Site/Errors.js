@@ -1,6 +1,13 @@
+/**
+  * @module components/Site/Errors
+  * @property {Function} showError - Muestra un alerta con todos los errores generados en una peticion http.
+*/
 import Alert from '~/components/Site/SweetAlert';
 
 export default {
+  /**
+    * @param {Object} error - Captura los errores generados.
+  */
   showError(errors) {
     if (errors.hasOwnProperty('data')){
       errors.data.forEach(element => {

@@ -36,8 +36,18 @@
   </v-card>
 </template>
 <script>
+  /**
+    * @module components/Site/SimpleCard
+  */
   import Alert from '~/components/Site/SweetAlert';
-
+  /**
+   * @vue-data {Boolean} isLoadingVer - Loading para el boton ver y/o actualizar.
+   * @vue-data {Boolean} isLoadingDelete - Loading para el boton eliminar.
+   * @vue-prop {Object} model - Información del modelo generado desde una api.
+   * @vue-prop {String} url - Permite ejecutar las peticiones get y delete para el modelo generado.
+   * @vue-event {Number} getModelo - Obtiene y envia la información del modelo seleccionado al componente padre.
+   * @vue-event {Number} deleteModel - Elimina el modelo seleccionado y emite un evento al componente padre.
+  */
   export default {
     data() {
       return {
