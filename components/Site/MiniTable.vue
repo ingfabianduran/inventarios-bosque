@@ -61,7 +61,7 @@
       },
       total: {
         type: Array,
-        required: true
+        required: false
       }
     },
     methods: {

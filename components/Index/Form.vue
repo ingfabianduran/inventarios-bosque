@@ -62,6 +62,9 @@
   </ValidationObserver>
 </template>
 <script>
+  /**
+    * @module components/Index/Form
+  */
   import Alert from '~/components/Site/SweetAlert';
   /**
    * @vue-data {Object} form - Correo y contraseña del usuario.

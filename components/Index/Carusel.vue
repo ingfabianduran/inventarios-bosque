@@ -13,9 +13,11 @@
 </template>
 <script>
   /**
-   * @vue-data {Array} images - Lista la cual almacena la ruta de acceso a la fotos del login.
-   */
-
+    * @module components/Index/Carusel
+  */
+  /**
+    * @vue-data {Array} images - Lista la cual almacena la ruta de acceso a la fotos del login.
+  */
   export default {
     data() {
       return {

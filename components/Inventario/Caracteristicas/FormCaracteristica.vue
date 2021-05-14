@@ -108,6 +108,9 @@
 </template>
 <script>
   /**
+    * @module components/Inventario/Caracteristicas/FormCaracteristica
+  */
+  /**
    * @vue-data {Object} form - Datos del formulario.
    * @vue-prop {Object} [caracteristica={}] - Captura los datos y los ingresa en el formulario.
    * @vue-event {} storeCaracteristica - Valida y envia la informacion del formulario al componente padre.

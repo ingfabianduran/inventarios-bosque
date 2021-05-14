@@ -72,6 +72,9 @@
 </template>
 <script>
   /**
+    * @module components/Inventario/Procesadores/FormProcesadores
+  */
+  /**
    * @vue-data {Object} form - Datos del formulario.
    * @vue-event {} storeProcesador - Valida y envia la informacion del formulario al componente padre.
    * @vue-event {} omitir - Emite el evento omitir al componente padre.

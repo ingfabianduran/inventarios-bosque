@@ -94,6 +94,9 @@
 </template>
 <script>
   /**
+    * @module components/Inventario/Discos/FormDisco
+  */
+  /**
    * @vue-data {Object} form - Datos del formulario.
    * @vue-data {Array} tipos - Tipos que puede tener un disco duro.
    * @vue-event {} storeDisco - Valida y envia la informacion del formulario al componente padre.

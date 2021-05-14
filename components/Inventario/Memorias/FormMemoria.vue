@@ -94,6 +94,9 @@
 </template>
 <script>
   /**
+    * @module components/Inventario/Memorias/FormMemoria
+  */
+  /**
    * @vue-data {Object} form - Datos del formulario.
    * @vue-event {} storeMemoria - Valida y envia la informacion del formulario al componente padre.
    * @vue-event {} omitir - Emite el evento omitir al componente padre.

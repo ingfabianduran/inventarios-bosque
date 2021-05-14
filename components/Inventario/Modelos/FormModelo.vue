@@ -124,6 +124,9 @@
 </template>
 <script>
   /**
+    * @module components/Inventario/Modelos/FormModelo
+  */
+  /**
    * @vue-data {Object} form - Datos del formulario.
    * @vue-data {Array} tipos - Muestra los tipos que puede tener un modelo.
    * @vue-data {Array} marcas - Muestra las marcas registradas en el sistema.

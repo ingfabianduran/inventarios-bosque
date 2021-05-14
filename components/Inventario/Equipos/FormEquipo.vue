@@ -221,6 +221,9 @@
   </v-card>
 </template>
 <script>
+  /**
+    * @module components/Inventario/Equipos/FormEquipo
+  */
   import moment from 'moment';
   /**
    * @vue-data {Object} form - Datos del formulario.

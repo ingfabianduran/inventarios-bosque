@@ -165,6 +165,9 @@
   </v-card>
 </template>
 <script>
+  /**
+    * @module components/Mantenimiento/Especialistas/FormEspecialista
+  */
   import Alert from '~/components/Site/SweetAlert';
   import Loader from '~/components/Site/Loader';
   /**

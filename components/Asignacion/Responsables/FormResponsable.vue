@@ -125,6 +125,9 @@
   </v-card>
 </template>
 <script>
+  /**
+    * @module components/Asignacion/Responsables/FormResponsable
+  */
   import Alert from '~/components/Site/SweetAlert';
   import Loader from '~/components/Site/Loader';
   /**

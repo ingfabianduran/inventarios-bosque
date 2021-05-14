@@ -74,6 +74,9 @@
 </template>
 <script>
   /**
+    * @module components/Inventario/Inventarios/FormInventario
+  */
+  /**
    * @vue-data {Object} form - Datos del formulario.
    * @vue-prop {Object} [inventario={}] - Captura los datos y los ingresa en el formulario.
    * @vue-event {} storeInventario - Valida y envia la informacion del formulario al componente padre.

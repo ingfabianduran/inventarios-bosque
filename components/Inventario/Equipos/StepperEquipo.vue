@@ -50,6 +50,9 @@
   </v-stepper>
 </template>
 <script>
+  /**
+    * @module components/Equipos/StepperEquipo
+  */
   import Disco from '~/components/Inventario/Discos/FormDisco';
   import Memoria from '~/components/Inventario/Memorias/FormMemoria';
   import Equipo from '~/components/Inventario/Equipos/FormEquipo';
@@ -59,7 +62,34 @@
   import Alert from '~/components/Site/SweetAlert';
   import Loader from '~/components/Site/Loader';
   import moment from 'moment';
-
+  /**
+   * @vue-data {Number} paso - v-model del componente v-stepper.
+   * @vue-data {Array} pasos - Lista que configura los v-stepper-step.
+   * @vue-data {Object} form - Almacena la información del equipo.
+   * @vue-data {Object} disco - Almacena la información del disco.
+   * @vue-data {Object} memoria - Almacena la información de la memoria.
+   * @vue-data {Boolean} showDiscos - Valida si se muestra o no el input discos en el componente Equipo.
+   * @vue-data {Boolean} showMemorias - Valida si se muestra o no el input memorias en el componente Disco.
+   * @vue-data {Boolean} isLoading - Valida si se muestra o no el componente de carga.
+   * @vue-prop {String} titulo - Titulo renderizado en el componente Alert.
+   * @vue-prop {String} url - Url ejecutada en las peticiones http del componente.
+   * @vue-prop {Object} data - Información del equipo traido desde el componente padre.
+   * @vue-event {Object} setDisco - Setea las variables disco y showDiscos.
+   * @vue-event {Object} setMemorias - Setea las variables memoria y showMemorias.
+   * @vue-event {Object} setEquipo - Setea la variable form y valida si se va hacer un registro masivo.
+   * @vue-event {Object} setInventario - Setea la propiedad form.inventario.
+   * @vue-event {Object} setCaracteristica - Setea la propiedad form.caracteristica.
+   * @vue-event {Array} setMacs - Setea la propiedad form.mac y realiza el submit del formulario.
+   * @vue-event {} omitirDisco - Setea la variable showDiscos.
+   * @vue-event {} omitirMemorias - Setea la variable showMemorias.
+   * @vue-event {} omitir - Setea la variable paso.
+   * @vue-event {} setDiscoMemoria - Almacena la información de los discos y memorias registrados.
+   * @vue-event {} setInfoEquipo - Almacena la información del equipo, validando si es POST o PUT la petición.
+   * @vue-event {} storeEquipo - Ejecuta la peticion POST.
+   * @vue-event {} updateEquipo - Ejecuta la peticion PUT.
+   * @vue-event {} cancelarRegistro - Setea todas las variables del componente.
+   * @vue-event {} showCardEquipo - Llama a la función cancelarRegistro y emite un evento al componente padre.
+  */
   export default {
     data() {
       return {
@@ -90,7 +120,6 @@
         showDiscos: true,
         showMemorias: true,
         isLoading: false,
-        isMasive: false,
       }
     },
     props: {
@@ -153,10 +182,7 @@
 
               await this.$axios.$post('api/inventario/masivos', formData, {
                 headers: {
-                  'Access-Control-Allow-Origin': '*',
-                  'Access-Control-Allow-Headers': '*',
                   'Content-Type': 'multipart/form-data',
-                  'Accept': 'application/json, text/plain'
                 }
               });
             }
@@ -262,6 +288,10 @@
         this.$emit('showCardEquipo');
       }
     },
+    /**
+      * Watch Events:
+      * @property {Function} data - Setea los valores de la variable form.
+    */
     watch: {
       data() {
         if (Object.keys(this.data).length > 0) {

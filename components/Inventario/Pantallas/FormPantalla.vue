@@ -85,6 +85,9 @@
 </template>
 <script>
   /**
+    * @module components/Inventario/Pantallas/FormPantalla
+  */
+  /**
    * @vue-data {Object} form - Datos del formulario.
    * @vue-data {Array} tipos - Tipos que puede tener una pantalla.
    * @vue-data {Array} marcas - Muestra las marcas registradas en el sistema.

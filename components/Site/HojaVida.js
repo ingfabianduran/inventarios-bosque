@@ -75,12 +75,12 @@ export default {
               ],
               [
                 { text: 'Perifericos', style: 'subtitulos' },
-                { colSpan: 5, text: equipo.caracteristica.perifericos }, '', '', '', ''
+                { colSpan: 5, text: (equipo.caracteristica !== null ? equipo.caracteristica.perifericos : 'No registra') }, '', '', '', ''
               ],
               [{ colSpan: 6, text: '3. CONFIGURACIÓN DE RED', style: 'titulos' }, '', '', '', '', ''],
               [
                 { colSpan: 2, text: 'Nombre de red', style: 'subtitulos' }, '',
-                { colSpan: 4, text: equipo.caracteristica.nombre_red }, '', '',
+                { colSpan: 4, text: (equipo.caracteristica !== null ? equipo.caracteristica.nombre_red : 'No registra') }, '', '',
               ],
             ]
           }

@@ -81,6 +81,9 @@
   </v-card>
 </template>
 <script>
+  /**
+    * @module components/Mantenimiento/Aranda/FormAranda
+  */
   import Loader from '~/components/Site/Loader';
   import Alert from '~/components/Site/SweetAlert';
   /**

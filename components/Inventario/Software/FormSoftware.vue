@@ -69,6 +69,9 @@
   </v-card>
 </template>
 <script>
+  /**
+    * @module components/Inventario/Software/FormSoftware
+  */
   import Alert from '~/components/Site/SweetAlert';
   import Loader from '~/components/Site/Loader';
   /**

@@ -133,6 +133,9 @@
   </v-card>
 </template>
 <script>
+  /**
+    * @module components/Mantenimiento/Mantenimientos/FormMantenimiento
+  */
   import Loader from '~/components/Site/Loader';
   import Alert from '~/components/Site/SweetAlert';
   /**

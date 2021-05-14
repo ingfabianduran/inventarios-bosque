@@ -72,6 +72,9 @@
   </v-card>
 </template>
 <script>
+  /**
+    * @module components/Asignacion/Espacios/FormEspacio
+  */
   import Alert from '~/components/Site/SweetAlert';
   import Loader from '~/components/Site/Loader';
   /**

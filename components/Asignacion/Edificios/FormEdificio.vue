@@ -53,6 +53,9 @@
   </v-card>
 </template>
 <script>
+  /**
+    * @module components/Asignacion/Edificios/FormEdificio
+  */
   import Alert from '~/components/Site/SweetAlert';
   import Loader from '~/components/Site/Loader';
   /**
