@@ -139,14 +139,24 @@
         if (equipo.isMasiva) {
           Alert.showConfirm('Registro Masivo', '¿Esta seguro de realizar el registro masivo de equipos?', 'question', async(confirmed) => {
             if (confirmed) {
-              await this.setDiscoMemoria();
               let formData = new FormData();
               formData.append('seriales', equipo.form.file);
-              formData.append('json', this.form);
+              formData.append('json', `{
+                  "fecha_compra" : "${equipo.form.fecha_compra}",
+                  "vence_garantia" : "${equipo.form.vence_garantia}",
+                  "tipo": "${equipo.form.tipo}",
+                  "valor": ${equipo.form.valor},
+                  "modelo_id": ${equipo.form.modelo_id},
+                  "disco_id": ${equipo.form.disco_id},
+                  "memoria_id": ${equipo.form.memoria_id}
+              }`);
 
-              const res = await this.$axios.$post('api/inventario/masivos', formData, {
+              await this.$axios.$post('api/inventario/masivos', formData, {
                 headers: {
-                  'Content-Type': 'multipart/form-data'
+                  'Access-Control-Allow-Origin': '*',
+                  'Access-Control-Allow-Headers': '*',
+                  'Content-Type': 'multipart/form-data',
+                  'Accept': 'application/json, text/plain'
                 }
               });
             }
