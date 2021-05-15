@@ -37,12 +37,36 @@
   </v-stepper>
 </template>
 <script>
+  /**
+    * @module components/Inventario/Modelos/StepperModelo
+  */
   import Loader from '~/components/Site/Loader';
   import Procesador from '~/components/Inventario/Procesadores/FormProcesadores';
   import Marca from '~/components/Inventario/Marcas/FormMarca';
   import Modelo from '~/components/Inventario/Modelos/FormModelo';
   import Alert from '~/components/Site/SweetAlert';
-
+  /**
+   * @vue-data {Number} paso - v-model del componente v-stepper.
+   * @vue-data {Array} pasos - Lista que configura los v-stepper-step.
+   * @vue-data {Object} form - Almacena la información del modelo.
+   * @vue-data {Object} marca - Almacena la información de la marca.
+   * @vue-data {Object} procesador - Almacena la información del procesador.
+   * @vue-data {Boolean} showMarcas - Valida si se muestra o no el input marcas en el componente Modelo.
+   * @vue-data {Boolean} showProcesadores - Valida si se muestra o no el input procesadores en el componente Modelo.
+   * @vue-data {Boolean} isLoading - Valida si se muestra o no el componente de carga.
+   * @vue-prop {String} titulo - Titulo renderizado en el componente Alert.
+   * @vue-prop {String} url - Url ejecutada en las peticiones http del componente.
+   * @vue-prop {Object} data - Información del modelo traido desde el componente padre.
+   * @vue-event {Object} setProcesador - Setea las variables procesador y showProcesadores.
+   * @vue-event {Object} setMarca - Setea las variables marca y showMarcas.
+   * @vue-event {} setShowMarcas - Setea las variable showMarcas.
+   * @vue-event {} setShowProcesadores - Setea las variable showProcesadores.
+   * @vue-event {Object} setModelo - Setea las variable form y valida si se va a realizar un POST o un PUT sobre la información.
+   * @vue-event {} setMarcaProcesador - Valida si se desea crear una nueva marca o procesaodor si se ha registrado algo en los formularios Marca y procesador.
+   * @vue-event {} storeModelo - Realiza el POST sobre modelo.
+   * @vue-event {} updateModelo - Realiza el PUT sobre modelo.
+   * @vue-event {} clearForm - Setea todas las variables del componente.
+  */
   export default {
     data() {
       return {
@@ -164,6 +188,10 @@
         this.$refs.modelo.resetData();
       }
     },
+    /**
+      * Watch Events:
+      * @property {Function} data - Setea las variables del componente.
+    */
     watch: {
       data() {
         if (Object.keys(this.data).length > 0) {

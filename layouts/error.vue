@@ -33,8 +33,19 @@
 	</div>
 </template>
 <script>
+  /**
+    * @module layout/error
+  */
+  /**
+   * @vue-prop {Object} error - Controla todos los posibles errores que se puedan generar en el servidor.
+   */
   export default {
-    props: ['error'],
+    props: {
+      error: {
+        type: Object,
+        required: true
+      }
+    },
   }
 </script>
 <style>

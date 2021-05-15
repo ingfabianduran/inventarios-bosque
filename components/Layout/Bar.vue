@@ -8,6 +8,11 @@
   </v-app-bar>
 </template>
 <script>
+  /**
+    * Site bar component
+    * @vuedoc
+    * @exports components/Layout/Bar
+  */
   export default {
     data() {
       return {

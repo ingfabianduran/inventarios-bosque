@@ -2,7 +2,7 @@
   <v-app>
     <v-main class="color-index">
       <v-container fluid fill-height >
-        <v-row 
+        <v-row
           align="center"
           justify="center">
           <v-col sm="12" md="12" lg="8" xl="8">
@@ -15,6 +15,9 @@
   </v-app>
 </template>
 <script>
+  /**
+    * @module layout/index
+  */
   import Footer from '~/components/Layout/Footer';
 
   export default {

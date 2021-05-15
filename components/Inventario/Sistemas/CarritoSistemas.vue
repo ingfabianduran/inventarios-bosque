@@ -85,10 +85,25 @@
   </v-card>
 </template>
 <script>
+  /**
+    * @module components/Inventario/Sistemas/CarritoSistemas
+  */
   import Loader from '~/components/Site/Loader'
   import Sistemas from '~/components/Site/MiniTable';
   import Alert from '~/components/Site/SweetAlert';
-
+  /**
+   * @vue-data {Object} form - Información para agregar un nuevo sistema.
+   * @vue-data {Array} items - Listado de sistemas que tiene el equipo.
+   * @vue-data {Array} headers - Columnas de la tabla Sistemas.
+   * @vue-data {Array} sistemas - Listado de sistemas registradas en el sistema.
+   * @vue-data {Boolean} isLoading - Habilita o no la barra de carga sobre el componente.
+   * @vue-prop {Number} id - Identificador del equipo seleccionado en el componente padre.
+   * @vue-event {} getSistemas - Consulta los sistemas registradas en el sistema.
+   * @vue-event {} storeSistema - Asocia un sistema al equipo seleccionado.
+   * @vue-event {Object} updateSistema - Actualiza la información de los sistemas asociadas al equipo.
+   * @vue-event {} clearForm - Setea el valor de la variable form.
+   * @vue-computed {String} rol - Obtiene el rol del usuario activo en la sesion.
+  */
   export default {
     data() {
       return {

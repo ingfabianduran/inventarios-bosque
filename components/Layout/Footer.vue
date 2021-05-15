@@ -12,10 +12,17 @@
 </template>
 <script>
   import moment from 'moment';
-
+  /**
+    * Site footer component
+    * @vuedoc
+    * @exports components/Layout/Footer
+  */
   export default {
     props: {
-      color: String
+      color: {
+        type: String,
+        required: true
+      }
     },
     computed: {
       getYear() {

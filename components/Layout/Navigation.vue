@@ -51,7 +51,11 @@
 <script>
   import ListNavigation from '~/components/Layout/ListNavigation';
   import Alert from '~/components/Site/SweetAlert';
-
+  /**
+    * Site Navigation component
+    * @vuedoc
+    * @exports components/Layout/Navigation
+  */
   export default {
     data() {
       return {
@@ -85,7 +89,10 @@
       }
     },
     props: {
-      navigation: Object,
+      navigation: {
+        type: Object,
+        required: true
+      }
     },
     components: {
       ListNavigation
