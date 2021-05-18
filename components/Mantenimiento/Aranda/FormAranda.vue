@@ -86,6 +86,7 @@
   */
   import Loader from '~/components/Site/Loader';
   import Alert from '~/components/Site/SweetAlert';
+  import { mapGetters } from 'vuex';
   /**
    * @vue-data {Object} form - Datos del formulario.
    * @vue-data {Array} tipos - Tipo que puede tener un caso Aranda.
@@ -99,6 +100,8 @@
    * @vue-event {} storeAranda - Registra o actualiza un caso Aranda.
    * @vue-event {} deleteCasoAranda - Elimina un caso Aranda.
    * @vue-event {} clearForm - Limpia los datos del formulario.
+   * @vue-computed {Object} getValues - Obtiene los config para los formularios.
+   * @vue-computed {Array} tipos - Obtiene los tipos de caso para Aranda.
   */
   export default {
     data() {
@@ -108,7 +111,6 @@
           caso: '',
           mantenimiento_id: ''
         },
-        tipos: ['Incidente', 'Requerimiento'],
         isLoading: false
       }
     },
@@ -202,6 +204,14 @@
           this.form.caso = '';
           this.form.mantenimiento_id = this.mantenimiento;
         }
+      }
+    },
+    computed: {
+      ...mapGetters([
+        'getValues'
+      ]),
+      tipos() {
+        return this.getValues('aranda');
       }
     }
   }

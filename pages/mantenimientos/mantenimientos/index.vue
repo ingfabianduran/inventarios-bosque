@@ -12,7 +12,6 @@
           :url="mantenimiento.url"
           :textBtn="mantenimiento.textBtn"
           :stateBtn="mantenimiento.stateBtn"
-          @registrarAranda="registrarAranda"
           @clearForm="clearFormMantenimiento" />
       </v-col>
       <v-col

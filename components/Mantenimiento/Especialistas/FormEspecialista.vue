@@ -170,6 +170,7 @@
   */
   import Alert from '~/components/Site/SweetAlert';
   import Loader from '~/components/Site/Loader';
+  import { mapGetters } from 'vuex';
   /**
    * @vue-data {Boolean} showPassword - Pone o no visible la contraseña sobre los input de tipo password.
    * @vue-data {Array} roles - Muestra los roles que puede tener un especialista.
@@ -181,12 +182,13 @@
    * @vue-prop {String} textBtn - Cadena para el texto del formulario.
    * @vue-event {} storeEspecialista - Registra o actualiza un especialista.
    * @vue-event {} clearForm - Limpia los datos del formulario.
+   * @vue-computed {Object} getValues - Obtiene los config para los formularios.
+   * @vue-computed {Array} roles - Obtiene los tipos de usuario.
   */
   export default {
     data() {
       return {
         showPassword: false,
-        roles: ['COORDINADOR', 'SOPORTE', 'MESA'],
         form: {
           cedula: '',
           email: '',
@@ -294,6 +296,14 @@
             }
           }
         }
+      }
+    },
+    computed: {
+      ...mapGetters([
+        'getValues'
+      ]),
+      roles() {
+        return this.getValues('usuario');
       }
     }
   }

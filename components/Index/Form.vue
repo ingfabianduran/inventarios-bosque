@@ -90,13 +90,13 @@
             this.isLoading = true;
             await this.$auth.loginWith('laravelJWT', { data: { email: `${this.setEmail(this.form.email).toLowerCase()}@unbosque.edu.co`, password: this.form.password } });
             Alert.showToast('success', 'Bienvenido al Sistema, un momento por favor...');
-            this.$store.commit('set', '');
+            this.$store.commit('setMessage', '');
             setTimeout(() => {
               this.isLoading = false;
               this.$router.push('/inventarios/equipos');
             }, 3000);
           } catch (error) {
-            this.$store.commit('set', 'Usuario o contraseña incorrecta');
+            this.$store.commit('setMessage', 'Usuario o contraseña incorrecta');
             this.isLoading = false;
           }
         }

@@ -89,16 +89,23 @@
       Pagination,
     },
     async fetch () {
-      const { data } = await this.$axios.$get(`api/inventario/equipos/i/10?page=${this.page.current}`);
-      this.equipos = data.data;
-      this.page.last = data.last_page;
-      this.page.url = 'api/inventario/equipos/i/10?page=';
-
+      await this.listEquipos();
+      await this.getConfig();
       if (this.$auth.user.rol === 'SOPORTE' || this.$auth.user.rol === 'MESA') {
         this.isViewAddEquipo = false;
       }
     },
     methods: {
+      async listEquipos() {
+        const { data } = await this.$axios.$get(`api/inventario/equipos/i/10?page=${this.page.current}`);
+        this.equipos = data.data;
+        this.page.last = data.last_page;
+        this.page.url = 'api/inventario/equipos/i/10?page=';
+      },
+      async getConfig() {
+        const { data } = await this.$axios.$get('api/config');
+        this.$store.commit('setConfig', data.migraciones);
+      },
       updateListEquipos(equipos) {
         this.equipos = equipos.data;
         this.page.current = equipos.current;

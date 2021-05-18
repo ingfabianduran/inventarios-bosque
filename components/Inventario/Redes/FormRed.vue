@@ -119,6 +119,7 @@
   /**
     * @module components/Inventario/Redes/FormRed
   */
+  import { mapGetters } from 'vuex';
   /**
    * @vue-data {Object} form - Datos del formulario.
    * @vue-data {Array} tipos - Tipos que puede tener una dirección mac.
@@ -130,6 +131,8 @@
    * @vue-event {} omitir - Emite el evento omitir al componente padre.
    * @vue-event {} clearForm - Limpia los datos del formulario y emite el evento clearForm al componente padre.
    * @vue-event {} resetData - Limpia los datos del formulario.
+   * @vue-computed {Object} getValues - Obtiene los config para los formularios.
+   * @vue-computed {Array} tipos - Obtiene los tipos de dispositivo de red.
   */
   export default {
     data() {
@@ -138,7 +141,6 @@
           tipo: '',
           mac: ''
         },
-        tipos: ['LAN', 'WAN'],
         macs: []
       }
     },
@@ -189,6 +191,14 @@
     watch: {
       redes() {
         this.macs = this.redes;
+      }
+    },
+    computed: {
+      ...mapGetters([
+        'getValues'
+      ]),
+      tipos() {
+        return this.getValues('mac');
       }
     }
   }

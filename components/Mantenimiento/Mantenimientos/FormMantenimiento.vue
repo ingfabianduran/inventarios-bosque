@@ -138,6 +138,7 @@
   */
   import Loader from '~/components/Site/Loader';
   import Alert from '~/components/Site/SweetAlert';
+  import { mapGetters } from 'vuex';
   /**
    * @vue-data {Array} tipos - Tipos que puede tener un mantenimiento.
    * @vue-data {Array} categorias - Muestra las categorias registradas en el sistema.
@@ -155,12 +156,13 @@
    * @vue-event {} getTecnicos - Trae los tecnicos registrados en el sistema.
    * @vue-event {} storeMantenimiento - Registra o actualiza un mantenimiento.
    * @vue-event {} clearForm - Limpia los datos del formulario.
+   * @vue-computed {Object} getValues - Obtiene los config para los formularios.
+   * @vue-computed {Array} tipos - Obtiene los tipos de mantenimiento.
    * @vue-computed {String} rol - Obtiene el rol del usuario activo en la sesion.
   */
   export default {
     data() {
       return {
-        tipos: ['Correctivo', 'Preventivo'],
         categorias: [],
         equipos: [],
         tecnicos: [],
@@ -276,6 +278,12 @@
       }
     },
     computed: {
+      ...mapGetters([
+        'getValues'
+      ]),
+      tipos() {
+        return this.getValues('mantenimiento');
+      },
       rol() {
         return this.$auth.user.rol;
       }

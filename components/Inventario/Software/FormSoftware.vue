@@ -74,6 +74,7 @@
   */
   import Alert from '~/components/Site/SweetAlert';
   import Loader from '~/components/Site/Loader';
+  import { mapGetters } from 'vuex';
   /**
    * @vue-data {Array} tipos - Tipos que pueda tener un software.
    * @vue-data {Object} form - Datos del formulario.
@@ -84,11 +85,12 @@
    * @vue-prop {String} textBtn - Cadena para el texto del formulario.
    * @vue-event {} storeSoftware - Registra o actualiza un software.
    * @vue-event {} clearForm - Limpia los datos del formulario.
+   * @vue-computed {Object} getValues - Obtiene los config para los formularios.
+   * @vue-computed {Array} tipos - Obtiene los tipos de licencia de software.
   */
   export default {
     data() {
       return {
-        tipos: ['Free', 'Licenciado'],
         form: {
           nombre: '',
           tipo: ''
@@ -153,6 +155,14 @@
       software() {
         this.form.nombre = this.software.nombre;
         this.form.tipo = this.software.tipo;
+      }
+    },
+    computed: {
+      ...mapGetters([
+        'getValues'
+      ]),
+      tipos() {
+        return this.getValues('software');
       }
     }
   }

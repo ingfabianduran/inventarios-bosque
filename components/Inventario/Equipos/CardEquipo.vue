@@ -6,7 +6,8 @@
       v-if="dialogEquipo.isView" />
     <Masivos
       :dialog="dialogMasivo"
-      @closeMasivos="closeModalMasivos" />
+      @closeMasivos="closeModalMasivos"
+      v-if="dialogMasivo.isView" />
     <v-card>
       <v-card-title
         class="font-weight-bold text-h4">

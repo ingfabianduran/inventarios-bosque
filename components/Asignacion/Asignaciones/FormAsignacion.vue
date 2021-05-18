@@ -147,6 +147,7 @@
   */
   import Alert from '~/components/Site/SweetAlert';
   import Loader from '~/components/Site/Loader';
+  import { mapGetters } from 'vuex';
   /**
    * @vue-data {Array} tipos - Almacena todos los tipos de espacio que puede tener una asignación.
    * @vue-data {Array} edificios - Muestra los edificios registrados en el sistema.
@@ -164,11 +165,13 @@
    * @vue-prop {String} textBtn - Cadena para el texto del formulario.
    * @vue-event {} storeAsignacion - Registra o actualiza una asignación.
    * @vue-event {} clearForm - Limpia los datos del formulario.
+   * @vue-computed {Object} getValues - Obtiene los config para los formularios.
+   * @vue-computed {Array} tipos - Obtiene los tipos de asignación.
   */
   export default {
     data() {
       return {
-        tipos: ['Academico', 'Administrativo', 'Servicio al estudiante'],
+        // tipos: ['Academico', 'Administrativo', 'Servicio al estudiante'],
         edificios: [],
         espacios: [],
         responsables: [],
@@ -293,6 +296,14 @@
       async edificio(value) {
         const { data } = await this.$axios.$get(`api/asignacion/edificios/${value}`);
         this.espacios = data.espacios;
+      }
+    },
+    computed: {
+      ...mapGetters([
+        'getValues'
+      ]),
+      tipos() {
+        return this.getValues('asignacion');
       }
     }
   }

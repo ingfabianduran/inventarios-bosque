@@ -11,7 +11,8 @@
         Registros Masivos
       </v-toolbar>
       <v-card-text>
-        <Table class="mt-1" :headers="headers" :items="masivos" titulo="Eliminar Masivo" @itemSelect="deleteMasivo" />
+        <Loader :isShow="isLoading" color="#212121" size="70" />
+        <Table class="mt-3" :headers="headers" :items="masivos" titulo="Eliminar Masivo" @itemSelect="deleteMasivo" />
         <Pagination :page="page" @getData="updateListMasivos" />
       </v-card-text>
     </v-card>
@@ -21,6 +22,8 @@
   /**
     * @module components/Equipos/DialogMasivo
   */
+  import Alert from '~/components/Site/SweetAlert';
+  import Loader from '~/components/Site/Loader';
   import Table from '~/components/Site/MiniTable';
   import Paginacion from '~/components/Site/Pagination';
   /**
@@ -29,8 +32,8 @@
    * @vue-data {Object} page - Configura la paginacion de la tabla.
    * @vue-prop {Object} dialog - Permite mostrar o no el v-dialog.
    * @vue-event {} close - Permite ocultar el v-dialog.
-   * @vue-event {} deleteMasivo - Elimina el masivo seleccionado en la tabla.
-   * @vue-event {} updateListMasivos - Actualiza la lista de masivos mediante la paginación.
+   * @vue-event {Object} deleteMasivo - Elimina el masivo seleccionado en la tabla.
+   * @vue-event {Object} updateListMasivos - Actualiza la lista de masivos mediante la paginación.
   */
   export default {
     data() {
@@ -44,8 +47,9 @@
         page: {
           current: 1,
           last: 0,
-          url: 'api/inventario/masivos/i/10?page='
+          url: 'api/inventario/masivos/i/5?page='
         },
+        isLoading: false
       }
     },
     props: {
@@ -55,18 +59,35 @@
       }
     },
     components: {
+      Loader,
       Table,
       Paginacion
+    },
+    async fetch() {
+      const { data } = await this.$axios.$get('api/inventario/masivos/i/5');
+      this.masivos = data.data;
+      this.page.last = data.last_page;
     },
     methods: {
       close() {
         this.$emit('closeMasivos', false);
       },
       async deleteMasivo(masivo) {
-
+        try {
+          this.isLoading = true;
+          const { descripcion } = await this.$axios.$delete(`api/inventario/masivos/${masivo.id}`);
+          setTimeout(() => {
+            this.isLoading = false;
+            Alert.showToast('success', descripcion);
+            this.$fetch();
+          }, 1000);
+        } catch (error) {
+          this.isLoading = false;
+        }
       },
       updateListMasivos(masivos) {
-
+        this.masivos = masivos.data;
+        this.page.current = masivos.current;
       }
     }
   }

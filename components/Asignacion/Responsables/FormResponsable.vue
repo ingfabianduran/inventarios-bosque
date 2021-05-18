@@ -58,7 +58,7 @@
                 rules="required|oneOf:Académico,Administrativo,Docente,Directivo,Investigador">
                 <v-select
                   v-model="form.tipo"
-                  :items="roles"
+                  :items="tipos"
                   label="Rol"
                   outlined
                   color="#7BC142"
@@ -130,6 +130,7 @@
   */
   import Alert from '~/components/Site/SweetAlert';
   import Loader from '~/components/Site/Loader';
+  import { mapGetters } from 'vuex';
   /**
    * @vue-data {Array} roles - Almacena los roles que puede tener un responsable.
    * @vue-data {Array} dependencias - Almacena todas las dependencia que puede tener un responsable.
@@ -141,11 +142,12 @@
    * @vue-prop {String} textBtn - Cadena para el texto del formulario.
    * @vue-event {} storeResponsable - Registra o actualiza un responsable.
    * @vue-event {} clearForm - Limpia los datos del formulario.
+   * @vue-computed {Object} getValues - Obtiene los config para los formularios.
+   * @vue-computed {Array} tipos - Obtiene los tipos de responsable.
   */
   export default {
     data() {
       return {
-        roles: ['Académico', 'Administrativo', 'Docente', 'Directivo', 'Investigador'],
         dependencias: [],
         form: {
           nombre: '',
@@ -231,6 +233,14 @@
             this.form.dependencia_id = this.responsable.dependencia.id;
           }
         }
+      }
+    },
+    computed: {
+      ...mapGetters([
+        'getValues'
+      ]),
+      tipos() {
+        return this.getValues('responsable');
       }
     }
   }

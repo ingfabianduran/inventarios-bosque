@@ -87,6 +87,7 @@
   /**
     * @module components/Inventario/Pantallas/FormPantalla
   */
+  import { mapGetters } from 'vuex';
   /**
    * @vue-data {Object} form - Datos del formulario.
    * @vue-data {Array} tipos - Tipos que puede tener una pantalla.
@@ -97,6 +98,8 @@
    * @vue-event {} storePantalla - Valida y envia la informacion del formulario al componente padre.
    * @vue-event {} clearForm - Limpia los datos del formulario y emite el evento clearForm al componente padre.
    * @vue-event {} resetData - Limpia los datos del formulario.
+   * @vue-computed {Object} getValues - Obtiene los config para los formularios.
+   * @vue-computed {Array} tipos - Obtiene los tipos de pantalla.
   */
   export default {
     data() {
@@ -106,7 +109,6 @@
           tipo: '',
           marca_id: ''
         },
-        tipos: ['Externa', 'Integrada'],
         marcas: []
       }
     },
@@ -157,6 +159,14 @@
         if (this.pantalla.marca !== null) {
           this.form.marca_id = this.pantalla.marca.id;
         }
+      }
+    },
+    computed: {
+      ...mapGetters([
+        'getValues'
+      ]),
+      tipos() {
+        return this.getValues('pantalla');
       }
     }
   }

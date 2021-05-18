@@ -96,6 +96,7 @@
   /**
     * @module components/Inventario/Discos/FormDisco
   */
+  import { mapGetters } from 'vuex';
   /**
    * @vue-data {Object} form - Datos del formulario.
    * @vue-data {Array} tipos - Tipos que puede tener un disco duro.
@@ -103,6 +104,8 @@
    * @vue-event {} omitir - Emite el evento omitir al componente padre.
    * @vue-event {} clearForm - Limpia los datos del formulario y emite el evento clearForm al componente padre.
    * @vue-event {} resetData - Limpia los datos del formulario.
+   * @vue-computed {Object} getValues - Obtiene los config para los formularios.
+   * @vue-computed {Array} tipos - Obtiene los tipos de disco duro.
    * @vue-computed {String} rol - Obtiene el rol del usuario activo en la sesion.
   */
   export default {
@@ -113,7 +116,6 @@
           tipo: '',
           descripcion: ''
         },
-        tipos: ['HDD', 'SSD']
       }
     },
     methods: {
@@ -138,6 +140,12 @@
       }
     },
     computed: {
+      ...mapGetters([
+        'getValues'
+      ]),
+      tipos() {
+        return this.getValues('disco');
+      },
       rol() {
         return this.$auth.user.rol;
       }

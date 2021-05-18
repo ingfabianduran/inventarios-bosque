@@ -104,6 +104,7 @@
             try {
               Alert.showToast('success', 'Esta a punto de salir del sistema...');
               setTimeout(async () => {
+                this.$store.commit('setConfig', {});
                 await this.$auth.logout();
                 this.$router.push('/');
               }, 3000);
