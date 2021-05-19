@@ -250,15 +250,15 @@
     data() {
       return {
         form: {
-          fecha_compra: '01-01-2020',
-          vence_garantia: '01-01-2021',
-          tipo: 'Compra',
+          fecha_compra: '',
+          vence_garantia: '',
+          tipo: '',
           file: null,
-          serie: 'MJ6302563',
-          valor: '3000000',
-          modelo_id: 1,
-          disco_id: 1,
-          memoria_id: 1
+          serie: '',
+          valor: '',
+          modelo_id: '',
+          disco_id: '',
+          memoria_id: ''
         },
         modelos: [],
         discos: [],

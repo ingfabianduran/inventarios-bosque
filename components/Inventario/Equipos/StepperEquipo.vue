@@ -170,16 +170,17 @@
             if (confirmed) {
               try {
                 this.isLoading = true;
+                await this.setDiscoMemoria();
                 let formData = new FormData();
                 formData.append('seriales', equipo.form.file);
                 formData.append('json', `{
-                    "fecha_compra" : "${equipo.form.fecha_compra}",
-                    "vence_garantia" : "${equipo.form.vence_garantia}",
-                    "tipo": "${equipo.form.tipo}",
-                    "valor": ${equipo.form.valor},
-                    "modelo_id": ${equipo.form.modelo_id},
-                    "disco_id": ${equipo.form.disco_id},
-                    "memoria_id": ${equipo.form.memoria_id}
+                    "fecha_compra" : "${this.form.fecha_compra}",
+                    "vence_garantia" : "${this.form.vence_garantia}",
+                    "tipo": "${this.form.tipo}",
+                    "valor": ${this.form.valor},
+                    "modelo_id": ${this.form.modelo_id},
+                    "disco_id": ${this.form.disco_id},
+                    "memoria_id": ${this.form.memoria_id}
                 }`);
 
                 const { data } = await this.$axios.$post('api/inventario/masivos', formData, {
@@ -190,7 +191,7 @@
                 setTimeout(() => {
                   this.isLoading = false;
                   Alert.showToast('success', data);
-                  this.cancelarRegistro();
+                  this.showCardEquipo();
                 }, 500);
               } catch (error) {
                 this.isLoading = false;
