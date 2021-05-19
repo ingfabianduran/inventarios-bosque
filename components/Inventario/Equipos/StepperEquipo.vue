@@ -2,6 +2,7 @@
   <v-stepper
     v-model="paso"
     alt-labels>
+    <Loader :isShow="isLoading" color="#212121" size="90" />
     <v-stepper-header>
       <template v-for="(step, i) in pasos">
         <v-stepper-step
@@ -44,7 +45,6 @@
       <v-stepper-content
         step="6">
         <Red :redes="data.macs" ref="red" @getMacs="setMacs" @clearForm="showCardEquipo" />
-        <Loader :isShow="isLoading" color="#212121" size="80" />
       </v-stepper-content>
     </v-stepper-items>
   </v-stepper>
@@ -187,8 +187,11 @@
                     'Content-Type': 'multipart/form-data'
                   }
                 });
-
-                Alert.showToast('success', data);
+                setTimeout(() => {
+                  this.isLoading = false;
+                  Alert.showToast('success', data);
+                  this.cancelarRegistro();
+                }, 500);
               } catch (error) {
                 this.isLoading = false;
               }
