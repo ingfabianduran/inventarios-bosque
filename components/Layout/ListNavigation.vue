@@ -48,10 +48,21 @@
   </div>
 </template>
 <script>
+  /**
+    * Site List Navigation component
+    * @vuedoc
+    * @exports components/Layout/ListNavigation
+  */
   export default {
     props: {
-      categoria: String,
-      links: Array
+      categoria: {
+        type: String,
+        required: true
+      },
+      links: {
+        type: Array,
+        required: true
+      }
     },
     methods: {
       validateRoles(roles) {

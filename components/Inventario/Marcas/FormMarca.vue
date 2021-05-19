@@ -54,6 +54,16 @@
   </v-card>
 </template>
 <script>
+  /**
+    * @module components/Inventario/Marcas/FormMarca
+  */
+  /**
+   * @vue-data {Object} form - Datos del formulario.
+   * @vue-event {} storeMarca - Valida y envia la informacion del formulario al componente padre.
+   * @vue-event {} omitir - Emite el evento omitir al componente padre.
+   * @vue-event {} clearForm - Limpia los datos del formulario y emite el evento clearForm al componente padre.
+   * @vue-event {} resetData - Limpia los datos del formulario.
+  */
   export default {
     data() {
       return {

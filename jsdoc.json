@@ -1,0 +1,28 @@
+{
+  "plugins": ["node_modules/jsdoc-vuejs", "plugins/markdown"],
+  "source": {
+    "include": ["."],
+    "includePattern": "\\.(vue|js)$",
+    "excludePattern": "(node_modules)"
+  },
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": true,
+    "useLongnameInNav": false,
+    "showInheritedInNav": true,
+    "name": "Inv Bosque",
+    "footerText": "Universidad El Bosque"
+  },
+  "opts": {
+    "recurse": true,
+    "destination": "./doc",
+    "template": "node_modules/tui-jsdoc-template",
+    "encoding": "utf8",
+    "private": true,
+    "readme": "./README.md"
+  },
+  "tags": {
+    "allowUnknownTags": true,
+    "dictionaries": ["jsdoc"]
+  }
+}

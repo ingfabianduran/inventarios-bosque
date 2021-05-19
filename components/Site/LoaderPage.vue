@@ -11,6 +11,15 @@
   </v-overlay>
 </template>
 <script>
+  /**
+    * @module components/Site/LoaderPage
+  */
+  /**
+   * @vue-data {Boolean} loading - Valida si se muestra o no el componente.
+   * @vue-data {Boolean} overlay - Valida si la carga esta activa o no.
+   * @vue-event {} start - Pone en true las variables loading y overlay.
+   * @vue-event {} finish - Pone el false las variables loading y overlay.
+  */
   export default {
     data: () => ({
       loading: false,

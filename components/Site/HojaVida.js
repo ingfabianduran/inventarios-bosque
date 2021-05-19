@@ -1,3 +1,6 @@
+/**
+ * @module components/Site/HojaVida
+*/
 import pdfMake from 'pdfmake/build/pdfmake';
 pdfMake.fonts = {
   Roboto: {
@@ -10,8 +13,14 @@ pdfMake.fonts = {
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import numbro from 'numbro';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
-
+/**
+ * @property {Function} getHojaVida - Toma la información del equipo y crea el pdf.
+ * @property {Function} tablaDinamica - Crea y retorna una tabla para ser pintada sobre el pdf.
+ */
 export default {
+  /**
+    * @param {Object} equipo - Captura la informacion del equipo.
+  */
   getHojaVida(equipo) {
     let pdf = {
       header: function (currentPage, pageCount, pageSize) {
@@ -66,12 +75,12 @@ export default {
               ],
               [
                 { text: 'Perifericos', style: 'subtitulos' },
-                { colSpan: 5, text: equipo.caracteristica.perifericos }, '', '', '', ''
+                { colSpan: 5, text: (equipo.caracteristica !== null ? equipo.caracteristica.perifericos : 'No registra') }, '', '', '', ''
               ],
               [{ colSpan: 6, text: '3. CONFIGURACIÓN DE RED', style: 'titulos' }, '', '', '', '', ''],
               [
                 { colSpan: 2, text: 'Nombre de red', style: 'subtitulos' }, '',
-                { colSpan: 4, text: equipo.caracteristica.nombre_red }, '', '',
+                { colSpan: 4, text: (equipo.caracteristica !== null ? equipo.caracteristica.nombre_red : 'No registra') }, '', '',
               ],
             ]
           }
@@ -153,7 +162,11 @@ export default {
     }
     pdfMake.createPdf(pdf).open();
   },
-
+  /**
+    * @param {Object} data - Información especifica del equipo.
+    * @param {Array} columnas - Propiedades de cada una de las columnas de la tabla.
+    * @param {Array} tituloTabla - Propiedades de la fila de la tabla.
+  */
   tablaDinamica(data, columnas, tituloTabla) {
     let body = [];
     body.push(tituloTabla);

@@ -34,11 +34,31 @@
   </v-stepper>
 </template>
 <script>
+  /**
+    * @module components/Inventario/Pantallas/StepperPantalla
+  */
   import Loader from '~/components/Site/Loader';
   import Alert from '~/components/Site/SweetAlert';
   import Marca from '~/components/Inventario/Marcas/FormMarca';
   import Pantalla from '~/components/Inventario/Pantallas/FormPantalla';
-
+  /**
+   * @vue-data {Number} paso - v-model del componente v-stepper.
+   * @vue-data {Array} pasos - Lista que configura los v-stepper-step.
+   * @vue-data {Object} form - Almacena la información de la pantalla.
+   * @vue-data {Object} marca - Almacena la información de la marca.
+   * @vue-data {Boolean} showMarcas - Valida si se muestra o no el input marcas en el componente Pantalla.
+   * @vue-data {Boolean} isLoading - Valida si se muestra o no el componente de carga.
+   * @vue-prop {String} titulo - Titulo renderizado en el componente Alert.
+   * @vue-prop {String} url - Url ejecutada en las peticiones http del componente.
+   * @vue-prop {Object} data - Información de la pantalla traido desde el componente padre.
+   * @vue-event {Object} setMarca - Setea las variables marca y showMarcas.
+   * @vue-event {} setShowMarcas - Setea las variable showMarcas.
+   * @vue-event {Object} setPantalla - Setea las variable form y valida si se va a realizar un POST o un PUT sobre la información.
+   * @vue-event {Object} setMarcaPantalla - Setea las variables marca y showMarcas.
+   * @vue-event {} storePantalla - Realiza el POST sobre pantalla.
+   * @vue-event {} updatePantalla - Realiza el PUT sobre pantalla.
+   * @vue-event {} clearForm - Setea todas las variables del componente.
+  */
   export default {
     data() {
       return {
@@ -132,6 +152,10 @@
         this.$refs.pantalla.resetData();
       }
     },
+    /**
+      * Watch Events:
+      * @property {Function} data - Setea las variables del componente.
+    */
     watch: {
       data() {
         if (Object.keys(this.data).length > 0) {

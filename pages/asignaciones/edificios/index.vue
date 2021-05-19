@@ -32,11 +32,22 @@
   </div>
 </template>
 <script>
+  /**
+    * @module pages/asignaciones/edificios/index
+  */
   import Form from '~/components/Asignacion/Edificios/FormEdificio';
   import Busqueda from '~/components/Site/CardSearch';
   import Edificio from '~/components/Site/SimpleCard';
   import Pagination from '~/components/Site/Pagination';
-
+  /**
+   * @vue-data {Object} edificio - Datos para gestionar la api del modelo.
+   * @vue-data {Array} edificios - Lista de edificios mostrada en la vista.
+   * @vue-data {Object} page - Configura la paginacion de la vista.
+   * @vue-event {Array} updateListEdificios - Actualiza la informacion sobre la vista.
+   * @vue-event {Object} getEdificio - Trae el modelo seleccionado desde la vista.
+   * @vue-event {} clearForm - Reinicia los valores sobre el modelo.
+   * @vue-event {Array} searchListEdificio - Cambia los valores en la vista cuando se esta realizando una busqueda.
+  */
   export default {
     middleware: ['auth', 'isCoordinador'],
     head() {

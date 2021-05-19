@@ -133,13 +133,36 @@
   </v-card>
 </template>
 <script>
+  /**
+    * @module components/Mantenimiento/Mantenimientos/FormMantenimiento
+  */
   import Loader from '~/components/Site/Loader';
   import Alert from '~/components/Site/SweetAlert';
-
+  import { mapGetters } from 'vuex';
+  /**
+   * @vue-data {Array} tipos - Tipos que puede tener un mantenimiento.
+   * @vue-data {Array} categorias - Muestra las categorias registradas en el sistema.
+   * @vue-data {Array} equipos - Busca los equipos registrados en el sistema.
+   * @vue-data {Object} tecnicos - Muestra los tecnicos registrados en el sistema.
+   * @vue-data {Object} form - Datos del formulario.
+   * @vue-data {Boolean} isLoading - Valida el estado de carga del formulario.
+   * @vue-data {String} searchEquipo - Captura la cadena que permite encontrar un equipo registrado en el sistema.
+   * @vue-prop {String} titulo - Titulo especificado en el v-card-title del componente.
+   * @vue-prop {Object} [mantenimiento={}] - Captura los datos y los ingresa en el formulario.
+   * @vue-prop {String} url - Cadena para ejecutar la peticion POST y PUT.
+   * @vue-prop {String} textBtn - Cadena para el texto del formulario.
+   * @vue-prop {Boolean} [stateBtn=false] - Cadena para el texto del formulario.
+   * @vue-event {} getCategorias - Trae las categorias registradas en el sistema.
+   * @vue-event {} getTecnicos - Trae los tecnicos registrados en el sistema.
+   * @vue-event {} storeMantenimiento - Registra o actualiza un mantenimiento.
+   * @vue-event {} clearForm - Limpia los datos del formulario.
+   * @vue-computed {Object} getValues - Obtiene los config para los formularios.
+   * @vue-computed {Array} tipos - Obtiene los tipos de mantenimiento.
+   * @vue-computed {String} rol - Obtiene el rol del usuario activo en la sesion.
+  */
   export default {
     data() {
       return {
-        tipos: ['Correctivo', 'Preventivo'],
         categorias: [],
         equipos: [],
         tecnicos: [],
@@ -200,7 +223,7 @@
           Alert.showConfirm(this.titulo, `¿Esta seguro de realizar la petición?`, 'question', async(confirmed) => {
             if (confirmed) {
               try {
-                this.form.user_id = this.$auth.user.id;
+                this.form.user_id = (this.$auth.user.rol === 'COORDINADOR' ? this.form.user_id : this.$auth.user.id);
                 this.isLoading = true;
                 const { descripcion } = (this.titulo === 'Nuevo Mantenimiento' ? await this.$axios.$post(this.url, this.form) : await this.$axios.$put(this.url, this.form));
                 setTimeout(() => {
@@ -227,6 +250,11 @@
         this.$emit('clearForm');
       },
     },
+    /**
+      * Watch Events:
+      * @property {Function} mantenimiento - Setea los valores del formulario.
+      * @property {Function} searchEquipo - Realiza la busqueda del equipo, mientras es digitado sobre el input.
+    */
     watch: {
       mantenimiento() {
         if (Object.keys(this.mantenimiento).length > 0) {
@@ -250,6 +278,12 @@
       }
     },
     computed: {
+      ...mapGetters([
+        'getValues'
+      ]),
+      tipos() {
+        return this.getValues('mantenimiento');
+      },
       rol() {
         return this.$auth.user.rol;
       }

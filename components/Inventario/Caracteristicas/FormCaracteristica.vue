@@ -107,6 +107,17 @@
   </v-card>
 </template>
 <script>
+  /**
+    * @module components/Inventario/Caracteristicas/FormCaracteristica
+  */
+  /**
+   * @vue-data {Object} form - Datos del formulario.
+   * @vue-prop {Object} [caracteristica={}] - Captura los datos y los ingresa en el formulario.
+   * @vue-event {} storeCaracteristica - Valida y envia la informacion del formulario al componente padre.
+   * @vue-event {} omitir - Emite el evento omitir al componente padre.
+   * @vue-event {} clearForm - Limpia los datos del formulario y emite el evento clearForm al componente padre.
+   * @vue-event {} resetData - Limpia los datos del formulario.
+  */
   export default {
     data() {
       return {
@@ -146,6 +157,10 @@
         this.form.observaciones = '';
       }
     },
+    /**
+      * Watch Events:
+      * @property {Function} caracteristica - Setea los valores del formulario.
+    */
     watch: {
       caracteristica() {
         if (this.caracteristica !== null) {

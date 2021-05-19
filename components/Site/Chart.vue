@@ -15,9 +15,20 @@
   </v-card>
 </template>
 <script>
-import Chart from 'chart.js';
-import ChartDataLabels  from 'chartjs-plugin-datalabels';
-
+  /**
+    * @module components/Site/Chart
+  */
+  import Chart from 'chart.js';
+  import ChartDataLabels  from 'chartjs-plugin-datalabels';
+  /**
+   * @vue-data {Object} ctx - Contexto para poder dibujar las graficas.
+   * @vue-data {Object} chart - Instancia de la libreria Chart para poder dibujar la grafica.
+   * @vue-data {Object} page - Configura la paginacion de la vista.
+   * @vue-prop {String} idChart - Identificador unico para cada grafica dibujada.
+   * @vue-prop {Array} labels - Lista de etiquetas ubicadas en las graficas.
+   * @vue-prop {Array} datasets - Lista de valores ubicados en las graficas.
+   * @vue-prop {String} titulo - Titulo ubicado en el v-toolbar-title.
+  */
   export default {
     data() {
       return {
@@ -42,10 +53,6 @@ import ChartDataLabels  from 'chartjs-plugin-datalabels';
         type: String,
         required: true
       },
-      total: {
-        type: Number,
-        required: false
-      }
     },
     mounted() {
       this.ctx = document.getElementById(this.idChart).getContext('2d');
@@ -59,7 +66,7 @@ import ChartDataLabels  from 'chartjs-plugin-datalabels';
               color: '#000000',
               font: {
                 family: "'Open Sans Condensed', 'sans-serif'",
-                size: 16,
+                size: 12,
                 weight: 'bold'
               },
               anchor: 'end',
@@ -107,6 +114,10 @@ import ChartDataLabels  from 'chartjs-plugin-datalabels';
         }
       });
     },
+    /**
+      * Watch Events:
+      * @property {Function} labels - Setea los labels y los actualiza sobre la grafica.
+    */
     watch: {
       labels() {
         this.chart.data.labels = this.labels;

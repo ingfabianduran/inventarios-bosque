@@ -53,9 +53,21 @@
   </v-card>
 </template>
 <script>
+  /**
+    * @module components/Mantenimiento/Categorias/FormCategoria
+  */
   import Alert from '~/components/Site/SweetAlert';
   import Loader from '~/components/Site/Loader';
-
+  /**
+   * @vue-data {Object} form - Datos del formulario.
+   * @vue-data {boolean} isLoading - Valida el estado de carga del formulario.
+   * @vue-prop {String} titulo - Titulo especificado en el v-card-title del componente.
+   * @vue-prop {Object} [categoria={}] - Captura los datos y los ingresa en el formulario.
+   * @vue-prop {String} url - Cadena para ejecutar la peticion POST y PUT.
+   * @vue-prop {String} textBtn - Cadena para el texto del formulario.
+   * @vue-event {} storeCategoria - Registra o actualiza una categoria.
+   * @vue-event {} clearForm - Limpia los datos del formulario.
+  */
   export default {
     data() {
       return {
@@ -113,6 +125,10 @@
         this.$emit('clearForm');
       }
     },
+    /**
+      * Watch Events:
+      * @property {Function} categoria - Setea los valores del formulario.
+    */
     watch: {
       categoria() {
         this.form.nombre = this.categoria.nombre;

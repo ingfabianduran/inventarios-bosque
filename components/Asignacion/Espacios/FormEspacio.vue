@@ -72,9 +72,21 @@
   </v-card>
 </template>
 <script>
+  /**
+    * @module components/Asignacion/Espacios/FormEspacio
+  */
   import Alert from '~/components/Site/SweetAlert';
   import Loader from '~/components/Site/Loader';
-
+  /**
+   * @vue-data {Object} form - Datos del formulario.
+   * @vue-data {Boolean} isLoading - Valida el estado de carga del formulario.
+   * @vue-prop {String} titulo - Titulo especificado en el v-card-title del componente.
+   * @vue-prop {Object} [espacio={}] - Captura los datos y los ingresa en el formulario.
+   * @vue-prop {String} url - Cadena para ejecutar la peticion POST y PUT.
+   * @vue-prop {String} textBtn - Cadena para el texto del formulario.
+   * @vue-event {} storeEspacio - Registra o actualiza un espacio.
+   * @vue-event {} clearForm - Limpia los datos del formulario.
+  */
   export default {
     data() {
       return {
@@ -142,6 +154,10 @@
         this.$emit('clearForm');
       }
     },
+    /**
+      * Watch Events:
+      * @property {Function} espacio - Setea los valores del formulario.
+    */
     watch: {
       espacio() {
         this.form.nombre = this.espacio.nombre;

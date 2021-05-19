@@ -30,10 +30,10 @@
             <Pantallas :id="dialog.data.id" />
           </v-tab-item>
           <v-tab-item>
-            <Texto :texto="(dialog.data.caracteristica.observaciones) ? dialog.data.caracteristica.observaciones : 'No registra'" />
+            <Texto :texto="dialog.data.caracteristica !== null ? dialog.data.caracteristica.observaciones : 'No registra'" />
           </v-tab-item>
           <v-tab-item>
-            <Texto :texto="(dialog.data.caracteristica.perifericos) ? dialog.data.caracteristica.perifericos : 'No registra'" />
+            <Texto :texto="dialog.data.caracteristica !== null ? dialog.data.caracteristica.perifericos : 'No registra'" />
           </v-tab-item>
           <v-tab-item>
             <Sistemas :id="dialog.data.id" />
@@ -42,16 +42,26 @@
             <Softwares :id="dialog.data.id" />
           </v-tab-item>
         </v-tabs-items>
+        {{ this.dialog.data.caracteristica }}
       </v-card>
   </v-dialog>
 </template>
 <script>
+  /**
+    * @module components/Equipos/TabsEquipo
+  */
   import Texto from '~/components/Site/CardAreaText';
   import Softwares from '~/components/Inventario/Software/CarritoSoftware';
   import Sistemas from '~/components/Inventario/Sistemas/CarritoSistemas';
   import Pantallas from '~/components/Inventario/Pantallas/CarritoPantalla';
   import Mantenimientos from '~/components/Site/Table';
-
+  /**
+   * @vue-data {Object} tab - v-model para el componente v-tab.
+   * @vue-data {Array} tabs - Lista para configurar los v-tabs.
+   * @vue-data {Array} headers - Lista para configurar la tabla mantenimientos.
+   * @vue-prop {Object} dialog - Información del equipo tomada del componente padre.
+   * @vue-event {} close - Emite un evento al componente padre y se cierra la modal.
+  */
   export default {
     data() {
       return {

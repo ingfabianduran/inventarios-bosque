@@ -18,10 +18,17 @@
   </v-app>
 </template>
 <script>
+  /**
+    * @module layout/default
+  */
   import Bar from '~/components/Layout/Bar';
   import Navigation from '~/components/Layout/Navigation';
   import Footer from '~/components/Layout/Footer';
-
+  /**
+   * @vue-data {Boolean} navigation - Variable que controla la visibilidad de la barra lateral
+   * @vue-event {Boolean}  - Setea la variable navigation.
+   *
+  */
   export default {
     data() {
       return {

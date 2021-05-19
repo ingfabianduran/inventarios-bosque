@@ -123,6 +123,25 @@
   </v-card>
 </template>
 <script>
+  /**
+    * @module components/Inventario/Modelos/FormModelo
+  */
+  import { mapGetters } from 'vuex';
+  /**
+   * @vue-data {Object} form - Datos del formulario.
+   * @vue-data {Array} tipos - Muestra los tipos que puede tener un modelo.
+   * @vue-data {Array} marcas - Muestra las marcas registradas en el sistema.
+   * @vue-data {Array} procesadores - Muestra los procesadores registrados en el sistema.
+   * @vue-prop {Boolean} [marca=true] - Valida si se muestra o no las marcas registradas.
+   * @vue-prop {Boolean} [procesador=true] - Valida si se muestra o no los procesadores registradas.
+   * @vue-prop {Object} [modelo={}] - Valida si se muestra o no los procesadores registradas.
+   * @vue-event {} storeCaracteristica - Valida y envia la informacion del formulario al componente padre.
+   * @vue-event {} omitir - Emite el evento omitir al componente padre.
+   * @vue-event {} clearForm - Limpia los datos del formulario y emite el evento clearForm al componente padre.
+   * @vue-event {} resetData - Limpia los datos del formulario.
+   * @vue-computed {Object} getValues - Obtiene los config para los formularios.
+   * @vue-computed {Array} tipos - Obtiene los tipos de modelo.
+  */
   export default {
     data() {
       return {
@@ -133,7 +152,6 @@
           marca_id: '',
           procesador_id: '',
         },
-        tipos: ['All in One', 'Desktop', 'Portatil', 'Portatil Mini', 'Tablet', 'Tiny', 'WorkStation'],
         marcas: [],
         procesadores: []
       }
@@ -197,6 +215,14 @@
         if (this.modelo.procesador !== null) {
           this.form.procesador_id = this.modelo.procesador_id;
         }
+      }
+    },
+    computed: {
+      ...mapGetters([
+        'getValues'
+      ]),
+      tipos() {
+        return this.getValues('modelo');
       }
     }
   }

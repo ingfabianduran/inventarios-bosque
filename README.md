@@ -1,4 +1,6 @@
-# inventarios-bosque
+# Inv Bosque
+
+Sistema de inventarios para el departamento de tecnologia. 
 
 ## Build Setup
 

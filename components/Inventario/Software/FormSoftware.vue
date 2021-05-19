@@ -69,13 +69,28 @@
   </v-card>
 </template>
 <script>
+  /**
+    * @module components/Inventario/Software/FormSoftware
+  */
   import Alert from '~/components/Site/SweetAlert';
   import Loader from '~/components/Site/Loader';
-
+  import { mapGetters } from 'vuex';
+  /**
+   * @vue-data {Array} tipos - Tipos que pueda tener un software.
+   * @vue-data {Object} form - Datos del formulario.
+   * @vue-data {Boolean} isLoading - Valida el estado de carga del formulario.
+   * @vue-prop {String} titulo - Titulo especificado en el v-card-title del componente.
+   * @vue-prop {Object} [software={}] - Captura los datos y los ingresa en el formulario.
+   * @vue-prop {String} url - Cadena para ejecutar la peticion POST y PUT.
+   * @vue-prop {String} textBtn - Cadena para el texto del formulario.
+   * @vue-event {} storeSoftware - Registra o actualiza un software.
+   * @vue-event {} clearForm - Limpia los datos del formulario.
+   * @vue-computed {Object} getValues - Obtiene los config para los formularios.
+   * @vue-computed {Array} tipos - Obtiene los tipos de licencia de software.
+  */
   export default {
     data() {
       return {
-        tipos: ['Free', 'Licenciado'],
         form: {
           nombre: '',
           tipo: ''
@@ -132,10 +147,22 @@
         this.$emit('clearForm');
       }
     },
+    /**
+      * Watch Events:
+      * @property {Function} software - Setea los valores del formulario.
+    */
     watch: {
       software() {
         this.form.nombre = this.software.nombre;
         this.form.tipo = this.software.tipo;
+      }
+    },
+    computed: {
+      ...mapGetters([
+        'getValues'
+      ]),
+      tipos() {
+        return this.getValues('software');
       }
     }
   }

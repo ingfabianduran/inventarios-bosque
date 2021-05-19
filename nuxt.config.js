@@ -26,6 +26,7 @@ export default {
     { src: '~/plugins/VeeValidate.js' },
     { src: '~/plugins/Axios.js' },
     { src: '~/plugins/Mask.js' },
+    { src: '~/plugins/Vuex-persist', ssr: false }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -62,7 +63,8 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: [
-      "vee-validate/dist/rules"
+      "vee-validate/dist/rules",
+      "vuex-persist"
     ],
   },
 

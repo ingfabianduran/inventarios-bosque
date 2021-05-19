@@ -46,8 +46,25 @@
   </v-card>
 </template>
 <script>
+  /**
+    * @module components/Site/Table
+  */
   import Alert from '~/components/Site/SweetAlert';
-
+  /**
+   * @vue-data {Boolean} isLoading - Valida si la tabla esta cargando o no.
+   * @vue-data {String} busqueda - Captura el texto de la busqueda.
+   * @vue-prop {String} title - Titulo ubicado en el v-card-title.
+   * @vue-prop {Array} headers - Configuracion de las columnas de la tabla.
+   * @vue-prop {Array} items - Items mostrados en la tabla.
+   * @vue-prop {String} url - Url que apunta a una api.
+   * @vue-prop {Obejct} search - Almacena las configuraciones para realizar la busqueda sobre una url.
+   * @vue-prop {Boolean} [isRead=false] - Muestra o no el componente v-card-title.
+   * @vue-prop {Boolean} [isPagination=true] - Habilita o deshabilita la paginacion sobre la tabla.
+   * @vue-event {Number} getModel - Realiza la petición get a la url y envia la información al componente padre.
+   * @vue-event {Number} deleteModel - Realiza la peticion delete a traves de la url y emite un evento al componente padre.
+   * @vue-event {} resetSearch - Setea el valor de la variable busqueda y emite un evento al componente padre.
+   * @vue-computed {} rol - Obtiene el rol del usuario activo en la sesion.
+  */
   export default {
     data() {
       return {
@@ -127,6 +144,10 @@
         this.$emit('resetBusqueda');
       }
     },
+    /**
+      * Watch Events:
+      * @property {Function} busqueda - Realiza una peticion get y envia la información al componente padre.
+    */
     watch: {
       async busqueda(value) {
         if (value !== null && value.length > 0) {

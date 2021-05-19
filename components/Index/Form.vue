@@ -62,8 +62,16 @@
   </ValidationObserver>
 </template>
 <script>
+  /**
+    * @module components/Index/Form
+  */
   import Alert from '~/components/Site/SweetAlert';
-
+  /**
+   * @vue-data {Object} form - Correo y contraseña del usuario.
+   * @vue-event {} logIn - Valida el usuario y la contraseña registrados.
+   * @vue-event {} setEmail - Formatea el usuario digitado para que solo tome el nombre sin el contenido a partir del @.
+   * @vue-computed {String} message - Obtiene el mensaje de estado de sesion.
+  */
   export default {
     data() {
       return {
@@ -82,13 +90,13 @@
             this.isLoading = true;
             await this.$auth.loginWith('laravelJWT', { data: { email: `${this.setEmail(this.form.email).toLowerCase()}@unbosque.edu.co`, password: this.form.password } });
             Alert.showToast('success', 'Bienvenido al Sistema, un momento por favor...');
-            this.$store.commit('set', '');
+            this.$store.commit('setMessage', '');
             setTimeout(() => {
               this.isLoading = false;
               this.$router.push('/inventarios/equipos');
             }, 3000);
           } catch (error) {
-            this.$store.commit('set', 'Usuario o contraseña incorrecta');
+            this.$store.commit('setMessage', 'Usuario o contraseña incorrecta');
             this.isLoading = false;
           }
         }

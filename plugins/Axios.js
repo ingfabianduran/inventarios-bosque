@@ -12,7 +12,7 @@ export default function ({ $axios, redirect, store }, inject) {
       Errors.showError(errors);
     } else if (code === 401) {
       const message = error.response.data.error;
-      store.commit('set', message);
+      store.commit('setMessage', message);
       redirect('/');
     } else if (code === 403) {
       const message = error.response.data.descripcion;

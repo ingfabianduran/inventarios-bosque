@@ -73,6 +73,18 @@
   </v-card>
 </template>
 <script>
+  /**
+    * @module components/Inventario/Inventarios/FormInventario
+  */
+  /**
+   * @vue-data {Object} form - Datos del formulario.
+   * @vue-prop {Object} [inventario={}] - Captura los datos y los ingresa en el formulario.
+   * @vue-event {} storeInventario - Valida y envia la informacion del formulario al componente padre.
+   * @vue-event {} omitir - Emite el evento omitir al componente padre.
+   * @vue-event {} clearForm - Limpia los datos del formulario y emite el evento clearForm al componente padre.
+   * @vue-event {} resetData - Limpia los datos del formulario.
+   * @vue-computed {String} rol - Obtiene el rol del usuario activo en la sesion.
+  */
   export default {
     data() {
       return {
@@ -108,6 +120,10 @@
         this.form.n_interno = '';
       }
     },
+    /**
+      * Watch Events:
+      * @property {Function} inventario - Setea los valores del formulario.
+    */
     watch: {
       inventario() {
         if (this.inventario !== null) {

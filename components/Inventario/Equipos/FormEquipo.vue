@@ -9,6 +9,16 @@
           <v-row>
             <v-col
               cols="12"
+              md="2"
+              v-if="Object.keys(equipo).length === 0">
+              <v-checkbox
+                v-model="isMasiva"
+                label="Creación Masiva"
+                color="#F27830">
+              </v-checkbox>
+            </v-col>
+            <v-col
+              cols="12"
               md="4">
               <ValidationProvider
                 v-slot="{ errors }"
@@ -29,7 +39,7 @@
             </v-col>
             <v-col
               cols="12"
-              md="4">
+              :md="(Object.keys(equipo).length > 0 ? 4 : 3)">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="compra"
@@ -49,7 +59,7 @@
             </v-col>
             <v-col
               cols="12"
-              md="4">
+              :md="(Object.keys(equipo).length > 0 ? 4 : 3)">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="garantia"
@@ -90,20 +100,40 @@
             <v-col
               cols="12"
               md="4">
-              <ValidationProvider
-                v-slot="{ errors }"
-                name="serie"
-                rules="required|min:3|max:100">
-                <v-text-field
-                  v-model="form.serie"
-                  label="Serie"
-                  placeholder="Serie del equipo"
-                  outlined
-                  color="#7BC142"
-                  :error-messages="errors"
-                  :disabled="rol === 'COORDINADOR' ? false : true">
-                </v-text-field>
-              </ValidationProvider>
+              <template v-if="!isMasiva">
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  name="serie"
+                  rules="required|min:3|max:100">
+                  <v-text-field
+                    v-model="form.serie"
+                    label="Serie"
+                    placeholder="Serie del equipo"
+                    outlined
+                    color="#7BC142"
+                    :error-messages="errors"
+                    :disabled="rol === 'COORDINADOR' ? false : true">
+                  </v-text-field>
+                </ValidationProvider>
+              </template>
+              <template v-else>
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  name="file"
+                  rules="required">
+                  <v-file-input
+                    accept=".xlsx"
+                    v-model="form.file"
+                    placeholder="Series"
+                    outlined
+                    color="#7BC142"
+                    prepend-icon=""
+                    prepend-inner-icon="mdi-file-table"
+                    :error-messages="errors"
+                    :disabled="rol === 'COORDINADOR' ? false : true">
+                  </v-file-input>
+                </ValidationProvider>
+              </template>
             </v-col>
             <v-col
               cols="12"
@@ -191,25 +221,49 @@
   </v-card>
 </template>
 <script>
+  /**
+    * @module components/Inventario/Equipos/FormEquipo
+  */
   import moment from 'moment';
-
+  import { mapGetters } from 'vuex';
+  /**
+   * @vue-data {Object} form - Datos del formulario.
+   * @vue-data {Array} tipos - Tipos que puede tener un equipo.
+   * @vue-data {Array} modelos - Muestra los modelos registrados en el sistema.
+   * @vue-data {Array} discos - Muestra los discos registrados en el sistema.
+   * @vue-data {Array} memorias - Muestra las memorias registradas en el sistema.
+   * @vue-data {Boolean} [isMasiva=true] - Determina si se muestra o no el input para la serie.
+   * @vue-prop {Boolean} [showDiscos=true] - Determina si se muestra o no el v-autocomplete para discos.
+   * @vue-prop {Boolean} [showMemorias=true] - Determina si se muestra o no el v-autocomplete para memorias.
+   * @vue-prop {Object} [equipo={}] - Captura los datos y los ingresa en el formulario.
+   * @vue-event {} getModelos - Trae los modelos registrados en el sistema.
+   * @vue-event {} getDiscos - Trae los discos registrados en el sistema.
+   * @vue-event {} getMemorias - Trae las memorias registradas en el sistema.
+   * @vue-event {} storeEquipo - Valida y envia la informacion del formulario al componente padre.
+   * @vue-event {} clearForm - Limpia los datos del formulario y emite el evento clearForm al componente padre.
+   * @vue-event {} resetData - Limpia los datos del formulario.
+   * @vue-computed {Object} getValues - Obtiene los config para los formularios.
+   * @vue-computed {Array} tipos - Obtiene los tipos de adquisición de un equipo.
+   * @vue-computed {String} rol - Obtiene el rol del usuario activo en la sesion.
+  */
   export default {
     data() {
       return {
         form: {
-          fecha_compra: '',
-          vence_garantia: '',
-          tipo: '',
-          serie: '',
-          valor: '',
-          modelo_id: '',
-          disco_id: '',
-          memoria_id: ''
+          fecha_compra: '01-01-2020',
+          vence_garantia: '01-01-2021',
+          tipo: 'Compra',
+          file: null,
+          serie: 'MJ6302563',
+          valor: '3000000',
+          modelo_id: 1,
+          disco_id: 1,
+          memoria_id: 1
         },
-        tipos: ['Compra', 'Leasing'],
         modelos: [],
         discos: [],
         memorias: [],
+        isMasiva: false
       }
     },
     props: {
@@ -247,7 +301,11 @@
       async storeEquipo() {
         const validate = await this.$refs.formEquipo.validate();
         if (validate) {
-          this.$emit('getEquipo', this.form);
+          const data = {
+            form: this.form,
+            isMasiva: this.isMasiva
+          };
+          this.$emit('getEquipo', data);
         }
       },
       clearForm() {
@@ -264,8 +322,13 @@
         this.form.modelo_id = '';
         this.form.disco_id = '';
         this.form.memoria_id = '';
+        this.isMasiva = false;
       }
     },
+    /**
+      * Watch Events:
+      * @property {Function} equipo - Setea los valores del formulario.
+    */
     watch: {
       equipo() {
         this.form.fecha_compra = moment(this.equipo.fecha_compra).format('DD-MM-YYYY');
@@ -288,6 +351,12 @@
       }
     },
     computed: {
+      ...mapGetters([
+        'getValues'
+      ]),
+      tipos() {
+        return this.getValues('equipo');
+      },
       rol() {
         return this.$auth.user.rol;
       }

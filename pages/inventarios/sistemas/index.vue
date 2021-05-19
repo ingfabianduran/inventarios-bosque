@@ -32,13 +32,24 @@
   </div>
 </template>
 <script>
+  /**
+    * @module pages/inventarios/sistemas/index
+  */
   import Form from '~/components/Inventario/Sistemas/FormSistema';
   import Busqueda from '~/components/Site/CardSearch';
   import Sistema from '~/components/Site/SimpleCard';
   import Pagination from '~/components/Site/Pagination';
-
+  /**
+   * @vue-data {Object} sistema - Datos para gestionar la api del modelo.
+   * @vue-data {Array} sistemas - Lista de sistemas mostrada en la vista.
+   * @vue-data {Object} page - Configura la paginacion de la vista.
+   * @vue-event {Array} updateListSistemas - Actualiza la informacion sobre la vista.
+   * @vue-event {Object} getSistema - Trae el modelo seleccionado desde la vista.
+   * @vue-event {} clearForm - Reinicia los valores sobre el modelo.
+   * @vue-event {Array} searchListSistemas - Cambia los valores en la vista cuando se esta realizando una busqueda.
+  */
   export default {
-    middleware: ['auth'],
+    middleware: ['auth', 'isCoordinador'],
     head() {
       return {
         title: 'Sistemas Operativos'

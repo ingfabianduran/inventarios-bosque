@@ -7,13 +7,11 @@
         cols="12"
         :md="(aranda.mantenimiento === 0 ? 12 : 8)">
         <Mantenimiento
-          ref="mantenimiento"
           :titulo="mantenimiento.titulo"
           :mantenimiento="mantenimiento.data"
           :url="mantenimiento.url"
           :textBtn="mantenimiento.textBtn"
           :stateBtn="mantenimiento.stateBtn"
-          @registrarAranda="registrarAranda"
           @clearForm="clearFormMantenimiento" />
       </v-col>
       <v-col
@@ -21,7 +19,6 @@
         md="4"
         v-show="aranda.mantenimiento !== 0">
         <Aranda
-          ref="aranda"
           :titulo="aranda.titulo"
           :aranda="aranda.data"
           :url="aranda.url"
@@ -49,11 +46,25 @@
   </div>
 </template>
 <script>
+  /**
+    * @module pages/mantenimientos/mantenimientos/index
+  */
   import Mantenimiento from '~/components/Mantenimiento/Mantenimientos/FormMantenimiento';
   import Aranda from '~/components/Mantenimiento/Aranda/FormAranda';
   import Table from '~/components/Site/Table';
   import Pagination from '~/components/Site/Pagination';
-
+  /**
+   * @vue-data {Object} mantenimiento - Datos para gestionar la api del modelo.
+   * @vue-data {Array} headers - Configura lo que va a mostrar la tabla.
+   * @vue-data {Array} mantenimientos - Lista de mantenimientos mostrada en la tabla.
+   * @vue-data {Object} page - Configura la paginacion de la tabla.
+   * @vue-data {Object} search - Configura la busqueda sobre el modelo.
+   * @vue-event {Array} updateListMantenimientos - Actualiza la informacion sobre la tabla.
+   * @vue-event {Object} getMantenimiento - Trae el modelo seleccionado desde la tabla.
+   * @vue-event {} clearFormMantenimiento - Reinicia los valores sobre el modelo mantenimiento.
+   * @vue-event {} clearFormAranda - Reinicia los valores sobre el modelo aranda.
+   * @vue-event {Array} searchListMantenimientos - Cambia los valores en la tabla cuando se esta realizando una busqueda.
+  */
   export default {
     middleware: ['auth'],
     head() {
@@ -106,9 +117,9 @@
     },
     async fetch() {
       const { data } = await this.$axios.$get(`api/mantenimiento/mantenimientos/i/10?page=${this.page.current}`);
-        this.mantenimientos = data.data;
-        this.page.last = data.last_page;
-        this.page.url = 'api/mantenimiento/mantenimientos/i/10?page=';
+      this.mantenimientos = data.data;
+      this.page.last = data.last_page;
+      this.page.url = 'api/mantenimiento/mantenimientos/i/10?page=';
     },
     methods: {
       updateListMantenimientos(mantenimientos) {
@@ -137,7 +148,7 @@
           this.aranda.mantenimiento = mantenimiento.id;
         }
       },
-      clearFormMantenimiento() {
+      async clearFormMantenimiento() {
         this.mantenimiento.titulo = 'Nuevo Mantenimiento';
         this.mantenimiento.data = {};
         this.mantenimiento.url = 'api/mantenimiento/mantenimientos';
@@ -159,10 +170,6 @@
         this.page.current = 1;
         this.page.last = mantenimientos.data.last_page;
         this.page.url = mantenimientos.url;
-      },
-      registrarAranda(mantenimiento) {
-        this.mantenimiento.data = mantenimiento;
-        this.aranda.mantenimiento = mantenimiento.id;
       }
     }
   }

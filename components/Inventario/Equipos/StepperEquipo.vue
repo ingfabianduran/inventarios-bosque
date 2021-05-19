@@ -50,6 +50,9 @@
   </v-stepper>
 </template>
 <script>
+  /**
+    * @module components/Equipos/StepperEquipo
+  */
   import Disco from '~/components/Inventario/Discos/FormDisco';
   import Memoria from '~/components/Inventario/Memorias/FormMemoria';
   import Equipo from '~/components/Inventario/Equipos/FormEquipo';
@@ -59,7 +62,34 @@
   import Alert from '~/components/Site/SweetAlert';
   import Loader from '~/components/Site/Loader';
   import moment from 'moment';
-
+  /**
+   * @vue-data {Number} paso - v-model del componente v-stepper.
+   * @vue-data {Array} pasos - Lista que configura los v-stepper-step.
+   * @vue-data {Object} form - Almacena la información del equipo.
+   * @vue-data {Object} disco - Almacena la información del disco.
+   * @vue-data {Object} memoria - Almacena la información de la memoria.
+   * @vue-data {Boolean} showDiscos - Valida si se muestra o no el input discos en el componente Equipo.
+   * @vue-data {Boolean} showMemorias - Valida si se muestra o no el input memorias en el componente Disco.
+   * @vue-data {Boolean} isLoading - Valida si se muestra o no el componente de carga.
+   * @vue-prop {String} titulo - Titulo renderizado en el componente Alert.
+   * @vue-prop {String} url - Url ejecutada en las peticiones http del componente.
+   * @vue-prop {Object} data - Información del equipo traido desde el componente padre.
+   * @vue-event {Object} setDisco - Setea las variables disco y showDiscos.
+   * @vue-event {Object} setMemorias - Setea las variables memoria y showMemorias.
+   * @vue-event {Object} setEquipo - Setea la variable form y valida si se va hacer un registro masivo.
+   * @vue-event {Object} setInventario - Setea la propiedad form.inventario.
+   * @vue-event {Object} setCaracteristica - Setea la propiedad form.caracteristica.
+   * @vue-event {Array} setMacs - Setea la propiedad form.mac y realiza el submit del formulario.
+   * @vue-event {} omitirDisco - Setea la variable showDiscos.
+   * @vue-event {} omitirMemorias - Setea la variable showMemorias.
+   * @vue-event {} omitir - Setea la variable paso.
+   * @vue-event {} setDiscoMemoria - Almacena la información de los discos y memorias registrados.
+   * @vue-event {} setInfoEquipo - Almacena la información del equipo, validando si es POST o PUT la petición.
+   * @vue-event {} storeEquipo - Ejecuta la peticion POST.
+   * @vue-event {} updateEquipo - Ejecuta la peticion PUT.
+   * @vue-event {} cancelarRegistro - Setea todas las variables del componente.
+   * @vue-event {} showCardEquipo - Llama a la función cancelarRegistro y emite un evento al componente padre.
+  */
   export default {
     data() {
       return {
@@ -89,7 +119,7 @@
         memoria: {},
         showDiscos: true,
         showMemorias: true,
-        isLoading: false
+        isLoading: false,
       }
     },
     props: {
@@ -127,15 +157,46 @@
         this.paso += 1;
       },
       setEquipo(equipo) {
-        this.form.fecha_compra = equipo.fecha_compra;
-        this.form.vence_garantia = equipo.vence_garantia;
-        this.form.tipo = equipo.tipo;
-        this.form.serie = equipo.serie;
-        this.form.valor = equipo.valor;
-        this.form.modelo_id = equipo.modelo_id;
-        this.form.disco_id = equipo.disco_id;
-        this.form.memoria_id = equipo.memoria_id;
-        this.paso += 1;
+        this.form.fecha_compra = equipo.form.fecha_compra;
+        this.form.vence_garantia = equipo.form.vence_garantia;
+        this.form.tipo = equipo.form.tipo;
+        this.form.serie = equipo.form.serie;
+        this.form.valor = equipo.form.valor;
+        this.form.modelo_id = equipo.form.modelo_id;
+        this.form.disco_id = equipo.form.disco_id;
+        this.form.memoria_id = equipo.form.memoria_id;
+        if (equipo.isMasiva) {
+          Alert.showConfirm('Registro Masivo', '¿Esta seguro de realizar el registro masivo de equipos?', 'question', async(confirmed) => {
+            if (confirmed) {
+              try {
+                this.isLoading = true;
+                let formData = new FormData();
+                formData.append('seriales', equipo.form.file);
+                formData.append('json', `{
+                    "fecha_compra" : "${equipo.form.fecha_compra}",
+                    "vence_garantia" : "${equipo.form.vence_garantia}",
+                    "tipo": "${equipo.form.tipo}",
+                    "valor": ${equipo.form.valor},
+                    "modelo_id": ${equipo.form.modelo_id},
+                    "disco_id": ${equipo.form.disco_id},
+                    "memoria_id": ${equipo.form.memoria_id}
+                }`);
+
+                const { data } = await this.$axios.$post('api/inventario/masivos', formData, {
+                  headers: {
+                    'Content-Type': 'multipart/form-data'
+                  }
+                });
+
+                Alert.showToast('success', data);
+              } catch (error) {
+                this.isLoading = false;
+              }
+            }
+          });
+        } else {
+          this.paso += 1;
+        }
       },
       setInventario(inventario) {
         this.form.inventario = inventario;
@@ -234,6 +295,10 @@
         this.$emit('showCardEquipo');
       }
     },
+    /**
+      * Watch Events:
+      * @property {Function} data - Setea los valores de la variable form.
+    */
     watch: {
       data() {
         if (Object.keys(this.data).length > 0) {

@@ -58,7 +58,7 @@
                 rules="required|oneOf:Académico,Administrativo,Docente,Directivo,Investigador">
                 <v-select
                   v-model="form.tipo"
-                  :items="roles"
+                  :items="tipos"
                   label="Rol"
                   outlined
                   color="#7BC142"
@@ -125,13 +125,29 @@
   </v-card>
 </template>
 <script>
+  /**
+    * @module components/Asignacion/Responsables/FormResponsable
+  */
   import Alert from '~/components/Site/SweetAlert';
   import Loader from '~/components/Site/Loader';
-
+  import { mapGetters } from 'vuex';
+  /**
+   * @vue-data {Array} roles - Almacena los roles que puede tener un responsable.
+   * @vue-data {Array} dependencias - Almacena todas las dependencia que puede tener un responsable.
+   * @vue-data {Boolean} isLoading - Valida el estado de carga del formulario.
+   * @vue-data {Object} form - Datos del formulario.
+   * @vue-prop {String} titulo - Titulo especificado en el v-card-title del componente.
+   * @vue-prop {Object} [edificio={}] - Captura los datos y los ingresa en el formulario.
+   * @vue-prop {String} url - Cadena para ejecutar la peticion POST y PUT.
+   * @vue-prop {String} textBtn - Cadena para el texto del formulario.
+   * @vue-event {} storeResponsable - Registra o actualiza un responsable.
+   * @vue-event {} clearForm - Limpia los datos del formulario.
+   * @vue-computed {Object} getValues - Obtiene los config para los formularios.
+   * @vue-computed {Array} tipos - Obtiene los tipos de responsable.
+  */
   export default {
     data() {
       return {
-        roles: ['Académico', 'Administrativo', 'Docente', 'Directivo', 'Investigador'],
         dependencias: [],
         form: {
           nombre: '',
@@ -202,6 +218,10 @@
         this.$emit('clearForm');
       }
     },
+    /**
+      * Watch Events:
+      * @property {Function} responsable - Setea los valores del formulario.
+    */
     watch: {
       responsable() {
         if (Object.keys(this.responsable).length > 0) {
@@ -213,6 +233,14 @@
             this.form.dependencia_id = this.responsable.dependencia.id;
           }
         }
+      }
+    },
+    computed: {
+      ...mapGetters([
+        'getValues'
+      ]),
+      tipos() {
+        return this.getValues('responsable');
       }
     }
   }

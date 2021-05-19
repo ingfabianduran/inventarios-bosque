@@ -23,10 +23,23 @@
   </div>
 </template>
 <script>
+  /**
+    * @module pages/mantenimientos/especialistas/index
+  */
   import Form from '~/components/Mantenimiento/Especialistas/FormEspecialista';
   import Table from '~/components/Site/Table';
   import Pagination from '~/components/Site/Pagination';
-
+  /**
+   * @vue-data {Object} especialista - Datos para gestionar la api del modelo.
+   * @vue-data {Array} headers - Configura lo que va a mostrar la tabla.
+   * @vue-data {Array} especialistas - Lista de especialistas mostrada en la tabla.
+   * @vue-data {Object} page - Configura la paginacion de la tabla.
+   * @vue-data {Object} search - Configura la busqueda sobre el modelo.
+   * @vue-event {Array} updateListEspecialistas - Actualiza la informacion sobre la tabla.
+   * @vue-event {Object} getEspecialista - Trae el modelo seleccionado desde la tabla.
+   * @vue-event {} clearForm - Reinicia los valores sobre el modelo.
+   * @vue-event {Array} searchListEspecialistas - Cambia los valores en la tabla cuando se esta realizando una busqueda.
+  */
   export default {
     middleware: ['auth', 'isCoordinador'],
     head() {

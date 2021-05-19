@@ -4,6 +4,10 @@
       :dialog="dialogEquipo"
       @closeModal="closeModalEquipo"
       v-if="dialogEquipo.isView" />
+    <Masivos
+      :dialog="dialogMasivo"
+      @closeMasivos="closeModalMasivos"
+      v-if="dialogMasivo.isView" />
     <v-card>
       <v-card-title
         class="font-weight-bold text-h4">
@@ -75,9 +79,23 @@
   </div>
 </template>
 <script>
+  /**
+    * @module components/Equipos/CardEquipo
+  */
   import Equipo from '~/components/Inventario/Equipos/TabsEquipo';
+  import Masivos from '~/components/Inventario/Equipos/DialogMasivo';
   import Pdf from '~/components/Site/HojaVida';
-
+  /**
+   * @vue-data {Array} dataEquipo - Estructura de la información del equipo renderizada en el v-card.
+   * @vue-data {Array} opciones - Listado de opciones para el componente v-menu.
+   * @vue-data {Object} dialogEquipo - Datos del equipo, los cuales se mostraran en el componente Equipo.
+   * @vue-data {Object} dialogMasivo - Valida si se muestra o no el componente Masivos.
+   * @vue-data {Boolean} showOpciones - Valida si se muestra o no el componente v-menu.
+   * @vue-prop {Object} equipo - Datos del equipo seleccionado en la tabla.
+   * @vue-prop {Boolean} [whenDeleteEquipo=false] - Valida si se muestra o no el componente v-menu.
+   * @vue-event {Boolean} closeModalEquipo - Muestra y oculta el componente equipo.
+   * @vue-event {String} eventMasOpciones - Valida cada una de las opciones del componente v-menu y las ejecuta.
+  */
   export default {
     data() {
       return {
@@ -107,15 +125,19 @@
           ] },
         ],
         opciones: [
-          { text: 'Agregar Equipo', opcion: 'agregarEquipo', show: (this.$auth.user.rol === 'COORDINADOR' ? true : false) },
+          { text: 'Agregar Equipos', opcion: 'agregarEquipos', show: (this.$auth.user.rol === 'COORDINADOR' ? true : false) },
           { text: 'Hoja de Vida', opcion: 'hojaVida', show: false },
           { text: 'Mas Información', opcion: 'masInformacion', show: false },
           { text: 'Modificar Equipo', opcion: 'modificarEquipo', show: false },
+          { text: 'Registros Masivos', opcion: 'registrosMasivos', show: (this.$auth.user.rol === 'COORDINADOR' ? true : false) },
           { text: 'Reportes de Inventario', opcion: 'reporteInventario', show: (this.$auth.user.rol === 'COORDINADOR' ? true : false) },
         ],
         dialogEquipo: {
           isView: false,
           data: {}
+        },
+        dialogMasivo: {
+          isView: false
         },
         showOpciones: (this.$auth.user.rol === 'COORDINADOR' ? true : false),
       }
@@ -131,17 +153,18 @@
       }
     },
     components: {
-      Equipo
+      Equipo,
+      Masivos
     },
     methods: {
       closeModalEquipo(value) {
         this.dialogEquipo.isView = value;
       },
-      closeModalReporte(value) {
-        this.dialogReporte.isView = value;
+      closeModalMasivos(value) {
+        this.dialogMasivo.isView = value;
       },
       async eventMasOpciones(opcion) {
-        if (opcion === 'agregarEquipo') {
+        if (opcion === 'agregarEquipos') {
           this.$emit('addEquipo');
         } else if (opcion === 'hojaVida') {
           const { data } = await this.$axios.$get(`api/inventario/equipos/${this.equipo.id}`);
@@ -153,11 +176,19 @@
           this.$emit('updateEquipo');
         } else if (opcion === 'reporteInventario') {
           this.$router.push('/inventarios/equipos/reportes');
+        } else if (opcion === 'registrosMasivos') {
+          this.dialogMasivo.isView = true;
         }
       }
     },
+    /**
+      * Watch Events:
+      * @property {Function} equipo - Setea los valores de dataEquipo.
+    */
     watch: {
       equipo() {
+        this.dataEquipo[2].data[2].value = this.equipo.serie;
+
         if (this.equipo.modelo !== null) {
           this.dataEquipo[0].data[0].value = this.equipo.modelo.marca.nombre;
           this.dataEquipo[0].data[1].value = this.equipo.modelo.descripcion;
@@ -197,11 +228,9 @@
         if (this.equipo.inventario !== null) {
           this.dataEquipo[2].data[0].value = (this.equipo.inventario.n_interno ? this.equipo.inventario.n_interno : 'No registra');
           this.dataEquipo[2].data[1].value = (this.equipo.inventario.inventario ? this.equipo.inventario.inventario : 'No registra');
-          this.dataEquipo[2].data[2].value = (this.equipo.serie ? this.equipo.serie : 'No registra');
         } else {
           this.dataEquipo[2].data[0].value = 'No registra';
           this.dataEquipo[2].data[1].value = 'No registra';
-          this.dataEquipo[2].data[2].value = 'No registra';
         }
 
         if (this.equipo.macs.length > 0) {

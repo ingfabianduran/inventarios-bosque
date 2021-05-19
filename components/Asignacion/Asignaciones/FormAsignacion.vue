@@ -19,7 +19,7 @@
               <ValidationProvider
                 v-slot="{ errors }"
                 name="tipo"
-                rules="required|oneOf:Aulas,Oficinas,Servicio al Estudiante">
+                rules="required|oneOf:Academico,Administrativo,Servicio al estudiante">
                 <v-autocomplete
                   v-model="form.tipo"
                   label="Tipo"
@@ -142,13 +142,36 @@
   </v-card>
 </template>
 <script>
+  /**
+    * @module components/Asignacion/Asignaciones/FormAsignacion
+  */
   import Alert from '~/components/Site/SweetAlert';
   import Loader from '~/components/Site/Loader';
-
+  import { mapGetters } from 'vuex';
+  /**
+   * @vue-data {Array} tipos - Almacena todos los tipos de espacio que puede tener una asignación.
+   * @vue-data {Array} edificios - Muestra los edificios registrados en el sistema.
+   * @vue-data {Array} espacios - Muestra los espacios asociados al edificio seleccionado.
+   * @vue-data {Array} responsables - Busca los responsables registrados en el sistema.
+   * @vue-data {Array} equipos - Busca los equipos registrados en el sistema.
+   * @vue-data {Object} form - Datos del formulario.
+   * @vue-data {String} edificio - Cadena que permite encontrar un edificio.
+   * @vue-data {String} searchResponsable - Cadena que permite encontrar un responsable.
+   * @vue-data {String} searchEquipo - Cadena que permite encontrar un equipo.
+   * @vue-data {Boolean} isLoading - Valida el estado de carga del formulario.
+   * @vue-prop {String} titulo - Titulo especificado en el v-card-title del componente.
+   * @vue-prop {Object} [asignacion={}] - Captura los datos y los ingresa en el formulario.
+   * @vue-prop {String} url - Cadena para ejecutar la peticion POST y PUT.
+   * @vue-prop {String} textBtn - Cadena para el texto del formulario.
+   * @vue-event {} storeAsignacion - Registra o actualiza una asignación.
+   * @vue-event {} clearForm - Limpia los datos del formulario.
+   * @vue-computed {Object} getValues - Obtiene los config para los formularios.
+   * @vue-computed {Array} tipos - Obtiene los tipos de asignación.
+  */
   export default {
     data() {
       return {
-        tipos: ['Aulas', 'Oficinas', 'Servicio al Estudiante'],
+        // tipos: ['Academico', 'Administrativo', 'Servicio al estudiante'],
         edificios: [],
         espacios: [],
         responsables: [],
@@ -231,6 +254,13 @@
         this.$emit('clearForm');
       }
     },
+    /**
+      * Watch Events:
+      * @property {Function} asignacion - Setea los valores del formulario.
+      * @property {Function} searchResponsable - Permite buscar un responsable y mostrarlo en la lista.
+      * @property {Function} searchEquipo - Permite buscar un equipo y mostrarlo en la lista.
+      * @property {Function} edificio - Cuando el valor del edificio cambia, este trae todos los espacios asociados al edificio seleccionado.
+    */
     watch: {
       asignacion() {
         if (Object.keys(this.asignacion).length > 0) {
@@ -266,6 +296,14 @@
       async edificio(value) {
         const { data } = await this.$axios.$get(`api/asignacion/edificios/${value}`);
         this.espacios = data.espacios;
+      }
+    },
+    computed: {
+      ...mapGetters([
+        'getValues'
+      ]),
+      tipos() {
+        return this.getValues('asignacion');
       }
     }
   }

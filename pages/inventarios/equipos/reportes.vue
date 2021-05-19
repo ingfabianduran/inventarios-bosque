@@ -68,13 +68,31 @@
   </div>
 </template>
 <script>
+  /**
+    * @module pages/inventarios/equipos/reportes
+  */
   import Chart from '~/components/Site/Chart';
   import Tabla from '~/components/Site/MiniTable';
   import Form from '~/components/Inventario/Equipos/FormReport';
   import Loader from '~/components/Site/Loader';
   import moment from 'moment';
   import numbro from 'numbro';
-
+  /**
+   * @vue-data {Array} headersRepMarcas - Configura lo que va a mostrar la tabla.
+   * @vue-data {Array} itemsRepMarcas - Lista de marcas mostradas en la tabla.
+   * @vue-data {Array} totalRepMarcas - Lista que almacena los totales de la lista itemsRepMarcas.
+   * @vue-data {Array} headersRepUsos - Configura lo que va a mostrar la tabla.
+   * @vue-data {Array} itemsRepUsos - Lista los tiempos de uso mostrados en la tabla.
+   * @vue-data {Array} totalRepUsos - Lista que almacena los totales de la lista itemsRepUsos.
+   * @vue-data {Array} dataChar - Almacena la informacion y configuración de las graficas.
+   * @vue-event {Object} chartTipoUsuario - Carga y setea la información para la grafica tipo usuario.
+   * @vue-event {Object} chartTipoEquipo - Carga y setea la información para la grafica tipo equipo.
+   * @vue-event {Object} updateDataReports - Actualiza la información en todas las graficas y tablas de la vista.
+   * @vue-event {Object} countWithMarca - Carga y setea la información para la tabla marcas.
+   * @vue-event {Object} countWithTiempoUso - Carga y setea la información para la tabla tiempo de uso.
+   * @vue-event {Number|Number} calcularPorcentaje - Calcula el porcentaje a traves de los valores pasados en los parametros.
+   * @vue-event {} resetValuesTiempoUso - Setea la propiedad itemsRepUsos.
+  */
   export default {
     middleware: ['auth', 'isCoordinador'],
     head() {
@@ -280,9 +298,6 @@
           { tiempos: 'Equipos con mas de 7 años', porcentAcaAdm: '0 %', cantidadAcaAdm: 0, porcentServEst: '0 %', cantidadSerEst: 0, porcentSinAsig: '0 %', cantidadSinAsig: 0 },
         ];
       },
-      close() {
-        this.$emit('closeModal', false);
-      }
     }
   }
 </script>

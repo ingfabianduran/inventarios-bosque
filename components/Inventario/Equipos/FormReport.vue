@@ -74,6 +74,14 @@
   </v-card>
 </template>
 <script>
+  /**
+    * @module components/Inventario/Equipos/FormReporte
+  */
+  /**
+   * @vue-data {Object} form - Datos del formulario.
+   * @vue-event {} setReporte - Valida y envia la informacion del formulario al componente padre.
+   * @vue-event {} clearForm - Limpia los datos del formulario.
+  */
   export default {
     data() {
       return {

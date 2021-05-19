@@ -116,6 +116,24 @@
   </v-card>
 </template>
 <script>
+  /**
+    * @module components/Inventario/Redes/FormRed
+  */
+  import { mapGetters } from 'vuex';
+  /**
+   * @vue-data {Object} form - Datos del formulario.
+   * @vue-data {Array} tipos - Tipos que puede tener una dirección mac.
+   * @vue-data {Array} macs - Listado que almacena las mac registradas.
+   * @vue-prop {Array} [redes=[]] - Listado de macs registradas sobre un equipo.
+   * @vue-event {} addMac - Agrega una mac a la lista macs.
+   * @vue-event {} deleteMac - Elimina la mac seleccionada en la lista.
+   * @vue-event {} sendMacs - Envia la lista macs al componente padre.
+   * @vue-event {} omitir - Emite el evento omitir al componente padre.
+   * @vue-event {} clearForm - Limpia los datos del formulario y emite el evento clearForm al componente padre.
+   * @vue-event {} resetData - Limpia los datos del formulario.
+   * @vue-computed {Object} getValues - Obtiene los config para los formularios.
+   * @vue-computed {Array} tipos - Obtiene los tipos de dispositivo de red.
+  */
   export default {
     data() {
       return {
@@ -123,7 +141,6 @@
           tipo: '',
           mac: ''
         },
-        tipos: ['LAN', 'WAN'],
         macs: []
       }
     },
@@ -167,9 +184,21 @@
         this.macs = [];
       }
     },
+    /**
+      * Watch Events:
+      * @property {Function} redes - Setea los valores en la lista macs.
+    */
     watch: {
       redes() {
         this.macs = this.redes;
+      }
+    },
+    computed: {
+      ...mapGetters([
+        'getValues'
+      ]),
+      tipos() {
+        return this.getValues('mac');
       }
     }
   }
