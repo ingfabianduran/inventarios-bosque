@@ -42,7 +42,6 @@
             <Softwares :id="dialog.data.id" />
           </v-tab-item>
         </v-tabs-items>
-        {{ this.dialog.data.caracteristica }}
       </v-card>
   </v-dialog>
 </template>
