@@ -62,6 +62,7 @@
   import Alert from '~/components/Site/SweetAlert';
   import Loader from '~/components/Site/Loader';
   import moment from 'moment';
+import { log } from '~/node_modules/pdfmake/build/pdfmake';
   /**
    * @vue-data {Number} paso - v-model del componente v-stepper.
    * @vue-data {Array} pasos - Lista que configura los v-stepper-step.
@@ -245,12 +246,16 @@
             try {
               this.isLoading = true;
               const equipo = (this.titulo === 'Nuevo Equipo') ? await this.storeEquipo() : await this.updateEquipo();
-              setTimeout(() => {
-                Alert.showToast('success', equipo.descripcion);
+              if (equipo !== undefined) {
+                setTimeout(() => {
+                  Alert.showToast('success', equipo.descripcion);
+                  this.isLoading = false;
+                  this.cancelarRegistro();
+                  this.$emit('clearForm', equipo.data);
+                }, 500);
+              } else {
                 this.isLoading = false;
-                this.cancelarRegistro();
-                this.$emit('clearForm', equipo.data);
-              }, 500);
+              }
             } catch (error) {
               this.isLoading = false;
             }
