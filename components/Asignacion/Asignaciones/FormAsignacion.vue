@@ -171,7 +171,6 @@
   export default {
     data() {
       return {
-        // tipos: ['Academico', 'Administrativo', 'Servicio al estudiante'],
         edificios: [],
         espacios: [],
         responsables: [],
