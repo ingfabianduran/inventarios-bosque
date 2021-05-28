@@ -49,7 +49,8 @@
         type="button"
         dark
         color="#7BC142"
-        x-large>
+        x-large
+        @click="clearForm()">
         Cancelar
       </v-btn>
     </v-form>
@@ -70,6 +71,7 @@
    * @vue-data {Object} form - Correo y contraseña del usuario.
    * @vue-event {} logIn - Valida el usuario y la contraseña registrados.
    * @vue-event {} setEmail - Formatea el usuario digitado para que solo tome el nombre sin el contenido a partir del @.
+   * @vue-event {} clearForm - Setea los valores del formulario.
    * @vue-computed {String} message - Obtiene el mensaje de estado de sesion.
   */
   export default {
@@ -109,6 +111,11 @@
           }
         }
         return formEmail;
+      },
+      clearForm() {
+        this.$refs.formLogin.reset();
+        this.form.email = '';
+        this.form.password = '';
       }
     },
     computed: {

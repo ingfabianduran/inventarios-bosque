@@ -58,7 +58,7 @@
                 rules="required|min:3|max:50">
                 <v-text-field
                   v-model="form.nombre"
-                  label="Nombre"
+                  label="Nombres"
                   placeholder="Nombre del Especialista"
                   outlined
                   color="#7BC142"

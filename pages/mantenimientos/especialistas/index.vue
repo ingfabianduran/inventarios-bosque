@@ -99,7 +99,7 @@
       async clearForm() {
         this.especialista.titulo = 'Nuevo Especialista';
         this.especialista.data = {};
-        this.especialista.url = 'api/matenimientos/usuarios';
+        this.especialista.url = 'api/mantenimiento/users';
         this.especialista.textBtn = 'Registrar';
         this.$fetch();
       },

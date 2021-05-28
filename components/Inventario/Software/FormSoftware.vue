@@ -5,7 +5,8 @@
     <ValidationObserver
       ref="formSoftware">
       <v-form
-        @submit.prevent="storeSoftware">
+        @submit.prevent="storeSoftware"
+        autocomplete="off">
         <v-card-title
           class="font-weight-bold text-h4">
           {{ this.titulo }}

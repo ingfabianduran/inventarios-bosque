@@ -16,7 +16,7 @@ export default function ({ $axios, redirect, store }, inject) {
       redirect('/');
     } else if (code === 403) {
       const message = error.response.data.descripcion;
-      store.commit('set', message);
+      store.commit('setMessage', message);
       redirect('/');
     } else if (code === 500) {
       const message = { codigo: 500, message: 'Opss!!! algo no esta bien por aca' };

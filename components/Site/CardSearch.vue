@@ -7,16 +7,19 @@
       dark>
       Busqueda
     </v-toolbar>
-    <v-card-text>
-      <v-text-field
-        v-model="busqueda"
-        :label="nameBusqueda"
-        filled
-        rounded
-        append-icon="mdi-magnify"
-        color="#7BC142">
-      </v-text-field>
-    </v-card-text>
+    <v-form
+      autocomplete="off">
+      <v-card-text>
+        <v-text-field
+          v-model="busqueda"
+          :label="nameBusqueda"
+          filled
+          rounded
+          append-icon="mdi-magnify"
+          color="#7BC142">
+        </v-text-field>
+      </v-card-text>
+    </v-form>
     <v-card-actions
       class="justify-end">
       <v-btn

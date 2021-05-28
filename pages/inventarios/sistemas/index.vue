@@ -15,7 +15,7 @@
         md="4"
         lg="4"
         xl="4">
-        <Busqueda nameBusqueda="Nombre del sistema operativo" url="api/inventario/sistemaoperativos/buscar/" @searchModel="searchListSistemas" @resetBusqueda="$fetch" />
+        <Busqueda nameBusqueda="Nombre del sistema operativo" url="/api/inventario/sistemaoperativos/buscar/nombre/" @searchModel="searchListSistemas" @resetBusqueda="$fetch" />
       </v-col>
     </v-row>
     <v-row>
