@@ -157,7 +157,9 @@
         this.form.tipo = this.pantalla.tipo;
 
         if (this.pantalla.marca !== null) {
-          this.form.marca_id = this.pantalla.marca.id;
+          if (this.pantalla.marca !== undefined) {
+            this.form.marca_id = this.pantalla.marca.id;
+          }
         }
       }
     },

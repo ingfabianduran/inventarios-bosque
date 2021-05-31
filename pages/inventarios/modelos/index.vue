@@ -15,7 +15,8 @@
           :search="search"
           @getModel="getModelo"
           @searchModel="searchListModelos"
-          @resetBusqueda="$fetch" />
+          @resetBusqueda="$fetch"
+          @updateModels="$fetch" />
       </v-col>
     </v-row>
     <Pagination :page="page" @getData="updateListModelos" />

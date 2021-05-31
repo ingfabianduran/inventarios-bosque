@@ -107,6 +107,7 @@
       resetData() {
         this.$refs.formProcesador.reset();
         this.form.nombre = '';
+        this.form.frecuencia = '';
       }
     }
   }

@@ -19,7 +19,7 @@
               <ValidationProvider
                 v-slot="{ errors }"
                 name="tipo"
-                rules="required|oneOf:Academico,Administrativo,Servicio al estudiante">
+                rules="required|oneOf:Académico,Administrativo,Servicio al estudiante">
                 <v-autocomplete
                   v-model="form.tipo"
                   label="Tipo"
