@@ -2,8 +2,8 @@
   <div>
     <v-row>
       <v-col>
-        <Equipo v-show="isViewAddEquipo" :titulo="titulo" :url="url" :data="equipo" @showCardEquipo="showCardEquipo" @clearForm="clearForm" />
-        <Card v-show="!isViewAddEquipo" :equipo="equipo" @addEquipo="isViewAddEquipo = true" @updateEquipo="updateEquipo" :whenDeleteEquipo="whenDeleteEquipo" />
+        <Equipo ref="stepperEquipo" v-show="isViewAddEquipo" :titulo="titulo" :url="url" :data="equipo" @showCardEquipo="showCardEquipo" @clearForm="clearForm" :masiveCreate="masiveCreate" />
+        <Card v-show="!isViewAddEquipo" :equipo="equipo" @addEquipo="openAddEquipo" @updateEquipo="updateEquipo" :whenDeleteEquipo="whenDeleteEquipo" />
       </v-col>
     </v-row>
     <v-row>
@@ -42,6 +42,7 @@
    * @vue-data {String} url - Url que va a ejecutar el formulario equipo para realizar la petición.
    * @vue-data {Boolean} whenDeleteEquipo - Deshabilita en el componente Card las opciones cuando un equipo es eliminado del sistema.
    * @vue-event {Array} updateListEquipos - Actualiza la informacion sobre la tabla.
+   * @vue-event {} openAddEquipo - Permite mostrar el formulario para agregar un equipo.
    * @vue-event {Object} getEquipo - Trae el modelo seleccionado desde la tabla.
    * @vue-event {Object} clearForm - Reinicia los valores sobre el modelo.
    * @vue-event {Array} searchListEquipos - Cambia los valores en la tabla cuando se esta realizando una busqueda.
@@ -79,7 +80,8 @@
         titulo: 'Nuevo Equipo',
         url: 'api/inventario/equipos',
         equipo: {},
-        whenDeleteEquipo: false
+        whenDeleteEquipo: false,
+        masiveCreate: true
       }
     },
     components: {
@@ -106,6 +108,11 @@
         const { data } = await this.$axios.$get('api/config');
         this.$store.commit('setConfig', data.migraciones);
       },
+      openAddEquipo() {
+        this.isViewAddEquipo = true;
+        this.masiveCreate = true;
+        this.$refs.stepperEquipo.cancelarRegistro();
+      },
       updateListEquipos(equipos) {
         this.equipos = equipos.data;
         this.page.current = equipos.current;
@@ -125,10 +132,9 @@
         this.isViewAddEquipo = true;
         this.titulo = 'Modificar Equipo';
         this.url = `api/inventario/equipos/${this.equipo.id}`;
+        this.masiveCreate = false;
       },
-      async clearForm(equipo) {
-        const { data } = await this.$axios.$get(`api/inventario/equipos/${equipo.id}`);
-        this.equipo = data;
+      async clearForm() {
         this.titulo = 'Nuevo Equipo';
         this.url = 'api/inventario/equipos';
         this.isViewAddEquipo = false;

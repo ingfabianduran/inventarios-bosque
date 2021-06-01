@@ -32,7 +32,7 @@
       </v-stepper-content>
       <v-stepper-content
         step="3">
-        <Equipo :equipo="data" ref="equipo" :showDiscos="showDiscos" :showMemorias="showMemorias" @getEquipo="setEquipo" @clearForm="showCardEquipo" />
+        <Equipo :equipo="data" ref="equipo" :showDiscos="showDiscos" :showMemorias="showMemorias" @getEquipo="setEquipo" @clearForm="showCardEquipo" :masiveCreate="masiveCreate" />
       </v-stepper-content>
       <v-stepper-content
         step="4">
@@ -62,7 +62,6 @@
   import Alert from '~/components/Site/SweetAlert';
   import Loader from '~/components/Site/Loader';
   import moment from 'moment';
-import { log } from '~/node_modules/pdfmake/build/pdfmake';
   /**
    * @vue-data {Number} paso - v-model del componente v-stepper.
    * @vue-data {Array} pasos - Lista que configura los v-stepper-step.
@@ -135,6 +134,10 @@ import { log } from '~/node_modules/pdfmake/build/pdfmake';
       data: {
         type: Object,
         required: true
+      },
+      masiveCreate: {
+        type: Boolean,
+        default: true
       }
     },
     components: {
@@ -251,7 +254,7 @@ import { log } from '~/node_modules/pdfmake/build/pdfmake';
                   Alert.showToast('success', equipo.descripcion);
                   this.isLoading = false;
                   this.cancelarRegistro();
-                  this.$emit('clearForm', equipo.data);
+                  this.$emit('clearForm');
                 }, 500);
               } else {
                 this.isLoading = false;

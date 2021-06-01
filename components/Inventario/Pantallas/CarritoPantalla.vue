@@ -81,7 +81,7 @@
           </v-row>
         </v-form>
       </ValidationObserver>
-      <Pantallas :headers="headers" :items="pantallas" titulo="Modificar Pantallas" @itemSelect="updatePantalla" />
+      <Pantallas :headers="headers" :items="pantallas" titulo="Modificar Pantallas" @itemSelect="updatePantalla" :stateBtn="(rol === 'MESA' ? true : false)" />
     </v-card-text>
   </v-card>
 </template>

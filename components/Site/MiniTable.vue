@@ -8,7 +8,8 @@
     <template v-slot:[`item.actions`]="{ item }">
       <v-btn
         icon
-        @click="deleteItem(item)">
+        @click="deleteItem(item)"
+        :disabled="stateBtn">
         <v-icon
           color="#F27830">
           mdi-delete
@@ -62,6 +63,10 @@
       total: {
         type: Array,
         required: false
+      },
+      stateBtn: {
+        type: Boolean,
+        default: false
       }
     },
     methods: {
@@ -72,7 +77,7 @@
           }
         });
       }
-    }
+    },
   }
 </script>
 <style scoped>

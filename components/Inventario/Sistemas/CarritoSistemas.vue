@@ -80,7 +80,7 @@
           </v-row>
         </v-form>
       </ValidationObserver>
-      <Sistemas :headers="headers" :items="sistemas" titulo="Modificar Sistemas Operativos" @itemSelect="updateSistema" />
+      <Sistemas :headers="headers" :items="sistemas" titulo="Modificar Sistemas Operativos" @itemSelect="updateSistema" :stateBtn="(rol === 'MESA' ? true : false)" />
     </v-card-text>
   </v-card>
 </template>

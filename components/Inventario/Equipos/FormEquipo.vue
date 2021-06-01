@@ -10,7 +10,7 @@
             <v-col
               cols="12"
               md="2"
-              v-if="Object.keys(equipo).length === 0">
+              v-if="masiveCreate">
               <v-checkbox
                 v-model="isMasiva"
                 label="Creación Masiva"
@@ -39,7 +39,7 @@
             </v-col>
             <v-col
               cols="12"
-              :md="(Object.keys(equipo).length > 0 ? 4 : 3)">
+              :md="(!masiveCreate ? 4 : 3)">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="compra"
@@ -59,7 +59,7 @@
             </v-col>
             <v-col
               cols="12"
-              :md="(Object.keys(equipo).length > 0 ? 4 : 3)">
+              :md="(!masiveCreate ? 4 : 3)">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="garantia"
@@ -278,6 +278,10 @@
       equipo: {
         type: Object,
         required: false
+      },
+      masiveCreate: {
+        type: Boolean,
+        default: true
       }
     },
     async fetch() {

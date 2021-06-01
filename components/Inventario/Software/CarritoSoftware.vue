@@ -169,6 +169,6 @@
         this.$refs.formAddSoftware.reset();
         this.form.software_id = '';
       }
-    }
+    },
   }
 </script>
