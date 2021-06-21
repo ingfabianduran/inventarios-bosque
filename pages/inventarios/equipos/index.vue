@@ -3,7 +3,7 @@
     <v-row>
       <v-col>
         <Equipo ref="stepperEquipo" v-show="isViewAddEquipo" :titulo="titulo" :url="url" :data="equipo" @showCardEquipo="showCardEquipo" @clearForm="clearForm" :masiveCreate="masiveCreate" />
-        <Card v-show="!isViewAddEquipo" :equipo="equipo" @addEquipo="openAddEquipo" @updateEquipo="updateEquipo" :whenDeleteEquipo="whenDeleteEquipo" />
+        <Card ref="cardEquipo" v-show="!isViewAddEquipo" :equipo="equipo" @addEquipo="openAddEquipo" @updateEquipo="updateEquipo" :whenDeleteEquipo="whenDeleteEquipo" />
       </v-col>
     </v-row>
     <v-row>
@@ -128,10 +128,11 @@
         this.page.last = equipos.data.last_page;
         this.page.url = equipos.url;
       },
-      updateEquipo() {
+      updateEquipo(equipo) {
         this.isViewAddEquipo = true;
         this.titulo = 'Modificar Equipo';
-        this.url = `api/inventario/equipos/${this.equipo.id}`;
+        this.equipo = equipo;
+        this.url = `api/inventario/equipos/${equipo.id}`;
         this.masiveCreate = false;
       },
       async clearForm() {

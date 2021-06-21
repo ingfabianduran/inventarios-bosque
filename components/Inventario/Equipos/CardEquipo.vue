@@ -173,7 +173,8 @@
           this.dialogEquipo.data = this.equipo;
           this.dialogEquipo.isView = true;
         } else if (opcion === 'modificarEquipo') {
-          this.$emit('updateEquipo');
+          const { data } = await this.$axios.$get(`api/inventario/equipos/${this.equipo.id}`);
+          this.$emit('updateEquipo', data);
         } else if (opcion === 'reporteInventario') {
           this.$router.push('/inventarios/equipos/reportes');
         } else if (opcion === 'registrosMasivos') {
