@@ -62,8 +62,7 @@
               :md="(!masiveCreate ? 4 : 3)">
               <ValidationProvider
                 v-slot="{ errors }"
-                name="garantia"
-                rules="required">
+                name="garantia">
                 <v-text-field
                   v-model="form.vence_garantia"
                   label="Garatia"
@@ -81,7 +80,7 @@
           <v-row>
             <v-col
               cols="12"
-              md="4">
+              md="3">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="tipo"
@@ -99,7 +98,25 @@
             </v-col>
             <v-col
               cols="12"
-              md="4">
+              md="3">
+              <ValidationProvider
+                v-slot="{ errors }"
+                name="estado"
+                rules="required|oneOf:Asignación Interna,Asignación Externa,Asignación Provisional,En Préstamo,En Garantía,Disponible,Dañado,Dado de Baja,Hurtado">
+                <v-select
+                  v-model="form.estado"
+                  label="Estado"
+                  outlined
+                  :items="equipo_estados"
+                  color="#7BC142"
+                  :error-messages="errors"
+                  :disabled="rol === 'COORDINADOR' ? false : true">
+                </v-select>
+              </ValidationProvider>
+            </v-col>
+            <v-col
+              cols="12"
+              md="3">
               <template v-if="!isMasiva">
                 <ValidationProvider
                   v-slot="{ errors }"
@@ -137,7 +154,7 @@
             </v-col>
             <v-col
               cols="12"
-              md="4">
+              md="3">
               <ValidationProvider
                 v-slot="{ errors }"
                 name="valor"
@@ -253,6 +270,7 @@
           fecha_compra: '',
           vence_garantia: '',
           tipo: '',
+          estado: '',
           file: null,
           serie: '',
           valor: '',
@@ -321,6 +339,7 @@
         this.form.fecha_compra = '';
         this.form.vence_garantia = '';
         this.form.tipo = '';
+        this.form.estado = '';
         this.form.serie = '';
         this.form.valor = '';
         this.form.modelo_id = '';
@@ -338,6 +357,7 @@
         this.form.fecha_compra = moment(this.equipo.fecha_compra).format('DD-MM-YYYY');
         this.form.vence_garantia = moment(this.equipo.vence_garantia).format('DD-MM-YYYY');
         this.form.tipo = this.equipo.tipo;
+        this.form.estado = this.equipo.estado;
         this.form.serie = this.equipo.serie;
         this.form.valor = this.equipo.valor;
 
@@ -360,6 +380,9 @@
       ]),
       tipos() {
         return this.getValues('equipo');
+      },
+      equipo_estados() {
+        return this.getValues('equipo_estado');
       },
       rol() {
         return this.$auth.user.rol;

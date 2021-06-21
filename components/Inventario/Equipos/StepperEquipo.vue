@@ -106,6 +106,7 @@
           fecha_compra: '',
           vence_garantia: '',
           tipo: '',
+          estado: '',
           serie: '',
           valor: '',
           modelo_id: '',
@@ -164,6 +165,7 @@
         this.form.fecha_compra = equipo.form.fecha_compra;
         this.form.vence_garantia = equipo.form.vence_garantia;
         this.form.tipo = equipo.form.tipo;
+        this.form.estado = equipo.form.estado;
         this.form.serie = equipo.form.serie;
         this.form.valor = equipo.form.valor;
         this.form.modelo_id = equipo.form.modelo_id;
