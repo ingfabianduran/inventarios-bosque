@@ -80,7 +80,12 @@
     },
     async fetch() {
       const { data }  = await this.$axios.$get(`api/asignacion/espacios/i/10?page=${this.page.current}`);
-      this.espacios = data.data;
+      this.espacios = data.data.map((espacio) => {
+        return {
+          id: espacio.id,
+          nombre: `${espacio.edificio.nombre} - ${espacio.nombre}`
+        }
+      });
       this.page.last = data.last_page;
       this.page.url = 'api/asignacion/espacios/i/10?page=';
     },
@@ -103,7 +108,12 @@
         this.$fetch();
       },
       searchListEspacios(espacios) {
-        this.espacios = espacios.data.data;
+        this.espacios = espacios.data.data.map((espacio) => {
+          return {
+            id: espacio.id,
+            nombre: `${espacio.edificio.nombre} - ${espacio.nombre}`
+          }
+        });
         this.page.current = 1;
         this.page.last = espacios.data.last_page;
         this.page.url = espacios.url;
